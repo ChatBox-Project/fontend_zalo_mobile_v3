@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './layout/HomeScreen';
 import LoginScreen from './layout/LoginScreen';
-import { Text } from 'react-native';
+import SignInScreen from './layout/SignInScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +23,13 @@ export default function App() {
           component={LoginScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Đăng nhập"
+          })}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignInScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Tạo tài khoản"
           })}
         />
       </Stack.Navigator>
