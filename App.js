@@ -4,6 +4,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from './layout/HomeScreen';
 import LoginScreen from './layout/LoginScreen';
 import SignInScreen from './layout/SignInScreen';
+import SignInScreen1 from './layout/SignInScreen1';
+import OTPScreen from './layout/OTPScreen';
+import BirthDayAndSexScreen from './layout/BirthDayAndSexScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +33,27 @@ export default function App() {
           component={SignInScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Tạo tài khoản"
+          })}
+        />
+        <Stack.Screen
+          name="SignIn1"
+          component={SignInScreen1}
+          options={({ navigation, route }) => ({
+            headerTitle: "Tạo tài khoản"
+          })}
+        />
+        <Stack.Screen
+          name="OTPScreen"
+          component={OTPScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Nhập mã kích hoạt"
+          })}
+        />
+        <Stack.Screen
+          name="BirthDayAndSexScreen"
+          component={BirthDayAndSexScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Ngày sinh và giới tính"
           })}
         />
       </Stack.Navigator>
