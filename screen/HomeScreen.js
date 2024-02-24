@@ -2,6 +2,7 @@ import React from 'react'
 import ZaloImage from "../images/zalo_icon.png"
 import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
+import { BLUE, GRAY } from './colors/Colors'
 
 function HomeScreen({ navigation }) {
 
@@ -15,7 +16,7 @@ function HomeScreen({ navigation }) {
                 <Button
                     title="Đăng nhập"
                     buttonStyle={{
-                        backgroundColor: 'rgba(78, 116, 289, 1)',
+                        backgroundColor: BLUE,
                         borderWidth: 2,
                         borderColor: 'white',
                         borderRadius: 30,
@@ -32,7 +33,7 @@ function HomeScreen({ navigation }) {
                 <Button
                     title="Tạo tài khoản mới"
                     buttonStyle={{
-                        backgroundColor: 'rgba(244, 244, 244, 1)',
+                        backgroundColor: GRAY,
                         borderWidth: 2,
                         borderColor: 'white',
                         borderRadius: 30,

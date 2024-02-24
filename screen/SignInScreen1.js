@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
+import { BLUE, GRAY } from './colors/Colors';
 
 function SignInScreen1({ navigation }) {
 
@@ -9,7 +10,7 @@ function SignInScreen1({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ width: "100%", padding: 12, backgroundColor: "rgba(244, 244, 244, 1)" }}>
+            <View style={{ width: "100%", padding: 12, backgroundColor: GRAY }}>
                 <Text>Nhập số điện thoại của bạn để tạo tài khoản mới</Text>
             </View>
             <View style={{ width: "95%", marginTop: 15 }}>
@@ -22,7 +23,7 @@ function SignInScreen1({ navigation }) {
                         checkedIcon="checkbox-outline"
                         uncheckedIcon={'checkbox-blank-outline'}
                     />
-                    <Text>Tôi đồng ý với các <Text style={{ color: "#007bff" }}>Quy định đặt tên trên Zalo</Text></Text>
+                    <Text>Tôi đồng ý với các <Text style={{ color: BLUE }}>Quy định đặt tên trên Zalo</Text></Text>
                 </View>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: -20 }}>
                     <CheckBox
@@ -32,7 +33,7 @@ function SignInScreen1({ navigation }) {
                         checkedIcon="checkbox-outline"
                         uncheckedIcon={'checkbox-blank-outline'}
                     />
-                    <Text>Tôi đồng ý với <Text style={{ color: "#007bff" }}>điều khoản Mạng xã hội của Zalo</Text></Text>
+                    <Text>Tôi đồng ý với <Text style={{ color: BLUE }}>điều khoản Mạng xã hội của Zalo</Text></Text>
                 </View>
             </View>
             <View style={{ alignSelf: 'flex-end' }}>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
+import { BLUE } from './colors/Colors';
 
 function SignInScreen({ navigation }) {
 
@@ -10,7 +11,7 @@ function SignInScreen({ navigation }) {
                 <Text style={{ fontSize: 16, fontWeight: '500' }}>Tên Zalo</Text>
                 <Input placeholder='Gồm 2-40 ký tự' inputStyle={{ fontSize: 16 }} />
                 <Text>Lưu ý khi đặt tên</Text>
-                <Text style={{ marginTop: 5, marginBottom: 5 }}>-  Không vi phạm <Text style={{ color: "#007bff" }}>Quy định đặt tên trên Zalo</Text></Text>
+                <Text style={{ marginTop: 5, marginBottom: 5 }}>-  Không vi phạm <Text style={{ color: BLUE }}>Quy định đặt tên trên Zalo</Text></Text>
                 <Text>-  Nên sử dụng tên thật để giúp bạn bè dễ nhận ra bạn</Text>
             </View>
             <View style={{ alignSelf: 'flex-end' }}>

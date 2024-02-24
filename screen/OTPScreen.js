@@ -1,25 +1,38 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/FontAwesome6';
+import { BLUE, GRAY } from './colors/Colors';
 
 
 function OTPScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <View style={{ width: "100%", padding: 12, backgroundColor: "rgba(244, 244, 244, 1)" }}>
+            <View style={{ width: "100%", padding: 12, backgroundColor: GRAY }}>
                 <Text>Vui lòng không chia sẻ mã xác thực để tránh mất tài khoản</Text>
             </View>
-            <View style={{ borderWidth: 3, padding: 15, marginTop: 60, borderRadius: 50, display: 'flex', justifyContent: 'center', alignItems: 'center', borderColor: "gray" }}>
-                <Icon name='phone-missed' size={30} color={"gray"} />
+            <View
+                style={{
+                    borderWidth: 3,
+                    marginTop: 60,
+                    marginBottom: 15,
+                    borderRadius: 50,
+                    width: 65,
+                    height: 65,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    borderColor: BLUE
+                }}>
+                <Icon name='phone-volume' size={30} color={BLUE} />
             </View>
-            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số (+84) 999 99999</Text>
+            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số (+84) 9999 9999</Text>
             <Text>Vui lòng nhập mã xác nhận</Text>
-            <View style={{ width: "95%", marginTop: 15 }}>
-                <Input placeholder='Nhập mã OTP' inputStyle={{ fontSize: 16 }} />
+            <View style={{ width: "35%", marginTop: 15 }}>
+                <Input placeholder='Nhập mã OTP' inputStyle={{ fontSize: 16, textAlign: 'center' }} />
             </View>
-            <Text>Gửi lại mã <Text style={{ color: "#007bff" }}>00:00</Text></Text>
+            <Text>Gửi lại mã <Text style={{ color: BLUE }}>00:00</Text></Text>
             <View style={{ alignSelf: 'flex-end' }}>
                 <Button
                     title={'Tiếp tục'}
