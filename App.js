@@ -1,7 +1,6 @@
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screen/HomeScreen';
 import LoginScreen from './screen/LoginScreen';
 import SignInScreen from './screen/SignInScreen';
 import SignInScreen1 from './screen/SignInScreen1';
@@ -9,6 +8,8 @@ import OTPScreen from './screen/OTPScreen';
 import BirthDayAndSexScreen from './screen/BirthDayAndSexScreen';
 import AvatarScreen from './screen/AvatarScreen';
 import { BLUE, WHITE } from './screen/colors/Colors';
+import LoginAndSignInScreen from './screen/LoginAndSignInScreen';
+import IndexScreen from './screen/IndexScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="Home"
+        initialRouteName="LoginAndSignIn"
         screenOptions={{
           headerStyle: { backgroundColor: BLUE },
           headerTitleStyle: { color: WHITE },
@@ -24,8 +25,8 @@ export default function App() {
         }}
       >
         <Stack.Screen
-          name="Home"
-          component={HomeScreen}
+          name="LoginAndSignIn"
+          component={LoginAndSignInScreen}
           options={({ navigation, route }) => ({
             headerShown: false,
           })}
@@ -70,6 +71,14 @@ export default function App() {
           component={AvatarScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Ảnh đại diện"
+          })}
+        />
+        <Stack.Screen
+          name="Index"
+          component={IndexScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Index",
+            headerShown: false,
           })}
         />
       </Stack.Navigator>

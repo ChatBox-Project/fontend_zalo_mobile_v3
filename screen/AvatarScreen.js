@@ -6,7 +6,7 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from './colors/Colors';
 
-function AvatarScreen() {
+function AvatarScreen({ navigation }) {
 
     const [image, setImage] = useState(null);
 
@@ -93,6 +93,7 @@ function AvatarScreen() {
                         marginHorizontal: 20,
                         marginVertical: 10,
                     }}
+                    onPress={() => { navigation.push("Index") }}
                 />
             </View>
         </View>

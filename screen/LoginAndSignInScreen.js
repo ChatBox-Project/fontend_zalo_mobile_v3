@@ -4,7 +4,7 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
 
-function HomeScreen({ navigation }) {
+function LoginAndSignInScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen
+export default LoginAndSignInScreen

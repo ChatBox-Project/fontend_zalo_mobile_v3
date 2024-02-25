@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 
-function LoginScreen() {
+function LoginScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <View style={{ width: "100%", padding: 12, backgroundColor: GRAY }}>
@@ -26,6 +26,7 @@ function LoginScreen() {
                     height: 40,
                     marginTop: 20
                 }}
+                onPress={() => { navigation.push("Index") }}
             />
         </View>
     )
