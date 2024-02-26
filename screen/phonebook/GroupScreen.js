@@ -1,7 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
-function ChatScreen({ navigation }) {
+function GroupScreen() {
 
     return (
         <View style={styles.container} >
@@ -20,4 +20,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default ChatScreen
+export default GroupScreen

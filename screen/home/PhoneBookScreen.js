@@ -1,23 +1,30 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import FriendScreen from '../phonebook/FriendScreen';
+import GroupScreen from '../phonebook/GroupScreen';
+
+const Tab = createMaterialTopTabNavigator();
 
 function PhoneBookScreen() {
 
     return (
-        <View style={styles.container} >
-            <Text>Loading....</Text>
-        </View>
-    )
+        <Tab.Navigator>
+            <Tab.Screen
+                name="Friend"
+                component={FriendScreen}
+                options={{
+                    tabBarLabel: "Bạn bè"
+                }}
+            />
+            <Tab.Screen
+                name="Group"
+                component={GroupScreen}
+                options={{
+                    tabBarLabel: "Nhóm"
+                }}
+            />
+        </Tab.Navigator>
+    );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
-    },
-});
 
 export default PhoneBookScreen

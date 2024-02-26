@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Fontisto';
 import Icon1 from 'react-native-vector-icons/AntDesign';
 import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/FontAwesome';
-import Icon4 from 'react-native-vector-icons/FontAwesome5';
+import Icon4 from 'react-native-vector-icons/AntDesign';
 import { Text, TouchableOpacity, View } from 'react-native';
 import { BLUE } from '../colors/Colors';
 import PhoneBookScreen from './PhoneBookScreen';
@@ -78,7 +78,7 @@ function IndexScreen() {
                     headerRight: () => (
                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                             <TouchableOpacity style={{ marginRight: 20 }}>
-                                <Icon4 name='user-plus' size={20} color={'white'} />
+                                <Icon4 name='adduser' size={25} color={'white'} />
                             </TouchableOpacity>
                         </View>
                     ),
