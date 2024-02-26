@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { BLUE } from './colors/Colors';
+import { BLUE } from '../colors/Colors';
 
 function SignInScreen({ navigation }) {
 

@@ -4,7 +4,7 @@ import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
-import { BLUE, GRAY } from './colors/Colors';
+import { BLUE, GRAY } from '../colors/Colors';
 
 function AvatarScreen({ navigation }) {
 

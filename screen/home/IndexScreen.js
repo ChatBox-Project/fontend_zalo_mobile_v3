@@ -7,14 +7,31 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/FontAwesome';
 import Icon4 from 'react-native-vector-icons/FontAwesome5';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { BLUE } from './colors/Colors';
+import { BLUE } from '../colors/Colors';
 import PhoneBookScreen from './PhoneBookScreen';
 import IndividualScreen from './IndividualScreen';
-
+import * as Contacts from 'expo-contacts';
 
 const Tab = createBottomTabNavigator();
 
 function IndexScreen() {
+
+    // Lấy danh bạ điện thoại
+    React.useEffect(() => {
+        (async () => {
+            const { status } = await Contacts.requestPermissionsAsync();
+            if (status === 'granted') {
+                const { data } = await Contacts.getContactsAsync({
+                    fields: [Contacts.Fields.PhoneNumbers],
+                });
+
+                if (data.length > 0) {
+                    const contact = data[0];
+                    console.log(contact);
+                }
+            }
+        })();
+    }, []);
 
     return (
         <Tab.Navigator
@@ -48,7 +65,7 @@ function IndexScreen() {
                         </View>
                     ),
                     tabBarIcon: ({ focused, color, size }) => (
-                        <Icon2 name='chatbox-ellipses-outline' size={25} color={color} />
+                        <Icon2 name='chatbox-ellipses-outline' size={20} color={color} />
                     ),
                     tabBarLabel: "Tin nhắn",
                 }}
@@ -66,7 +83,7 @@ function IndexScreen() {
                         </View>
                     ),
                     tabBarIcon: ({ focused, color, size }) => (
-                        <Icon3 name='address-book-o' size={25} color={color} />
+                        <Icon3 name='address-book-o' size={20} color={color} />
                     ),
                     tabBarLabel: "Danh bạ",
                 }}
@@ -84,7 +101,7 @@ function IndexScreen() {
                         </View>
                     ),
                     tabBarIcon: ({ focused, color, size }) => (
-                        <Icon3 name='user-o' size={25} color={color} />
+                        <Icon3 name='user-o' size={20} color={color} />
                     ),
                     tabBarLabel: "Cá nhân",
                 }}

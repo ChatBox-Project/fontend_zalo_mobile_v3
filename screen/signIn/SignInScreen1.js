@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
-import { BLUE, GRAY } from './colors/Colors';
+import { BLUE, GRAY } from '../colors/Colors';
 
 function SignInScreen1({ navigation }) {
 

@@ -1,15 +1,15 @@
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './screen/LoginScreen';
-import SignInScreen from './screen/SignInScreen';
-import SignInScreen1 from './screen/SignInScreen1';
-import OTPScreen from './screen/OTPScreen';
-import BirthDayAndSexScreen from './screen/BirthDayAndSexScreen';
-import AvatarScreen from './screen/AvatarScreen';
 import { BLUE, WHITE } from './screen/colors/Colors';
 import LoginAndSignInScreen from './screen/LoginAndSignInScreen';
-import IndexScreen from './screen/IndexScreen';
+import LoginScreen from './screen/LoginScreen';
+import SignInScreen from './screen/signIn/SignInScreen';
+import SignInScreen1 from './screen/signIn/SignInScreen1';
+import OTPScreen from './screen/signIn/OTPScreen';
+import BirthDayAndSexScreen from './screen/signIn/BirthDayAndSexScreen';
+import AvatarScreen from './screen/signIn/AvatarScreen';
+import IndexScreen from './screen/home/IndexScreen';
 
 const Stack = createNativeStackNavigator();
 
