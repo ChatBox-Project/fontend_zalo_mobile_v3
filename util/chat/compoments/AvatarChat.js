@@ -12,7 +12,7 @@ function AvatarChat({ image }) {
                         style={{
                             width: 50,
                             height: 50,
-                            borderRadius: 30
+                            borderRadius: 30,
                         }}
                         source={{
                             uri: 'https://khoinguonsangtao.vn/wp-content/uploads/2022/08/hinh-nen-gai-xinh.jpg',

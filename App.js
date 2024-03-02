@@ -10,6 +10,8 @@ import OTPScreen from './screen/signIn/OTPScreen';
 import BirthDayAndSexScreen from './screen/signIn/BirthDayAndSexScreen';
 import AvatarScreen from './screen/signIn/AvatarScreen';
 import IndexScreen from './screen/home/IndexScreen';
+import FriendRequestScreen from './screen/phonebook/FriendRequestScreen';
+import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -79,6 +81,20 @@ export default function App() {
           options={({ navigation, route }) => ({
             headerTitle: "Index",
             headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="FriendRequestScreen"
+          component={FriendRequestScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Lời mời kết bạn",
+          })}
+        />
+        <Stack.Screen
+          name="FriendPhoneBookScreen"
+          component={FriendPhoneBookScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Danh bạ máy",
           })}
         />
       </Stack.Navigator>

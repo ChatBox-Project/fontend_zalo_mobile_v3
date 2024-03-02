@@ -7,7 +7,7 @@ import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'
 
-function FriendScreen() {
+function FriendScreen({ navigation }) {
 
     const [tab, setTab] = React.useState(0)
 
@@ -16,6 +16,7 @@ function FriendScreen() {
             <View style={styles.container} >
                 <View style={{ marginTop: 5, width: "100%", borderBottomWidth: 8, borderBottomColor: GRAY }}>
                     <TouchableOpacity
+                        onPress={() => { navigation.push("FriendRequestScreen") }}
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -31,6 +32,7 @@ function FriendScreen() {
                         <Text style={{ fontSize: 15, marginLeft: 15 }}>Lời mời kết bạn</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
+                        onPress={() => { navigation.push("FriendPhoneBookScreen") }}
                         style={{
                             display: 'flex',
                             flexDirection: 'row',
@@ -73,7 +75,10 @@ function FriendScreen() {
                                 borderColor: "#dfe6e9",
                                 backgroundColor: tab === 0 ? "#dfe6e9" : "white"
                             }}>
-                            <Text style={{ color: tab === 0 ? "black" : "gray", fontWeight: tab === 0 ? "500" : "normal" }}>Tất cả 42</Text>
+                            <View style={{ justifyContent: 'space-around', justifyContent: 'center', flexDirection: 'row' }}>
+                                <Text style={{ color: tab === 0 ? "black" : "gray", fontWeight: tab === 0 ? "500" : "normal" }}>Tất cả</Text>
+                                <Text style={{ color: tab === 0 ? "black" : "gray", marginLeft: 5 }}>42</Text>
+                            </View>
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => { setTab(1) }}
