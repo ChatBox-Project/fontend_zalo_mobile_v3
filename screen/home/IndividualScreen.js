@@ -28,7 +28,7 @@ function IndividualScreen() {
               style={{
                 width: 50,
                 height: 50,
-                borderRadius: "50%",
+                borderRadius: 50,
                 marginLeft: 30,
               }}
             />
@@ -57,7 +57,7 @@ function IndividualScreen() {
               style={{
                 width: 30,
                 height: 30,
-                borderRadius: "50%",
+                borderRadius: 50,
                 marginLeft: 30,
               }}
             />
@@ -85,7 +85,7 @@ function IndividualScreen() {
               style={{
                 width: 30,
                 height: 30,
-                borderRadius: "50%",
+                borderRadius: 50,
                 marginLeft: 30,
               }}
             />
@@ -176,7 +176,7 @@ function IndividualScreen() {
               style={{
                 width: 30,
                 height: 30,
-                borderRadius: "50%",
+                borderRadius: 50,
                 marginLeft: 30,
               }}
             />
@@ -203,7 +203,7 @@ function IndividualScreen() {
               style={{
                 width: 30,
                 height: 30,
-                borderRadius: "50%",
+                borderRadius: 50,
                 marginLeft: 30,
               }}
             />
