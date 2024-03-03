@@ -6,10 +6,25 @@ import { BLUE, GRAY } from '../colors/Colors';
 import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'
+import TabItem from '../../util/tab/TabItem';
 
 function FriendScreen({ navigation }) {
 
-    const [tab, setTab] = React.useState(0)
+    const [tab, setTab] = React.useState(0);
+    const tabs = [
+        {
+            id: 0,
+            titleTab: "Tất cả",
+            tab: <TabFriend key={0} />,
+            count: 42
+        },
+        {
+            id: 1,
+            titleTab: "Mới truy cập",
+            tab: <TabStatusFriends key={1} />,
+            count: null
+        }
+    ]
 
     return (
         <ScrollView>
@@ -52,7 +67,6 @@ function FriendScreen({ navigation }) {
                         </View>
                     </TouchableOpacity>
                 </View>
-
                 <View style={{ width: "100%" }}>
                     <View
                         style={{
@@ -60,42 +74,29 @@ function FriendScreen({ navigation }) {
                             flexDirection: 'row',
                             justifyContent: 'flex-start',
                             alignItems: 'center',
-                            padding: 10,
+                            paddingVertical: 10,
                             width: "100%",
                             borderBottomWidth: 1,
                             borderBottomColor: '#dfe6e9',
                         }}>
-                        <TouchableOpacity
-                            onPress={() => { setTab(0) }}
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 6,
-                                borderRadius: 20,
-                                borderColor: "#dfe6e9",
-                                backgroundColor: tab === 0 ? "#dfe6e9" : "white"
-                            }}>
-                            <View style={{ justifyContent: 'space-around', justifyContent: 'center', flexDirection: 'row' }}>
-                                <Text style={{ color: tab === 0 ? "black" : "gray", fontWeight: tab === 0 ? "500" : "normal" }}>Tất cả</Text>
-                                <Text style={{ color: tab === 0 ? "black" : "gray", marginLeft: 5 }}>42</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => { setTab(1) }}
-                            style={{
-                                borderWidth: 1,
-                                paddingHorizontal: 10,
-                                paddingVertical: 6,
-                                borderRadius: 20,
-                                borderColor: "#dfe6e9",
-                                backgroundColor: tab === 1 ? "#dfe6e9" : "white",
-                                marginLeft: 15
-                            }}>
-                            <Text style={{ color: tab === 1 ? "black" : "gray", fontWeight: tab === 1 ? "500" : "normal" }}>Mới truy cập</Text>
-                        </TouchableOpacity>
+
+                        {
+                            tabs.map((item) => {
+                                return (
+                                    <TabItem key={item.id} title={item.titleTab} tab={tab} setTab={setTab} count={item.count} id={item.id} />
+                                )
+                            })
+                        }
+
                     </View>
                     {
-                        tab === 0 ? <TabFriend /> : <TabStatusFriends />
+                        tabs.map(item => {
+                            if (item.id === tab) {
+                                return (
+                                    item.tab
+                                )
+                            }
+                        })
                     }
                 </View>
             </View>
