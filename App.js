@@ -12,8 +12,8 @@ import AvatarScreen from './screen/signIn/AvatarScreen';
 import IndexScreen from './screen/home/IndexScreen';
 import FriendRequestScreen from './screen/phonebook/FriendRequestScreen';
 import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
-import PersonalScreen from './Individual/PersonalScreen';
 import SettingScreen from './screen/home/SettingScreen';
+import PersonalScreen from './screen/Individual/PersonalScreen';
 
 const Stack = createNativeStackNavigator();
 
