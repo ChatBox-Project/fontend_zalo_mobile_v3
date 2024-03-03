@@ -14,7 +14,7 @@ import * as Contacts from 'expo-contacts';
 
 const Tab = createBottomTabNavigator();
 
-function IndexScreen() {
+function IndexScreen({ navigation }) {
 
     // Lấy danh bạ điện thoại
     React.useEffect(() => {
@@ -95,7 +95,7 @@ function IndexScreen() {
                     headerTitle: "",
                     headerRight: () => (
                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity style={{ marginRight: 20 }}>
+                            <TouchableOpacity onPress={() => { navigation.push("Setting") }} style={{ marginRight: 20 }}>
                                 <Icon2 name='settings-outline' size={25} color={'white'} />
                             </TouchableOpacity>
                         </View>

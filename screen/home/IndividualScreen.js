@@ -9,11 +9,12 @@ import data from "../imagess/data.png";
 import shield from "../imagess/shield.png";
 import lock from "../imagess/lock.png";
 
-function IndividualScreen() {
+function IndividualScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, backgroundColor: GRAY }}>
         <TouchableOpacity
+          onPress={() => { navigation.push("Personal") }}
           style={{
             height: 80,
             width: 420,

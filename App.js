@@ -12,6 +12,8 @@ import AvatarScreen from './screen/signIn/AvatarScreen';
 import IndexScreen from './screen/home/IndexScreen';
 import FriendRequestScreen from './screen/phonebook/FriendRequestScreen';
 import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
+import PersonalScreen from './Individual/PersonalScreen';
+import SettingScreen from './screen/home/SettingScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -95,6 +97,20 @@ export default function App() {
           component={FriendPhoneBookScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Danh bạ máy",
+          })}
+        />
+        <Stack.Screen
+          name="Personal"
+          component={PersonalScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Trang cá nhân",
+          })}
+        />
+        <Stack.Screen
+          name="Setting"
+          component={SettingScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Cài đặt",
           })}
         />
       </Stack.Navigator>
