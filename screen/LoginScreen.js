@@ -24,7 +24,8 @@ function LoginScreen({ navigation }) {
                 }}
                 buttonStyle={{
                     height: 40,
-                    marginTop: 20
+                    marginTop: 20,
+                    backgroundColor: BLUE
                 }}
                 onPress={() => { navigation.push("Index") }}
             />

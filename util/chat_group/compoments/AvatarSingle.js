@@ -1,19 +1,37 @@
 import React from 'react'
-import { Image, View } from 'react-native'
+import { Image, Text, View } from 'react-native'
 
-function AvatarSingle({ image }) {
+function AvatarSingle({ image, number }) {
     return (
         <>
             {
                 image ?
                     <Image
-                        style={{ width: 20, height: 20, borderWidth: 1, borderRadius: 10, borderColor: "white", }}
+                        style={{
+                            width: 26,
+                            height: 26,
+                            borderWidth: 1,
+                            borderRadius: 15,
+                            borderColor: "white",
+                        }}
                         source={{
-                            uri: 'https://reactnative.dev/img/tiny_logo.png',
+                            uri: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmAnV3-BfumZuxq58opLduuw5U0yEEnBPL_A&usqp=CAU',
                         }}
                     />
                     :
-                    <View style={{ width: 20, height: 20, borderWidth: 1, borderRadius: 10, borderColor: "white", backgroundColor: "gray" }}></View>
+                    <View
+                        style={{
+                            width: 26,
+                            height: 26,
+                            borderWidth: 1,
+                            borderRadius: 15,
+                            borderColor: "white",
+                            backgroundColor: "gray",
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}>
+                        <Text style={{ color: "white", fontSize: 10, fontWeight: 'bold' }} >{number}</Text>
+                    </View>
 
             }
         </>

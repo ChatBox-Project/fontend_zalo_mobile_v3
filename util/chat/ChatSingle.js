@@ -12,12 +12,12 @@ function ChatSingle({ friend }) {
                 <AvatarChat image={1} />
                 <Text style={{ fontSize: 16, marginLeft: 15 }}>{friend?.username}</Text>
             </View>
-            <View style={{ width: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 15 }}>
-                <TouchableOpacity style={{ opacity: 0.6 }}>
-                    <Icon name='phone' size={21} />
+            <View style={{ width: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 20 }}>
+                <TouchableOpacity style={{ opacity: 0.5 }}>
+                    <Icon name='phone' size={22} />
                 </TouchableOpacity>
-                <TouchableOpacity style={{ opacity: 0.6 }}>
-                    <Icon1 name='videocam-outline' size={25} />
+                <TouchableOpacity style={{ opacity: 0.5 }}>
+                    <Icon1 name='videocam-outline' size={24} />
                 </TouchableOpacity>
             </View>
         </View>

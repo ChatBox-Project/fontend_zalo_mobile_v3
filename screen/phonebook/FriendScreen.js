@@ -7,10 +7,12 @@ import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'
 import TabItem from '../../util/tab/TabItem';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 function FriendScreen({ navigation }) {
 
     const [tab, setTab] = React.useState(0);
+
     const tabs = [
         {
             id: 0,
@@ -27,7 +29,10 @@ function FriendScreen({ navigation }) {
     ]
 
     return (
-        <ScrollView>
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+        >
             <View style={styles.container} >
                 <View style={{ marginTop: 5, width: "100%", borderBottomWidth: 8, borderBottomColor: GRAY }}>
                     <TouchableOpacity

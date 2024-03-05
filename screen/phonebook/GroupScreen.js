@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import Icon from 'react-native-vector-icons/AntDesign';
 import { BLUE, GRAY } from '../colors/Colors';
 import ChatGroup from '../../util/chat_group/ChatGroup';
+import { ScrollView } from 'react-native-virtualized-view';
 
 function GroupScreen() {
 
@@ -24,29 +25,39 @@ function GroupScreen() {
             groupLeaderId: null,
             userId: null,
             messageId: null
+        }, {
+            groupId: 3,
+            chatBoxId: 1,
+            groupName: "Cộng Đồng IT Việt",
+            groupMembers: null,
+            groupLeaderId: null,
+            userId: null,
+            messageId: null
         }
     ])
 
     return (
-        <View style={styles.container} >
-            <View
+        <ScrollView
+            showsVerticalScrollIndicator={false}
+            showsHorizontalScrollIndicator={false}
+            style={styles.container}
+        >
+            <TouchableOpacity
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',
                     alignItems: 'center',
                     paddingHorizontal: 15,
-                    paddingVertical: 12,
+                    paddingVertical: 10,
                     width: "100%",
-                    borderBottomWidth: 7,
-                    borderBottomColor: GRAY
                 }}>
                 <View style={{ width: 55, height: 55, borderRadius: 30, backgroundColor: "#e5f3f5", justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon name='addusergroup' color={BLUE} size={30} />
+                    <Icon name='addusergroup' color={BLUE} size={25} />
                 </View>
-                <Text style={{ marginLeft: 15 }}>Tạo nhóm mới</Text>
-            </View>
-            <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 10 }}>
-                <Text style={{ fontWeight: '500', fontSize: 12 }}>Nhóm đang tham gia (18) </Text>
+                <Text style={{ marginLeft: 15, fontSize: 16 }}>Tạo nhóm mới</Text>
+            </TouchableOpacity>
+            <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 10, borderTopColor: GRAY, borderTopWidth: 8, flex: 1 }}>
+                <Text style={{ fontWeight: '500', fontSize: 13, paddingBottom: 15 }}>Nhóm đang tham gia (18) </Text>
                 <FlatList
                     data={groups}
                     renderItem={(data) => {
@@ -56,7 +67,7 @@ function GroupScreen() {
                     }}
                 />
             </View>
-        </View>
+        </ScrollView>
     )
 }
 
@@ -65,8 +76,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'flex-start',
+        // alignItems: 'center',
+        // justifyContent: 'flex-start',
     },
 });
 

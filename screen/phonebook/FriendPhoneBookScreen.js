@@ -29,7 +29,7 @@ function FriendPhoneBookScreen({ navigation }) {
         <View style={styles.container} >
             <View style={{ width: "100%", paddingHorizontal: 15, paddingTop: 10 }}>
                 <View style={{ borderWidth: 1, borderRadius: 10, height: 35, borderColor: "#cccccc", justifyContent: "flex-start", alignItems: "center", flexDirection: "row" }}>
-                    <Icon name="search" size={30} color={"gray"} />
+                    <Icon name="search" size={30} color={"gray"} style={{ marginLeft: 5 }} />
                     <TextInput value={search} onChangeText={setSearch} placeholder='Tìm kiếm...' style={{ fontSize: 14, width: "90%", marginLeft: 5 }} />
                 </View>
             </View>

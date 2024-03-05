@@ -4,14 +4,22 @@ import AvatarSingle from './AvatarSingle'
 
 function AvatarChatGroup({ images }) {
     return (
-        <View style={{ width: 50, height: 50, justifyContent: 'center', alignItems: 'center', marginHorizontal: 12, marginVertical: 12, position: 'relative' }}>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 8, zIndex: 1 }}>
-                <AvatarSingle image={1} />
-                <AvatarSingle image={1} />
+        <View style={{ width: 51, height: 51, justifyContent: 'center', alignItems: 'center', marginHorizontal: 10, marginVertical: 10, position: 'relative' }}>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', top: 0, zIndex: 2 }}>
+                <View style={{ right: -2, zIndex: 1 }}>
+                    <AvatarSingle image={1} />
+                </View>
+                <View style={{ left: -2 }}>
+                    <AvatarSingle image={1} />
+                </View>
             </View>
-            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 5 }}>
-                <AvatarSingle image={1} />
-                <AvatarSingle image={1} />
+            <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', position: 'absolute', bottom: 0 }}>
+                <View style={{ right: -2, zIndex: 1 }}>
+                    <AvatarSingle image={1} />
+                </View>
+                <View style={{ left: -2 }}>
+                    <AvatarSingle number={2} />
+                </View>
             </View>
         </View>
     )
