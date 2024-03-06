@@ -43,12 +43,26 @@ function IndexScreen({ navigation }) {
                 tabBarActiveTintColor: BLUE,
                 tabBarInactiveTintColor: "#cccccc",
                 headerLeft: () => (
-                    <View style={{ marginLeft: 20, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                        <TouchableOpacity style={{ marginRight: 20 }}>
+                    <TouchableOpacity
+                        onPress={() => { navigation.push("Search") }}
+                        style={{
+                            marginLeft: 20,
+                            display: 'flex',
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            justifyContent: 'flex-start',
+                            // borderWidth: 1,
+                            width: 280,
+                            paddingVertical: 5
+                        }}>
+                        <TouchableOpacity
+                            onPress={() => { navigation.push("Search") }}
+                            style={{ marginRight: 20 }}
+                        >
                             <Icon name='search' size={20} color={'white'} />
                         </TouchableOpacity>
                         <Text style={{ fontSize: 17, color: '#D8D8E3' }}>Tìm kiếm</Text>
-                    </View>
+                    </TouchableOpacity>
                 ),
             }}
         >

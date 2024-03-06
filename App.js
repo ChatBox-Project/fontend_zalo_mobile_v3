@@ -14,10 +14,13 @@ import FriendRequestScreen from './screen/phonebook/FriendRequestScreen';
 import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
 import SettingScreen from './screen/home/SettingScreen';
 import PersonalScreen from './screen/Individual/PersonalScreen';
+import SearchScreen from './screen/home/SearchScreen';
+import { Text, TextInput, View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -25,7 +28,7 @@ export default function App() {
         screenOptions={{
           headerStyle: { backgroundColor: BLUE },
           headerTitleStyle: { color: WHITE },
-          headerTintColor: WHITE
+          headerTintColor: WHITE,
         }}
       >
         <Stack.Screen
@@ -111,6 +114,28 @@ export default function App() {
           component={SettingScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Cài đặt",
+          })}
+        />
+        <Stack.Screen
+          name="Search"
+          component={SearchScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "",
+            headerLeft: () => {
+              return (
+                <TextInput
+                  placeholder='tên, số điện thoại,...'
+                  style={{
+                    // borderWidth: 1,
+                    backgroundColor: "white",
+                    width: 300,
+                    borderRadius: 5,
+                    paddingLeft: 5
+                  }}
+                />
+              )
+            },
+            headerBackVisible: true,
           })}
         />
       </Stack.Navigator>

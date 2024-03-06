@@ -10,7 +10,7 @@ function AvatarSingle({ image, number }) {
                         style={{
                             width: 26,
                             height: 26,
-                            borderWidth: 1,
+                            borderWidth: 2,
                             borderRadius: 15,
                             borderColor: "white",
                         }}
@@ -23,7 +23,7 @@ function AvatarSingle({ image, number }) {
                         style={{
                             width: 26,
                             height: 26,
-                            borderWidth: 1,
+                            borderWidth: 2,
                             borderRadius: 15,
                             borderColor: "white",
                             backgroundColor: "gray",
