@@ -16,6 +16,7 @@ import SettingScreen from './screen/home/SettingScreen';
 import PersonalScreen from './screen/Individual/PersonalScreen';
 import SearchScreen from './screen/home/SearchScreen';
 import { Text, TextInput, View } from 'react-native';
+import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -136,6 +137,13 @@ export default function App() {
               )
             },
             headerBackVisible: true,
+          })}
+        />
+        <Stack.Screen
+          name="CreateNewGroup"
+          component={CreateNewGroupScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Nhóm mới",
           })}
         />
       </Stack.Navigator>

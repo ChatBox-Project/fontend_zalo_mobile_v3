@@ -5,7 +5,7 @@ import { BLUE, GRAY } from '../colors/Colors';
 import ChatGroup from '../../util/chat_group/ChatGroup';
 import { ScrollView } from 'react-native-virtualized-view';
 
-function GroupScreen() {
+function GroupScreen({ navigation }) {
 
     const [groups, setGroup] = React.useState([
         {
@@ -43,6 +43,7 @@ function GroupScreen() {
             style={styles.container}
         >
             <TouchableOpacity
+                onPress={() => { navigation.push("CreateNewGroup") }}
                 style={{
                     flexDirection: 'row',
                     justifyContent: 'flex-start',

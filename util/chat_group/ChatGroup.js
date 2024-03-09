@@ -14,9 +14,9 @@ function ChatGroup({ group }) {
                     <Text style={{ color: "gray" }}>Thanh Nam: này mới đang chỉnh sửa</Text>
                 </View>
             </View>
-            <View style={{ alignSelf: 'flex-start', marginTop: 10 }}>
+            {/* <View style={{ alignSelf: 'flex-start', marginTop: 10 }}>
                 <Text style={{ fontSize: 12 }}>21 phút</Text>
-            </View>
+            </View> */}
         </TouchableOpacity>
     )
 }
