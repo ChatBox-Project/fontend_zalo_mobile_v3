@@ -174,23 +174,21 @@ function PersonalScreen({ navigation }) {
           với những dấu ấn cuộc đời và kỷ niệm đáng nhớ nhé!!!
         </Text>
       </View>
-      <TouchableOpacity
-        style={{
-          alignContent: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-          backgroundColor: BLUE,
-          width: 200,
-          height: 50,
-          marginLeft: 110,
-          marginBottom: 60,
-          borderRadius: 30,
-        }}
-      >
-        <Text style={{ color: WHITE, marginTop: 15, fontWeight: "bold" }}>
-          Đăng lên Nhật ký
-        </Text>
-      </TouchableOpacity>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: BLUE,
+            alignItems: "center",
+            width: 200,
+            height: 50,
+            borderRadius: 30,
+          }}
+        >
+          <Text style={{ color: WHITE, marginTop: 15, fontWeight: "bold" }}>
+            Đăng lên Nhật ký
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
