@@ -82,7 +82,7 @@ function CreateNewGroupScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <View style={{ width: "100%" }}>
-                <View style={{ borderWidth: 1, borderRadius: 5, height: 35, borderColor: "#cccccc", justifyContent: "flex-start", alignItems: "center", flexDirection: "row", backgroundColor: "#cccccc" }}>
+                <View style={{ borderWidth: 1, borderRadius: 5, height: 35, borderColor: "#ecf0f1", justifyContent: "flex-start", alignItems: "center", flexDirection: "row", backgroundColor: "#ecf0f1" }}>
                     <Icon1 name="search" size={30} color={"gray"} style={{ marginLeft: 5 }} />
                     <TextInput value={search} onChangeText={setSearch} placeholder='Tìm tên hoặc số điện thoại' style={{ fontSize: 14, width: "90%", marginLeft: 5 }} />
                 </View>

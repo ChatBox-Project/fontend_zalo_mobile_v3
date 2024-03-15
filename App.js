@@ -17,6 +17,7 @@ import PersonalScreen from './screen/Individual/PersonalScreen';
 import SearchScreen from './screen/home/SearchScreen';
 import { Text, TextInput, View } from 'react-native';
 import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
+import AddFriend from './screen/phonebook/AddFriendScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -131,7 +132,8 @@ export default function App() {
                     backgroundColor: "white",
                     width: 300,
                     borderRadius: 5,
-                    paddingLeft: 5
+                    paddingHorizontal: 8,
+                    paddingVertical: 4
                   }}
                 />
               )
@@ -144,6 +146,13 @@ export default function App() {
           component={CreateNewGroupScreen}
           options={({ navigation, route }) => ({
             headerTitle: "Nhóm mới",
+          })}
+        />
+        <Stack.Screen
+          name="AddFriend"
+          component={AddFriend}
+          options={({ navigation, route }) => ({
+            headerTitle: "Thêm bạn",
           })}
         />
       </Stack.Navigator>
