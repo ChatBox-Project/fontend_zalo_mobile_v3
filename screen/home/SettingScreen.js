@@ -394,13 +394,16 @@ function SettingScreen({ navigation }) {
                 style={{
                   width: 30,
                   height: 30,
-                  marginLeft: 30,
                 }}
               />
             </View>
-            <View style={{ flexDirection: "column" }}>
+            <View>
               <Text
-                style={{ fontSize: 15, marginLeft: 10, fontWeight: "bold" }}
+                style={{
+                  fontSize: 15,
+                  marginLeft: 10,
+                  fontWeight: "bold",
+                }}
               >
                 Đăng Xuất
               </Text>

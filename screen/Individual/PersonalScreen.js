@@ -22,7 +22,15 @@ function PersonalScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <TouchableOpacity>
-        <View style={{ width: 420, height: 200, backgroundColor: BLUE }}>
+        <View
+          style={{
+            width: 420,
+            height: 200,
+            backgroundColor: BLUE,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <Image
             source={hoboi}
             style={{ width: 420, height: 200, backgroundColor: BLUE }}
@@ -32,8 +40,7 @@ function PersonalScreen({ navigation }) {
             style={{
               width: 130,
               height: 130,
-              marginTop: 150,
-              marginLeft: 150,
+              top: 150,
               position: "absolute",
               borderRadius: 50,
               borderColor: WHITE,
@@ -64,7 +71,7 @@ function PersonalScreen({ navigation }) {
           Cập nhật giới thiệu bản thân
         </Text>
       </TouchableOpacity>
-      <ScrollView horizontal={true}>
+      <ScrollView horizontal={true} style={{ flex: 1 }}>
         <View style={{ flexDirection: "row", marginTop: 15 }}>
           <TouchableOpacity
             style={{
@@ -153,44 +160,25 @@ function PersonalScreen({ navigation }) {
           </TouchableOpacity>
         </View>
       </ScrollView>
-      <View style={{ flexDirection: "column", alignItems: "center", flex: 10 }}>
+      <View style={{ flexDirection: "column", alignItems: "center", flex: 2 }}>
         <Image source={home} style={{ height: 150, width: 150 }} />
         <Text style={{ fontSize: 20 }}>Hôm nay Bạn có gì vui?</Text>
-        <Text
-          style={{
-            fontSize: 15,
-            marginTop: 10,
-            fontWeight: 200,
-          }}
-        >
-          Đây là Nhật ký của bạn - Hãy làm đầy Nhật ký
-        </Text>
-        <Text
-          style={{
-            fontSize: 15,
-            fontWeight: 200,
-          }}
-        >
-          với những dấu ấn cuộc đời và kỷ niệm đáng nhớ nhé!!!
-        </Text>
       </View>
-      <TouchableOpacity
-        style={{
-          alignContent: "center",
-          justifyContent: "center",
-          flexDirection: "row",
-          backgroundColor: BLUE,
-          width: 200,
-          height: 50,
-          marginLeft: 110,
-          marginBottom: 60,
-          borderRadius: 30,
-        }}
-      >
-        <Text style={{ color: WHITE, marginTop: 15, fontWeight: "bold" }}>
-          Đăng lên Nhật ký
-        </Text>
-      </TouchableOpacity>
+      <View style={{ alignItems: "center", justifyContent: "center" }}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: BLUE,
+            alignItems: "center",
+            width: 200,
+            height: 50,
+            borderRadius: 30,
+          }}
+        >
+          <Text style={{ color: WHITE, marginTop: 15, fontWeight: "bold" }}>
+            Đăng lên Nhật ký
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
