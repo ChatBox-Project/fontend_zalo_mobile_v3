@@ -91,7 +91,11 @@ function IndexScreen({ navigation }) {
                     headerTitle: "",
                     headerRight: () => (
                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
-                            <TouchableOpacity style={{ marginRight: 20 }}>
+                            <TouchableOpacity
+                                onPress={() => { navigation.push("AddFriend") }}
+                                style={{
+                                    marginRight: 20
+                                }}>
                                 <Icon4 name='adduser' size={25} color={'white'} />
                             </TouchableOpacity>
                         </View>

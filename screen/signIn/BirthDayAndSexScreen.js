@@ -60,13 +60,14 @@ function BirthDayAndSexScreen({ navigation }) {
                 <Button
                     title="Chọn ngày sinh"
                     disabled={false}
-                    buttonStyle={{
-                        borderRadius: 5,
-                    }}
                     containerStyle={{
                         width: 200,
                         height: 45,
                         marginTop: 20
+                    }}
+                    buttonStyle={{
+                        borderRadius: 5,
+                        backgroundColor: BLUE
                     }}
                     onPress={() => { showMode("date") }}
                 />
@@ -87,6 +88,9 @@ function BirthDayAndSexScreen({ navigation }) {
                         width: 100,
                         marginHorizontal: 20,
                         marginVertical: 10,
+                    }}
+                    buttonStyle={{
+                        backgroundColor: BLUE
                     }}
                     onPress={() => { navigation.push("AvatarScreen") }}
                 />
