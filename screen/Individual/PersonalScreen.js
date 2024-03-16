@@ -21,42 +21,43 @@ import home from "../imagess/home.png";
 function PersonalScreen({ navigation }) {
   return (
     <View style={styles.container}>
-      <TouchableOpacity>
+      <View
+        style={{ paddingBottom: 100 }}
+      >
+        <Image
+          source={hoboi}
+          style={{ width: "100%", height: 200 }}
+        />
         <View
           style={{
-            width: 420,
-            height: 200,
-            backgroundColor: BLUE,
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: -140,
             justifyContent: "center",
             alignItems: "center",
           }}
         >
-          <Image
-            source={hoboi}
-            style={{ width: 420, height: 200, backgroundColor: BLUE }}
-          ></Image>
-          <Image
-            source={ZaloImage}
+          <View
             style={{
-              width: 130,
-              height: 130,
-              top: 150,
-              position: "absolute",
-              borderRadius: 50,
-              borderColor: WHITE,
-              borderStartWidth: 130,
+              borderWidth: 3,
+              borderColor: "#ffffff",
+              width: 100,
+              height: 100,
+              borderRadius: 100 / 2,
+              justifyContent: "center",
+              alignItems: "center",
+              overflow: "hidden"
             }}
-          ></Image>
+          >
+            <Image
+              source={ZaloImage}
+              style={{ width: 100, height: 100 }}
+            />
+          </View>
+          <Text style={{ fontSize: 20, fontWeight: "600", marginTop: 15 }}>Lê Văn Luyện</Text>
         </View>
-      </TouchableOpacity>
-      <View
-        style={{
-          marginTop: 100,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Text style={{ fontSize: 20, fontWeight: "bold" }}>Lê Văn Luyện</Text>
       </View>
       <TouchableOpacity
         style={{
@@ -71,113 +72,104 @@ function PersonalScreen({ navigation }) {
           Cập nhật giới thiệu bản thân
         </Text>
       </TouchableOpacity>
-      <ScrollView horizontal={true} style={{ flex: 1 }}>
-        <View style={{ flexDirection: "row", marginTop: 15 }}>
-          <TouchableOpacity
-            style={{
-              width: 180,
-              height: 40,
-              backgroundColor: WHITE,
-              marginLeft: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              borderRadius: 10,
-            }}
-          >
-            <Image source={impo} style={{ width: 20, height: 20 }} />
-            <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-              Nhập từ Facebook
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 150,
-              height: 40,
-              backgroundColor: WHITE,
-              marginLeft: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              borderRadius: 10,
-            }}
-          >
-            <Image source={photo} style={{ width: 25, height: 25 }} />
-            <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-              Ảnh của tôi
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 180,
-              height: 40,
-              backgroundColor: WHITE,
-              marginLeft: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              borderRadius: 10,
-            }}
-          >
-            <Image source={kho} style={{ width: 25, height: 25 }} />
-            <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-              Kho khoảnh khắc
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 150,
-              height: 40,
-              backgroundColor: WHITE,
-              marginLeft: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              borderRadius: 10,
-            }}
-          >
-            <Image source={clock} style={{ width: 25, height: 25 }} />
-            <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-              Kỉ niệm năm xưa
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{
-              width: 150,
-              height: 40,
-              backgroundColor: WHITE,
-              marginLeft: 10,
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "row",
-              borderRadius: 10,
-            }}
-          >
-            <Image source={camera} style={{ width: 25, height: 25 }} />
-            <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-              Video của tôi
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
-      <View style={{ flexDirection: "column", alignItems: "center", flex: 2 }}>
-        <Image source={home} style={{ height: 150, width: 150 }} />
-        <Text style={{ fontSize: 20 }}>Hôm nay Bạn có gì vui?</Text>
-      </View>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: BLUE,
-            alignItems: "center",
-            width: 200,
-            height: 50,
-            borderRadius: 30,
-          }}
+      <View style={{ height: 70 }}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+        // style={{ borderWidth: 1 }}
         >
-          <Text style={{ color: WHITE, marginTop: 15, fontWeight: "bold" }}>
-            Đăng lên Nhật ký
-          </Text>
-        </TouchableOpacity>
+          <View style={{ flexDirection: "row", marginTop: 15 }}>
+            <TouchableOpacity
+              style={{
+                width: 180,
+                height: 40,
+                backgroundColor: WHITE,
+                marginLeft: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                borderRadius: 10,
+              }}
+            >
+              <Image source={impo} style={{ width: 20, height: 20 }} />
+              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                Nhập từ Facebook
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 40,
+                backgroundColor: WHITE,
+                marginLeft: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                borderRadius: 10,
+              }}
+            >
+              <Image source={photo} style={{ width: 25, height: 25 }} />
+              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                Ảnh của tôi
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 180,
+                height: 40,
+                backgroundColor: WHITE,
+                marginLeft: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                borderRadius: 10,
+              }}
+            >
+              <Image source={kho} style={{ width: 25, height: 25 }} />
+              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                Kho khoảnh khắc
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 40,
+                backgroundColor: WHITE,
+                marginLeft: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                borderRadius: 10,
+              }}
+            >
+              <Image source={clock} style={{ width: 25, height: 25 }} />
+              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                Kỉ niệm năm xưa
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                width: 150,
+                height: 40,
+                backgroundColor: WHITE,
+                marginLeft: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                flexDirection: "row",
+                borderRadius: 10,
+              }}
+            >
+              <Image source={camera} style={{ width: 25, height: 25 }} />
+              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                Video của tôi
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </View>
+      <View style={{ flexDirection: "column", alignItems: "center" }}>
+        <Image source={home} style={{ height: 150, width: 150 }} />
+        <Text style={{ fontSize: 16, fontWeight: "600" }}>Hôm nay bạn có gì vui?</Text>
       </View>
     </View>
   );
