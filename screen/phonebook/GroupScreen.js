@@ -63,7 +63,7 @@ function GroupScreen({ navigation }) {
                     data={groups}
                     renderItem={(data) => {
                         return (
-                            <ChatGroup group={data.item} />
+                            <ChatGroup group={data.item} navigation={navigation} />
                         )
                     }}
                 />

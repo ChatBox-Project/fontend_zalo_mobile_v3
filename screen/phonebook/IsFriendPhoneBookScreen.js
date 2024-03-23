@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import AvatarChat from '../../util/chat/compoments/AvatarChat';
+import AvatarChat from '../../util/friend/compoments/AvatarChat';
 import { BLUE } from '../colors/Colors';
 
 function IsFriendPhoneBookScreen({ navigation }) {

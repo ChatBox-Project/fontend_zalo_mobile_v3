@@ -1,11 +1,23 @@
 import React from 'react'
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import ChatSingle from '../../util/chat_single/ChatSingle';
 
 function ChatScreen({ navigation }) {
 
+    const [chats, setChats] = React.useState([1, 2, 3])
+
     return (
         <View style={styles.container} >
-            <Text>Loading....</Text>
+            <FlatList
+                showsVerticalScrollIndicator={false}
+                style={{
+                    width: "100%",
+                }}
+                data={chats}
+                renderItem={() => {
+                    return <ChatSingle navigation={navigation} />
+                }}
+            />
         </View>
     )
 }

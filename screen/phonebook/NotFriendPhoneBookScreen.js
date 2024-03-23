@@ -1,7 +1,7 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { BLUE } from '../colors/Colors';
-import AvatarChat from '../../util/chat/compoments/AvatarChat';
+import AvatarChat from '../../util/friend/compoments/AvatarChat';
 
 function NotFriendPhoneBookScreen({ navigation }) {
     const [friends, setFriends] = React.useState([

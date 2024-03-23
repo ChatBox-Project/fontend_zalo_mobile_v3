@@ -43,9 +43,9 @@ function PersonalScreen({ navigation }) {
             style={{
               borderWidth: 3,
               borderColor: "#ffffff",
-              width: 100,
-              height: 100,
-              borderRadius: 100 / 2,
+              width: 120,
+              height: 120,
+              borderRadius: 120 / 2,
               justifyContent: "center",
               alignItems: "center",
               overflow: "hidden"
@@ -53,10 +53,10 @@ function PersonalScreen({ navigation }) {
           >
             <Image
               source={ZaloImage}
-              style={{ width: 100, height: 100 }}
+              style={{ width: 120, height: 120 }}
             />
           </View>
-          <Text style={{ fontSize: 20, fontWeight: "600", marginTop: 15 }}>Lê Văn Luyện</Text>
+          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 15 }}>Lê Văn Luyện</Text>
         </View>
       </View>
       <TouchableOpacity
@@ -167,9 +167,9 @@ function PersonalScreen({ navigation }) {
           </View>
         </ScrollView>
       </View>
-      <View style={{ flexDirection: "column", alignItems: "center" }}>
-        <Image source={home} style={{ height: 150, width: 150 }} />
-        <Text style={{ fontSize: 16, fontWeight: "600" }}>Hôm nay bạn có gì vui?</Text>
+      <View style={{ flexDirection: "column", alignItems: "center", marginTop: 100 }}>
+        <Image source={home} style={{ height: 120, width: 120 }} />
+        <Text style={{ fontSize: 14, fontWeight: "600" }}>Hôm nay bạn có gì vui..?</Text>
       </View>
     </View>
   );

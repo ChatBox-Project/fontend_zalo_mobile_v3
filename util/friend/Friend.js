@@ -4,7 +4,7 @@ import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import AvatarChat from './compoments/AvatarChat';
 
-function ChatSingle({ friend }) {
+function Friend({ friend }) {
 
     return (
         <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 15, marginVertical: 12 }}>
@@ -24,4 +24,4 @@ function ChatSingle({ friend }) {
     )
 }
 
-export default ChatSingle
+export default Friend

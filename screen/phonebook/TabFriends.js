@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, View } from 'react-native';
-import ChatSingle from '../../util/chat/ChatSingle';
+import Friend from '../../util/friend/Friend';
 
 function TabFriend() {
 
@@ -31,7 +31,7 @@ function TabFriend() {
                 data={friends}
                 renderItem={(data) => {
                     return (
-                        <ChatSingle friend={data.item} />
+                        <Friend friend={data.item} />
                     )
                 }}
             />

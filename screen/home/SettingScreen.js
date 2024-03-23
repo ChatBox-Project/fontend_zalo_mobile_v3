@@ -370,11 +370,11 @@ function SettingScreen({ navigation }) {
         <View
           style={{
             height: 60,
-            width: 420,
+            width: "100%",
             backgroundColor: WHITE,
+            borderWidth: 1,
             justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
+            alignItems: "center"
           }}
         >
           <TouchableOpacity
@@ -386,6 +386,7 @@ function SettingScreen({ navigation }) {
               flexDirection: "row",
               justifyContent: "center",
               borderRadius: 20,
+              borderWidth: 1
             }}
           >
             <View>

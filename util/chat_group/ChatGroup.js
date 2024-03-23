@@ -4,9 +4,17 @@ import AvatarSingle from './compoments/AvatarSingle'
 import AvatarChatGroup from './compoments/AvatarChatGroup'
 import { GRAY } from '../../screen/colors/Colors'
 
-function ChatGroup({ group }) {
+function ChatGroup({ group, navigation }) {
     return (
-        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', borderBottomWidth: 1, borderBottomColor: GRAY }}>
+        <TouchableOpacity
+            onPress={() => { navigation.push("ChatWindow") }}
+            style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: GRAY
+            }}>
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <AvatarChatGroup images={null} />
                 <View>

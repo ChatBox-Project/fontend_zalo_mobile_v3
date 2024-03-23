@@ -18,6 +18,7 @@ import SearchScreen from './screen/home/SearchScreen';
 import { Text, TextInput, View } from 'react-native';
 import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
+import ChatWindow from './util/chat_window/chat_window';
 
 const Stack = createNativeStackNavigator();
 
@@ -153,6 +154,13 @@ export default function App() {
           component={AddFriend}
           options={({ navigation, route }) => ({
             headerTitle: "Thêm bạn",
+          })}
+        />
+        <Stack.Screen
+          name="ChatWindow"
+          component={ChatWindow}
+          options={({ navigation, route }) => ({
+            headerTitle: "",
           })}
         />
       </Stack.Navigator>

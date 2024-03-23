@@ -2,10 +2,10 @@ import React, { useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/EvilIcons';
-import AvatarChat from '../../util/chat/compoments/AvatarChat';
 import { Button, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE } from '../colors/Colors';
+import AvatarChat from '../../util/friend/compoments/AvatarChat';
 
 function CreateNewGroupScreen({ navigation }) {
 
