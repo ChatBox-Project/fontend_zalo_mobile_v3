@@ -19,6 +19,16 @@ import camera from "../imagess/camera.png";
 import home from "../imagess/home.png";
 
 function PersonalScreen({ navigation }) {
+
+  const [options, setOptions] = React.useState([
+    { title: "Nhập từ Facebook", image: impo },
+    { title: "Ảnh của tôi", image: photo },
+    { title: "Kho khoảnh khắc", image: kho },
+    { title: "Kỉ niệm năm xưa", image: clock },
+    { title: "Video của tôi", image: camera },
+  ])
+
+
   return (
     <View style={styles.container}>
       <View
@@ -76,100 +86,39 @@ function PersonalScreen({ navigation }) {
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
-        // style={{ borderWidth: 1 }}
         >
           <View style={{ flexDirection: "row", marginTop: 15 }}>
-            <TouchableOpacity
-              style={{
-                width: 180,
-                height: 40,
-                backgroundColor: WHITE,
-                marginLeft: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                borderRadius: 10,
-              }}
-            >
-              <Image source={impo} style={{ width: 20, height: 20 }} />
-              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-                Nhập từ Facebook
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: 150,
-                height: 40,
-                backgroundColor: WHITE,
-                marginLeft: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                borderRadius: 10,
-              }}
-            >
-              <Image source={photo} style={{ width: 25, height: 25 }} />
-              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-                Ảnh của tôi
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: 180,
-                height: 40,
-                backgroundColor: WHITE,
-                marginLeft: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                borderRadius: 10,
-              }}
-            >
-              <Image source={kho} style={{ width: 25, height: 25 }} />
-              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-                Kho khoảnh khắc
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: 150,
-                height: 40,
-                backgroundColor: WHITE,
-                marginLeft: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                borderRadius: 10,
-              }}
-            >
-              <Image source={clock} style={{ width: 25, height: 25 }} />
-              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-                Kỉ niệm năm xưa
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                width: 150,
-                height: 40,
-                backgroundColor: WHITE,
-                marginLeft: 10,
-                justifyContent: "center",
-                alignItems: "center",
-                flexDirection: "row",
-                borderRadius: 10,
-              }}
-            >
-              <Image source={camera} style={{ width: 25, height: 25 }} />
-              <Text style={{ marginLeft: 10, fontWeight: "500" }}>
-                Video của tôi
-              </Text>
-            </TouchableOpacity>
+            {
+              options.map((item, index) => {
+                return (
+                  <TouchableOpacity
+                    key={index}
+                    style={{
+                      backgroundColor: WHITE,
+                      justifyContent: "center",
+                      alignItems: "center",
+                      flexDirection: "row",
+                      marginHorizontal: 10,
+                      paddingHorizontal: 10,
+                      marginTop: 10,
+                      height: 40,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Image source={item.image} style={{ width: 20, height: 20 }} />
+                    <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                      {item.title}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              })
+            }
           </View>
         </ScrollView>
       </View>
       <View style={{ flexDirection: "column", alignItems: "center", marginTop: 100 }}>
         <Image source={home} style={{ height: 120, width: 120 }} />
-        <Text style={{ fontSize: 14, fontWeight: "600" }}>Hôm nay bạn có gì vui..?</Text>
+        <Text style={{ fontSize: 14 }}>Hôm nay bạn có gì vui...?</Text>
       </View>
     </View>
   );
