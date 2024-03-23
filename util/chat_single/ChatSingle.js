@@ -22,8 +22,8 @@ function ChatSingle({ chat, navigation }) {
             <View style={{
                 marginLeft: 15
             }}>
-                <Text style={{ fontSize: 16, marginBottom: 5 }}>Ngô Thiên Phú</Text>
-                <Text style={{ color: "gray" }}>Mai đi chơi nha</Text>
+                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '600' }}>Ngô Thiên Phú</Text>
+                <Text style={{ fontSize: 14, color: "gray" }}>Mai đi chơi nha</Text>
             </View>
         </TouchableOpacity>
     )

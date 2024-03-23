@@ -28,7 +28,7 @@ function NotFriendPhoneBookScreen({ navigation }) {
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <AvatarChat image={1} />
                                 <View>
-                                    <Text style={{ fontSize: 16, marginLeft: 15 }}>{data.item.name}</Text>
+                                    <Text style={{ fontSize: 16, marginLeft: 15, fontWeight: '600' }}>{data.item.name}</Text>
                                     <Text style={{ fontSize: 14, marginLeft: 15, color: "gray" }}>Tên Zalo: {data.item.nameZalo}</Text>
                                 </View>
                             </View>

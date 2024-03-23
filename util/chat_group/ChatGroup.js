@@ -18,8 +18,8 @@ function ChatGroup({ group, navigation }) {
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                 <AvatarChatGroup images={null} />
                 <View>
-                    <Text>{group.groupName}</Text>
-                    <Text style={{ color: "gray" }}>Thanh Nam: này mới đang chỉnh sửa</Text>
+                    <Text style={{ fontSize: 16, fontWeight: '600' }}>{group.groupName}</Text>
+                    <Text style={{ color: "gray", fontSize: 14 }}>Thanh Nam: này mới đang chỉnh sửa</Text>
                 </View>
             </View>
             {/* <View style={{ alignSelf: 'flex-start', marginTop: 10 }}>

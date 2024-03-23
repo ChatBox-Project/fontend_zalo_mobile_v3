@@ -55,7 +55,7 @@ function GroupScreen({ navigation }) {
                 <View style={{ width: 55, height: 55, borderRadius: 30, backgroundColor: "#e5f3f5", justifyContent: 'center', alignItems: 'center' }}>
                     <Icon name='addusergroup' color={BLUE} size={25} />
                 </View>
-                <Text style={{ marginLeft: 15, fontSize: 15, }}>Tạo nhóm mới</Text>
+                <Text style={{ marginLeft: 15, fontSize: 16 }}>Tạo nhóm mới</Text>
             </TouchableOpacity>
             <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 10, borderTopColor: GRAY, borderTopWidth: 8, flex: 1 }}>
                 <Text style={{ fontWeight: '500', fontSize: 13, paddingBottom: 15 }}>Nhóm đang tham gia (18) </Text>
