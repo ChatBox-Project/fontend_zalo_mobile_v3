@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native';
 
 function TabStatusFriends() {
     return (
-        <View style={{ justifyContent: 'flex-start', alignItems: 'center', height: 450 }}>
+        <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
             <Text style={{ fontWeight: '600', marginTop: 80, fontSize: 16 }}>Cho Phép hiển thị trạng thái truy cập</Text>
             <Text style={{ color: "gray" }}>Bạn cũng có thể thấy bạn bè truy cập. Bạn bè cũng</Text>
             <Text style={{ color: "gray" }}>xem được trạng thái truy cập của bạn</Text>

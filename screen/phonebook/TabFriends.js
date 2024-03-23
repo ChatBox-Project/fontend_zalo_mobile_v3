@@ -24,7 +24,7 @@ function TabFriend() {
     ]);
 
     return (
-        <View style={{ alignItems: 'center', flex: 1, minHeight: 445 }}>
+        <View style={{ alignItems: 'center', flex: 1 }}>
             <FlatList
                 style={{ width: "100%" }}
                 scrollEnabled={true}

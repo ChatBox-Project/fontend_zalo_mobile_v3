@@ -13,7 +13,7 @@ function PhoneBookScreen() {
                 name="Friend"
                 component={FriendScreen}
                 options={{
-                    tabBarLabel: "Bạn bè"
+                    tabBarLabel: "Bạn bè",
                 }}
             />
             <Tab.Screen
