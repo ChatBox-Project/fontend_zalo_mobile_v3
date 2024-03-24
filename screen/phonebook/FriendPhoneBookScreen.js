@@ -14,13 +14,13 @@ function FriendPhoneBookScreen({ navigation }) {
         {
             id: 0,
             titleTab: "Tất cả",
-            tab: <IsFriendPhoneBookScreen key={0} />,
+            tab: <IsFriendPhoneBookScreen key={0} navigation={navigation} />,
             count: 42
         },
         {
             id: 1,
             titleTab: "Chưa là bạn",
-            tab: <NotFriendPhoneBookScreen key={1} />,
+            tab: <NotFriendPhoneBookScreen key={1} navigation={navigation} />,
             count: 42
         }
     ]

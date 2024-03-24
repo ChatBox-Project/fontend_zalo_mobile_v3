@@ -17,7 +17,7 @@ function FriendScreen({ navigation }) {
         {
             id: 0,
             titleTab: "Tất cả",
-            tab: <TabFriend key={0} />,
+            tab: <TabFriend key={0} navigation={navigation} />,
             count: 42
         },
         {

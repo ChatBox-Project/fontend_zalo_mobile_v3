@@ -2,7 +2,7 @@ import React from 'react'
 import { FlatList, View } from 'react-native';
 import Friend from '../../util/friend/Friend';
 
-function TabFriend() {
+function TabFriend({ navigation }) {
 
     const [friends, setFriends] = React.useState([
         {
@@ -31,7 +31,7 @@ function TabFriend() {
                 data={friends}
                 renderItem={(data) => {
                     return (
-                        <Friend friend={data.item} />
+                        <Friend friend={data.item} navigation={navigation} />
                     )
                 }}
             />

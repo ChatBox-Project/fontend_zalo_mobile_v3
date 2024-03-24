@@ -96,7 +96,7 @@ function CreateNewGroupScreen({ navigation }) {
                             <TouchableOpacity style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8 }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                     <AvatarChat image={data.item.image} />
-                                    <Text style={{ fontSize: 15, marginLeft: 15 }}>{data.item.name}</Text>
+                                    <Text style={{ fontSize: 16, marginLeft: 15, fontWeight: '600' }}>{data.item.name}</Text>
                                 </View>
                                 <CheckBox checked={checks.includes(data.item.id)} size={18} onPress={() => { enterCheck(data.item.id) }} />
                             </TouchableOpacity>

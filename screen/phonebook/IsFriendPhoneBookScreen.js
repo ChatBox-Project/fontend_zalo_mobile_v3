@@ -24,7 +24,14 @@ function IsFriendPhoneBookScreen({ navigation }) {
                 data={friends}
                 renderItem={(data) => {
                     return (
-                        <TouchableOpacity style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginVertical: 10 }}>
+                        <TouchableOpacity
+                            onPress={() => { navigation.push("Personal") }}
+                            style={{
+                                flexDirection: 'row',
+                                justifyContent: 'space-between',
+                                alignItems: 'center',
+                                marginVertical: 10
+                            }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                 <AvatarChat image={1} />
                                 <View>
