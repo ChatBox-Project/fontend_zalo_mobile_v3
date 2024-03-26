@@ -44,7 +44,7 @@ function OTPScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("BirthDayAndSexScreen") }}
+                    onPress={() => { navigation.push("SignIn") }}
                 />
             </View>
         </View>

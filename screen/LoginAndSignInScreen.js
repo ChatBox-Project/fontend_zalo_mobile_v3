@@ -45,7 +45,7 @@ function LoginAndSignInScreen({ navigation }) {
                         marginVertical: 10,
                     }}
                     titleStyle={{ fontSize: 14, color: "black" }}
-                    onPress={() => { navigation.push("SignIn") }}
+                    onPress={() => { navigation.push("SignIn1") }}
                 />
             </View>
         </View>

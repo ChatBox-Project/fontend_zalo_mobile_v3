@@ -25,7 +25,7 @@ function SignInScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("SignIn1") }}
+                    onPress={() => { navigation.push("BirthDayAndSexScreen") }}
                 />
             </View>
         </View>

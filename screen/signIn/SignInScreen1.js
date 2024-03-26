@@ -15,6 +15,8 @@ function SignInScreen1({ navigation }) {
             </View>
             <View style={{ width: "95%", marginTop: 15 }}>
                 <Input placeholder='Nhập số điện thoại' inputStyle={{ fontSize: 16 }} />
+                <Input placeholder='Mật khẩu' inputStyle={{ fontSize: 16 }} />
+                <Input placeholder='Nhập lại mật khẩu' inputStyle={{ fontSize: 16 }} />
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center', marginTop: -20 }}>
                     <CheckBox
                         checked={checkBox1}
