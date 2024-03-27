@@ -93,7 +93,7 @@ function AvatarScreen({ navigation, route }) {
                         </View>
                     )
                     :
-                    <Image source={{ uri: `data:image/jpeg;base64,${image}` }}
+                    <Image source={{ uri: image }}
                         style={{
                             width: 120,
                             height: 120,

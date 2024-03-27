@@ -8,12 +8,13 @@ import { createAccount, getAccounts } from '../../api/SignInAPI';
 
 function OTPScreen({ navigation, route }) {
 
-    let OTP = route.params.OTP
     const account = route.params.account
+    const [OTP, setOTP] = React.useState(route.params.OTP)
     const [inputOTP, setInputOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
 
     useEffect(() => {
+        console.log(OTP)
         const id = setInterval(() => {
             if (time >= 0) {
                 setTime(time - 1)
@@ -26,8 +27,7 @@ function OTPScreen({ navigation, route }) {
     }, [time])
 
     function ressetOTP() {
-        OTP = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
-        console.log(OTP)
+        setOTP(Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000)
         setTime(30)
     }
 
