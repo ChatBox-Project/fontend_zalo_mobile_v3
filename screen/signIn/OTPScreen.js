@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
@@ -7,8 +7,27 @@ import { BLUE, GRAY } from '../colors/Colors';
 
 function OTPScreen({ navigation, route }) {
 
-    const OTP = route.params.OTP
+    let OTP = route.params.OTP
     const [inputOTP, setInputOTP] = React.useState("")
+    const [time, setTime] = React.useState(30)
+
+    useEffect(() => {
+        const id = setInterval(() => {
+            if (time >= 0) {
+                setTime(time - 1)
+            }
+        }, 1000);
+
+        return () => {
+            clearInterval(id)
+        }
+    }, [time])
+
+    function ressetOTP() {
+        OTP = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
+        console.log(OTP)
+        setTime(30)
+    }
 
     return (
         <View style={styles.container}>
@@ -40,7 +59,26 @@ function OTPScreen({ navigation, route }) {
                     onChangeText={setInputOTP}
                 />
             </View>
-            <Text>Gửi lại mã <Text style={{ color: BLUE }}>00:00</Text></Text>
+            <View
+                style={{ flexDirection: 'row' }}
+            >
+                {
+                    (time >= 0) ?
+                        <Text>Gửi lại mã</Text>
+                        :
+                        <TouchableOpacity
+                            onPress={() => { ressetOTP() }}
+                        >
+                            <Text
+                                style={{ color: BLUE }}
+                            >Gửi lại mã
+                            </Text>
+                        </TouchableOpacity>
+                }
+                {
+                    (time >= 0) ? <Text style={{ color: BLUE }}> {time}s</Text> : <></>
+                }
+            </View>
             <View style={{ alignSelf: 'flex-end' }}>
                 <Button
                     title={'Tiếp tục'}

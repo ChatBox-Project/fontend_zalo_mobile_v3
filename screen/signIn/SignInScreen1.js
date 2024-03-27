@@ -158,6 +158,7 @@ function SignInScreen1({ navigation }) {
                         backgroundColor: BLUE
                     }}
                     onPress={() => { validate(), ressetTextInput() }}
+                // onPress={() => { navigation.push("OTPScreen") }}
                 />
             </View>
             <Dialog

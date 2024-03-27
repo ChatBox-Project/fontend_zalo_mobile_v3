@@ -9,7 +9,10 @@ function SignInScreen({ navigation }) {
         <View style={styles.container}>
             <View style={{ width: "95%", marginTop: 15, marginLeft: 10 }}>
                 <Text style={{ fontSize: 16, fontWeight: '500' }}>Tên Zalo</Text>
-                <Input placeholder='Gồm 2-40 ký tự' inputStyle={{ fontSize: 16 }} />
+                <Input
+                    placeholder='Gồm 2-40 ký tự'
+                    inputStyle={{ fontSize: 16 }}
+                />
                 <Text>Lưu ý khi đặt tên</Text>
                 <Text style={{ marginTop: 5, marginBottom: 5 }}>-  Không vi phạm <Text style={{ color: BLUE }}>Quy định đặt tên trên Zalo</Text></Text>
                 <Text>-  Nên sử dụng tên thật để giúp bạn bè dễ nhận ra bạn</Text>
