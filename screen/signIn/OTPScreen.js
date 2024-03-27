@@ -5,7 +5,10 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
 
 
-function OTPScreen({ navigation }) {
+function OTPScreen({ navigation, route }) {
+
+    const OTP = route.params.OTP
+    const [inputOTP, setInputOTP] = React.useState("")
 
     return (
         <View style={styles.container}>
@@ -30,7 +33,12 @@ function OTPScreen({ navigation }) {
             <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số (+84) 9999 9999</Text>
             <Text>Vui lòng nhập mã xác nhận</Text>
             <View style={{ width: "35%", marginTop: 15 }}>
-                <Input placeholder='Nhập mã OTP' inputStyle={{ fontSize: 16, textAlign: 'center' }} />
+                <Input
+                    placeholder='Nhập mã OTP'
+                    inputStyle={{ fontSize: 16, textAlign: 'center' }}
+                    value={inputOTP}
+                    onChangeText={setInputOTP}
+                />
             </View>
             <Text>Gửi lại mã <Text style={{ color: BLUE }}>00:00</Text></Text>
             <View style={{ alignSelf: 'flex-end' }}>
@@ -44,7 +52,11 @@ function OTPScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("SignIn") }}
+                    onPress={() => {
+                        if (Number(OTP) === Number(inputOTP)) {
+                            navigation.push("SignIn")
+                        }
+                    }}
                 />
             </View>
         </View>
