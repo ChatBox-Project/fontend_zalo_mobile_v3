@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
+import { getAccounts } from '../../api/SignInAPI';
 
 function SignInScreen1({ navigation }) {
 
@@ -11,23 +12,39 @@ function SignInScreen1({ navigation }) {
     const [errorPhoneNumber, setErrorPhoneNumber] = useState("")
     const [errorPassword, setErrorPassword] = useState("")
     const [errorPasswordAgain, setErrorPasswordAgain] = useState("")
+    const [accounts, setAccounts] = useState([])
 
     const [checkBox1, setCheckBox1] = useState(false)
     const [checkBox2, setCheckBox2] = useState(false)
     const [visible1, setVisible1] = useState(false);
 
+    useEffect(() => {
+        getAccounts()
+            .then((data) => {
+                setAccounts(data)
+            })
+    }, [])
+
     const validate = () => {
 
-        let checkPass = true;
+        let checkPass = true
         const regexPhoneNumber = /^0[1-9][0-9]{8}$/
         const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 
         if (!phoneNumber) {
-            checkPass = false;
+            checkPass = false
             setErrorPhoneNumber("VUI LÒNG NHẬP TRƯỜNG NÀY")
         } else if (!regexPhoneNumber.test(phoneNumber)) {
-            checkPass = false;
+            checkPass = false
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI KHÔNG HỢP LỆ")
+        } else {
+            for (let i = 0; i < accounts.length; i++) {
+                if (accounts[i].username === phoneNumber) {
+                    checkPass = false
+                    setErrorPhoneNumber("SỐ ĐIỆN THOẠI ĐÃ ĐƯỢC ĐĂNG KÍ")
+                    break
+                }
+            }
         }
 
         if (!password) {
@@ -59,7 +76,14 @@ function SignInScreen1({ navigation }) {
             if (checkPass) {
                 let OTP = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
                 console.log(OTP)
-                navigation.push("OTPScreen", { OTP: OTP })
+
+                const account = {
+                    username: phoneNumber,
+                    password: password
+                }
+
+                navigation.push("OTPScreen", { OTP, account })
+                ressetTextInput()
             }
 
         }
@@ -157,7 +181,7 @@ function SignInScreen1({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { validate(), ressetTextInput() }}
+                    onPress={() => { validate() }}
                 // onPress={() => { navigation.push("OTPScreen") }}
                 />
             </View>

@@ -2,8 +2,11 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE } from '../colors/Colors';
+import { updateNameAccount } from '../../api/SignInAPI';
 
-function SignInScreen({ navigation }) {
+function SignInScreen({ navigation, route }) {
+
+    const account = route.params.account
 
     const [name, setName] = React.useState("")
     const [errorName, setErrorName] = React.useState("")
@@ -22,7 +25,14 @@ function SignInScreen({ navigation }) {
         }
 
         if (checkPass) {
-            navigation.push("BirthDayAndSexScreen")
+            navigation.push("BirthDayAndSexScreen", {
+                account: {
+                    ...account,
+                    profile: {
+                        name
+                    }
+                }
+            })
         }
     }
 

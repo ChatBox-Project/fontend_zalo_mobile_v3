@@ -5,8 +5,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { BLUE, GRAY } from '../colors/Colors';
 
-function BirthDayAndSexScreen({ navigation }) {
-
+function BirthDayAndSexScreen({ navigation, route }) {
+    const account = route.params.account
     const [sex, setSex] = useState(0)
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false)
@@ -92,7 +92,19 @@ function BirthDayAndSexScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("AvatarScreen") }}
+                    onPress={() => {
+                        const profile = account.profile
+                        navigation.push("AvatarScreen", {
+                            account: {
+                                ...account,
+                                profile: {
+                                    ...profile,
+                                    sex,
+                                    date: `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`
+                                }
+                            }
+                        })
+                    }}
                 />
             </View>
         </View>

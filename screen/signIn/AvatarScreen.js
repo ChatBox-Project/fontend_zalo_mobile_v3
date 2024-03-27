@@ -5,8 +5,11 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
+import { updateAccountInformation } from '../../api/SignInAPI';
 
-function AvatarScreen({ navigation }) {
+function AvatarScreen({ navigation, route }) {
+    console.log(route)
+    const account1 = route.params.account
 
     const [image, setImage] = useState(null);
 
@@ -22,11 +25,33 @@ function AvatarScreen({ navigation }) {
         // console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].base64);
+            setImage(result.assets[0].uri);
         }
     };
 
+    function updateAccountInformationNew() {
 
+        const profile1 = account1.profile
+
+        const updateAccount = {
+            ...account1,
+            profile: {
+                ...profile1,
+                image: image
+            }
+
+        }
+
+        updateAccountInformation(updateAccount)
+            .then(req => {
+                if (req.ok) {
+                    alert("Cập nhật thông tin thành công")
+                    navigation.push("LoginAndSignIn")
+                } else {
+                    alert("Cập nhật thông tin thất bại, vui lòng thử lại sau")
+                }
+            })
+    }
 
     return (
         <View style={styles.container}>
@@ -97,7 +122,7 @@ function AvatarScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("Index") }}
+                    onPress={() => { updateAccountInformationNew() }}
                 />
             </View>
         </View>
