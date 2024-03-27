@@ -5,6 +5,27 @@ import { BLUE } from '../colors/Colors';
 
 function SignInScreen({ navigation }) {
 
+    const [name, setName] = React.useState("")
+    const [errorName, setErrorName] = React.useState("")
+
+    function validate() {
+
+        let checkPass = true;
+        const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{2,40}$/
+
+        if (!name) {
+            checkPass = false
+            setErrorName("VUI LÒNG NHẬP TRƯỜNG NÀY")
+        } else if (!name.match(regexName)) {
+            checkPass = false
+            setErrorName("HỌ TÊN PHẢI TỪ 4-20 KÝ TỰ VÀ KHÔNG CHỨA KÍ TỰ ĐẶC BIỆT HOẶC SỐ")
+        }
+
+        if (checkPass) {
+            navigation.push("BirthDayAndSexScreen")
+        }
+    }
+
     return (
         <View style={styles.container}>
             <View style={{ width: "95%", marginTop: 15, marginLeft: 10 }}>
@@ -12,8 +33,16 @@ function SignInScreen({ navigation }) {
                 <Input
                     placeholder='Gồm 2-40 ký tự'
                     inputStyle={{ fontSize: 16 }}
+                    value={name}
+                    onChangeText={setName}
+                    onChange={() => {
+                        if (errorName) {
+                            setErrorName("")
+                        }
+                    }}
+                    errorMessage={errorName}
                 />
-                <Text>Lưu ý khi đặt tên</Text>
+                <Text style={{ marginTop: 5 }}>Lưu ý khi đặt tên</Text>
                 <Text style={{ marginTop: 5, marginBottom: 5 }}>-  Không vi phạm <Text style={{ color: BLUE }}>Quy định đặt tên trên Zalo</Text></Text>
                 <Text>-  Nên sử dụng tên thật để giúp bạn bè dễ nhận ra bạn</Text>
             </View>
@@ -28,7 +57,7 @@ function SignInScreen({ navigation }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { navigation.push("BirthDayAndSexScreen") }}
+                    onPress={() => { validate() }}
                 />
             </View>
         </View>
