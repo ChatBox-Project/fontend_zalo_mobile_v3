@@ -16,12 +16,13 @@ function AvatarScreen({ navigation }) {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
+            base64: true
         });
 
         // console.log(result);
 
         if (!result.canceled) {
-            setImage(result.assets[0].uri);
+            setImage(result.assets[0].base64);
         }
     };
 
@@ -67,7 +68,7 @@ function AvatarScreen({ navigation }) {
                         </View>
                     )
                     :
-                    <Image source={{ uri: image }}
+                    <Image source={{ uri: `data:image/jpeg;base64,${image}` }}
                         style={{
                             width: 120,
                             height: 120,

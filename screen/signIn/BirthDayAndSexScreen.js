@@ -7,7 +7,7 @@ import { BLUE, GRAY } from '../colors/Colors';
 
 function BirthDayAndSexScreen({ navigation }) {
 
-    const [sex, setSex] = useState(-1)
+    const [sex, setSex] = useState(0)
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false)
     const [mode, setMode] = useState('date')
