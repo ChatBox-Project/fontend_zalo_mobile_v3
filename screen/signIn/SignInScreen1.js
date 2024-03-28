@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { getAccounts } from '../../api/SignInAPI';
+import { useFocusEffect } from '@react-navigation/native';
 
 function SignInScreen1({ navigation }) {
 
@@ -18,12 +19,14 @@ function SignInScreen1({ navigation }) {
     const [checkBox2, setCheckBox2] = useState(false)
     const [visible1, setVisible1] = useState(false);
 
-    useEffect(() => {
-        getAccounts()
-            .then((data) => {
-                setAccounts(data)
-            })
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getAccounts()
+                .then((data) => {
+                    setAccounts(data)
+                })
+        }, [])
+    );
 
     const validate = () => {
 
