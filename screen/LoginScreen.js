@@ -4,9 +4,12 @@ import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { getAccounts } from '../api/SignInAPI';
 import { useFocusEffect } from '@react-navigation/native';
+import { useDispatch } from 'react-redux'
+import { setAccount } from '../counter/counterSlice';
 
 function LoginScreen({ navigation }) {
 
+    const dispatch = useDispatch()
     const [accounts, setAccounts] = React.useState([])
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [password, setPassword] = React.useState("")
@@ -49,6 +52,7 @@ function LoginScreen({ navigation }) {
     function checkAccount() {
         for (let i = 0; i < accounts.length; i++) {
             if (accounts[i].username === phoneNumber && accounts[i].password) {
+                dispatch(setAccount(accounts[i]))
                 return true
             }
         }

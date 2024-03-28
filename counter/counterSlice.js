@@ -3,22 +3,17 @@ import { createSlice } from '@reduxjs/toolkit'
 export const counterSlice = createSlice({
     name: 'counter',
     initialState: {
-        value: 0
+        account: {}
     },
     reducers: {
-        increment: state => {
-
+        setAccount: (state, action) => {
+            state.account = { ...action.payload }
+            // console.log(state.account)
         },
-        decrement: state => {
-
-        },
-        incrementByAmount: (state, action) => {
-
-        }
     }
 })
 
 // Action creators are generated for each case reducer function
-export const { increment, decrement, incrementByAmount } = counterSlice.actions
+export const { setAccount } = counterSlice.actions
 
 export default counterSlice.reducer
