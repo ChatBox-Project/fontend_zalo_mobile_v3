@@ -51,7 +51,7 @@ function LoginScreen({ navigation }) {
 
     function checkAccount() {
         for (let i = 0; i < accounts.length; i++) {
-            if (accounts[i].username === phoneNumber && accounts[i].password) {
+            if (accounts[i].username === phoneNumber && accounts[i].password === password) {
                 dispatch(setAccount(accounts[i]))
                 return true
             }
