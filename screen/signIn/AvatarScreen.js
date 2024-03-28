@@ -8,7 +8,7 @@ import { BLUE, GRAY } from '../colors/Colors';
 import { updateAccountInformation } from '../../api/SignInAPI';
 
 function AvatarScreen({ navigation, route }) {
-    console.log(route)
+
     const account1 = route.params.account
 
     const [image, setImage] = useState(null);
@@ -30,27 +30,30 @@ function AvatarScreen({ navigation, route }) {
     };
 
     function updateAccountInformationNew() {
+        if (image) {
+            const profile1 = account1.profile
 
-        const profile1 = account1.profile
+            const updateAccount = {
+                ...account1,
+                profile: {
+                    ...profile1,
+                    image: image
+                }
 
-        const updateAccount = {
-            ...account1,
-            profile: {
-                ...profile1,
-                image: image
             }
 
+            updateAccountInformation(updateAccount)
+                .then(req => {
+                    if (req.ok) {
+                        alert("Cập nhật thông tin thành công")
+                        navigation.push("LoginAndSignIn")
+                    } else {
+                        alert("Cập nhật thông tin thất bại, vui lòng thử lại sau")
+                    }
+                })
+        } else {
+            alert("Vui lòng chọn ảnh đại diện để tiếp tục")
         }
-
-        updateAccountInformation(updateAccount)
-            .then(req => {
-                if (req.ok) {
-                    alert("Cập nhật thông tin thành công")
-                    navigation.push("LoginAndSignIn")
-                } else {
-                    alert("Cập nhật thông tin thất bại, vui lòng thử lại sau")
-                }
-            })
     }
 
     return (
