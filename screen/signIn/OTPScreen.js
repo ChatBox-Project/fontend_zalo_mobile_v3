@@ -14,7 +14,6 @@ function OTPScreen({ navigation, route }) {
     const [time, setTime] = React.useState(30)
 
     useEffect(() => {
-        console.log(OTP)
         const id = setInterval(() => {
             if (time >= 0) {
                 setTime(time - 1)
@@ -25,6 +24,10 @@ function OTPScreen({ navigation, route }) {
             clearInterval(id)
         }
     }, [time])
+
+    useEffect(() => {
+        console.log(OTP)
+    }, [OTP])
 
     function ressetOTP() {
         setOTP(Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000)
