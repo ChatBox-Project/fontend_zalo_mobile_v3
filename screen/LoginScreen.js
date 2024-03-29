@@ -113,14 +113,16 @@ function LoginScreen({ navigation }) {
                     backgroundColor: BLUE
                 }}
                 onPress={() => {
-                    if (validateInput()) {
-                        if (checkAccount()) {
-                            navigation.push("Index")
-                            ressetInput()
-                        } else {
-                            alert("Tài khoản hoặc mật khẩu không chính xác")
-                        }
-                    }
+                    // if (validateInput()) {
+                    //     if (checkAccount()) {
+                    //         navigation.push("Index")
+                    //         ressetInput()
+                    //     } else {
+                    //         alert("Tài khoản hoặc mật khẩu không chính xác")
+                    //         ressetInput()
+                    //     }
+                    // }
+                    navigation.push("Index")
                 }}
             />
         </View>

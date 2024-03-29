@@ -1,16 +1,39 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon1 from 'react-native-vector-icons/Entypo';
 import Icon2 from 'react-native-vector-icons/FontAwesome';
 import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
+import { GiftedChat } from 'react-native-gifted-chat'
 
 function ChatWindow({ navigation }) {
 
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
+    const [messages, setMessages] = React.useState([])
+
+    React.useEffect(() => {
+        setMessages([
+            {
+                _id: 1,
+                text: 'Hello developer',
+                createdAt: new Date(),
+                user: {
+                    _id: 2,
+                    name: 'React Native',
+                    avatar: 'https://placeimg.com/140/140/any',
+                },
+            },
+        ])
+    }, [])
+
+    const onSend = React.useCallback((messages = []) => {
+        setMessages(previousMessages =>
+            GiftedChat.append(previousMessages, messages),
+        )
+    }, [])
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -28,7 +51,10 @@ function ChatWindow({ navigation }) {
     };
 
     const list = [
-        { title: 'Gửi file' },
+        {
+            title: 'Gửi File',
+            onPress: () => pickImage(),
+        },
         {
             title: 'Cancel',
             containerStyle: { backgroundColor: 'red' },
@@ -46,52 +72,17 @@ function ChatWindow({ navigation }) {
 
     return (
         <View style={styles.container} >
-            <FlatList
-
+            <GiftedChat
+                messages={messages}
+                onSend={messages => onSend(messages)}
+                user={{
+                    _id: 1,
+                }}
             />
-            <View
-                style={{
-                    borderWidth: 1,
-                    width: "100%",
-                    paddingHorizontal: 10,
-                    paddingVertical: 10,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    borderColor: GRAY
-                }}>
-
-                <TouchableOpacity
-                    style={{ marginRight: 5 }}
-                >
-                    <Icon name='icons' size={25} color={"gray"} />
-                </TouchableOpacity>
-                <TextInput
-                    placeholder='Tin Nhắn'
-                    style={{
-                        fontSize: 20,
-                        // borderWidth: 1,
-                        width: 200
-                    }}
-                />
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', width: 130 }}>
-                    <TouchableOpacity
-                        onPress={() => { setIsVisible(true) }}
-                    >
-                        <Icon1 name='dots-three-horizontal' size={25} color={"gray"} />
-                    </TouchableOpacity>
-                    <TouchableOpacity>
-                        <Icon2 name='microphone' size={25} color={"gray"} />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={pickImage}
-                    >
-                        <Icon2 name='image' size={25} color={"gray"} />
-                    </TouchableOpacity>
-                </View>
-
-            </View>
-
+            <Button
+                title='Tùy chọn'
+                onPress={() => { setIsVisible(true) }}
+            />
             <BottomSheet modalProps={{}} isVisible={isVisible}>
                 {list.map((l, i) => (
                     <ListItem
@@ -115,7 +106,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
-        alignItems: 'center',
         justifyContent: 'space-between',
     },
 });
