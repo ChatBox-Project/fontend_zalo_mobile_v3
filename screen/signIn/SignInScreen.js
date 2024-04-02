@@ -2,7 +2,6 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE } from '../colors/Colors';
-import { updateNameAccount } from '../../api/SignInAPI';
 
 function SignInScreen({ navigation, route }) {
 

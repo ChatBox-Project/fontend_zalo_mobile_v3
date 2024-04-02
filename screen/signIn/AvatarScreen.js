@@ -19,7 +19,6 @@ function AvatarScreen({ navigation, route }) {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-            base64: true
         });
 
         // console.log(result);

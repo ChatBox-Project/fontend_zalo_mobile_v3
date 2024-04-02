@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
-import { createAccount, getAccounts } from '../../api/SignInAPI';
+import { Register } from '../../api/SignInAPI';
 
 
 function OTPScreen({ navigation, route }) {
@@ -97,19 +97,7 @@ function OTPScreen({ navigation, route }) {
                     }}
                     onPress={() => {
                         if (Number(OTP) === Number(inputOTP)) {
-                            createAccount(account)
-                                .then((rep) => {
-                                    if (rep.ok) {
-                                        alert("Đăng kí tài khoản thành công")
-                                        rep.json()
-                                            .then(data => {
-                                                const account = data
-                                                navigation.push("SignIn", { account })
-                                            })
-                                    } else {
-                                        alert("Đăng kí tài khoản thất bại")
-                                    }
-                                })
+                            Register(account)
                         } else {
                             alert("Mã không chính xác")
                         }

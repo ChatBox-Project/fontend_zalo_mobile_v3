@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
-import { getAccounts } from '../../api/SignInAPI';
 import { useFocusEffect } from '@react-navigation/native';
 
 function SignInScreen1({ navigation }) {
@@ -21,10 +20,7 @@ function SignInScreen1({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            getAccounts()
-                .then((data) => {
-                    setAccounts(data)
-                })
+            // setAccount
         }, [])
     );
 
@@ -81,7 +77,7 @@ function SignInScreen1({ navigation }) {
                 console.log(OTP)
 
                 const account = {
-                    username: phoneNumber,
+                    phoneNumber: phoneNumber,
                     password: password
                 }
 
