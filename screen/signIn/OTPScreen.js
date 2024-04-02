@@ -4,6 +4,7 @@ import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
 import { Register } from '../../api/SignInAPI';
+import { addListener } from '@reduxjs/toolkit';
 
 
 function OTPScreen({ navigation, route }) {
@@ -97,7 +98,11 @@ function OTPScreen({ navigation, route }) {
                     }}
                     onPress={() => {
                         if (Number(OTP) === Number(inputOTP)) {
-                            Register(account)
+                            Register(account).then((rep) => {
+                                alert(rep.message)
+                            }).catch((error) => {
+                                alert(error)
+                            })
                         } else {
                             alert("Mã không chính xác")
                         }

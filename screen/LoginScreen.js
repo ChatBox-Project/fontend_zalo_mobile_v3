@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { getAccounts } from '../api/SignInAPI';
+import { Login } from '../api/SignInAPI';
 import { useFocusEffect } from '@react-navigation/native';
 import { useDispatch } from 'react-redux'
 import { setAccount } from '../counter/counterSlice';
@@ -15,13 +15,11 @@ function LoginScreen({ navigation }) {
     const [password, setPassword] = React.useState("")
     const [errorPhoneNumber, setErrorPhoneNumber] = React.useState("")
     const [errorPassword, setErrorPassword] = React.useState("")
+    const [loading, setLoading] = React.useState(false)
 
     useFocusEffect(
         React.useCallback(() => {
-            getAccounts()
-                .then((data) => {
-                    setAccounts(data)
-                })
+
         }, [])
     );
 
@@ -50,13 +48,16 @@ function LoginScreen({ navigation }) {
     }
 
     function checkAccount() {
-        for (let i = 0; i < accounts.length; i++) {
-            if (accounts[i].username === phoneNumber && accounts[i].password === password) {
-                dispatch(setAccount(accounts[i]))
-                return true
-            }
-        }
-        return false
+        setLoading(true)
+        Login({ phoneNumber, password }).then(req => {
+            navigation.push("Index")
+            ressetInput()
+            setLoading(false)
+        }).catch(error => {
+            setErrorPhoneNumber("SỐ ĐIỆN THOẠI HOẶC TÀI KHOẢN KHÔNG CHÍNH XÁC")
+            ressetInput()
+            setLoading(false)
+        })
     }
 
     function ressetInput() {
@@ -85,7 +86,7 @@ function LoginScreen({ navigation }) {
                 <Input
                     placeholder="Mật khẩu"
                     secureTextEntry={true}
-                    inputStyle={{ fontSize: 16, marginTop: -15 }}
+                    inputStyle={{ fontSize: 16, marginTop: -5 }}
                     onChangeText={setPassword}
                     onChange={() => {
                         if (errorPassword) {
@@ -102,7 +103,7 @@ function LoginScreen({ navigation }) {
                 </TouchableOpacity>
             </View>
             <Button
-                loading={false}
+                loading={loading}
                 title={'Đăng nhập'}
                 containerStyle={{
                     width: 360,
@@ -113,16 +114,10 @@ function LoginScreen({ navigation }) {
                     backgroundColor: BLUE
                 }}
                 onPress={() => {
-                    // if (validateInput()) {
-                    //     if (checkAccount()) {
-                    //         navigation.push("Index")
-                    //         ressetInput()
-                    //     } else {
-                    //         alert("Tài khoản hoặc mật khẩu không chính xác")
-                    //         ressetInput()
-                    //     }
-                    // }
-                    navigation.push("Index")
+                    if (validateInput()) {
+                        checkAccount()
+                    }
+                    // navigation.push("Index")
                 }}
             />
         </View>

@@ -1,16 +1,15 @@
 import axios from "axios";
 
-const register = "http://localhost:3333/api/auth/register"
-const login = "http://localhost:3333/api/auth/login"
+const register = "http://10.0.2.2:3333/api/auth/register"
+const login = "http://10.0.2.2:3333/api/auth/login"
 
-async function Register(account) {
-    await axios.post(register, account)
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+function Register(account) {
+    return axios.post(register, account)
 }
 
-export { Register }
+function Login(account) {
+    console.log(account)
+    return axios.post(login, account)
+}
+
+export { Register, Login }
