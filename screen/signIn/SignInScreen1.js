@@ -3,6 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { useFocusEffect } from '@react-navigation/native';
+import { Register } from '../../api/SignInAPI';
 
 function SignInScreen1({ navigation }) {
 
@@ -13,6 +14,7 @@ function SignInScreen1({ navigation }) {
     const [errorPassword, setErrorPassword] = useState("")
     const [errorPasswordAgain, setErrorPasswordAgain] = useState("")
     const [accounts, setAccounts] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const [checkBox1, setCheckBox1] = useState(false)
     const [checkBox2, setCheckBox2] = useState(false)
@@ -73,16 +75,22 @@ function SignInScreen1({ navigation }) {
             }
 
             if (checkPass) {
-                let OTP = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
-                console.log(OTP)
-
-                const account = {
-                    phoneNumber: phoneNumber,
-                    password: password
-                }
-
-                navigation.push("OTPScreen", { OTP, account })
-                ressetTextInput()
+                setLoading(true)
+                Register({ phoneNumber, password }).then((rep) => {
+                    // console.log(rep)
+                    let OTP = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000
+                    console.log(OTP)
+                    navigation.push("OTPScreen", { OTP })
+                    ressetTextInput()
+                    setLoading(false)
+                }).catch((error) => {
+                    let status = error.response.data.status;
+                    if (status === 400) {
+                        setErrorPhoneNumber("SỐ ĐIỆN THOẠI ĐÃ ĐƯỢC ĐĂNG KÍ")
+                        ressetTextInput()
+                        setLoading(false)
+                    }
+                })
             }
 
         }
@@ -171,6 +179,7 @@ function SignInScreen1({ navigation }) {
             </View>
             <View style={{ alignSelf: 'flex-end' }}>
                 <Button
+                    loading={loading}
                     title={'Tiếp tục'}
                     containerStyle={{
                         width: 100,
