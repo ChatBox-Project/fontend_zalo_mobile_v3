@@ -51,32 +51,20 @@ function PersonalScreen({ navigation }) {
           }}
         >
           <Avatar
-            size={120}
+            size={130}
             rounded
             source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            containerStyle={{ borderWidth: 4, borderColor: "#cccccc" }}
           />
-          <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 15 }}>Lê Văn Luyện</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>Ngô Thiên Phú</Text>
         </View>
       </View>
-      <TouchableOpacity
-        style={{
-          marginTop: 10,
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <Image source={pen} style={{ width: 20, height: 20 }}></Image>
-        <Text style={{ color: BLUE, marginLeft: 5 }}>
-          Cập nhật giới thiệu bản thân
-        </Text>
-      </TouchableOpacity>
-      <View style={{ height: 70 }}>
+      <View style={{ height: 80 }}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
         >
-          <View style={{ flexDirection: "row", marginTop: 15 }}>
+          <View style={{ flexDirection: "row", marginTop: 15, paddingHorizontal: 10 }}>
             {
               options.map((item, index) => {
                 return (
@@ -87,11 +75,12 @@ function PersonalScreen({ navigation }) {
                       justifyContent: "center",
                       alignItems: "center",
                       flexDirection: "row",
-                      marginHorizontal: 10,
+                      marginHorizontal: 5,
                       paddingHorizontal: 10,
                       marginTop: 10,
-                      height: 40,
+                      height: 50,
                       borderRadius: 10,
+                      // borderWidth: 1
                     }}
                   >
                     <Image source={item.image} style={{ width: 20, height: 20 }} />
@@ -105,9 +94,8 @@ function PersonalScreen({ navigation }) {
           </View>
         </ScrollView>
       </View>
-      <View style={{ flexDirection: "column", alignItems: "center", marginTop: 100 }}>
-        <Image source={home} style={{ height: 120, width: 120 }} />
-        <Text style={{ fontSize: 14 }}>Hôm nay bạn có gì vui...?</Text>
+      <View style={{ flexDirection: "column", alignItems: "center" }}>
+
       </View>
     </View>
   );
