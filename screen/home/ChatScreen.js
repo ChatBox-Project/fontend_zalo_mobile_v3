@@ -4,7 +4,7 @@ import ChatSingle from '../../util/chat_single/ChatSingle';
 
 function ChatScreen({ navigation }) {
 
-    const [chats, setChats] = React.useState([1, 2, 3])
+    const [chats, setChats] = React.useState([1])
 
     return (
         <View style={styles.container} >
