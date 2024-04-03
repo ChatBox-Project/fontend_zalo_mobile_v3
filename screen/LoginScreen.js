@@ -99,7 +99,7 @@ function LoginScreen({ navigation }) {
                 <TouchableOpacity
                     style={{ marginTop: 10 }}
                 >
-                    <Text style={{ marginLeft: 10, color: BLUE, fontWeight: '500', marginTop: -10 }}>Lấy lại mật khẩu</Text>
+                    <Text style={{ marginLeft: 10, color: BLUE, fontWeight: '500', marginTop: -10 }}>Quên mật khẩu</Text>
                 </TouchableOpacity>
             </View>
             <Button

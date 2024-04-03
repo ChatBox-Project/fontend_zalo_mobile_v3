@@ -6,6 +6,7 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { BLUE, GRAY } from '../colors/Colors';
 
 function BirthDayAndSexScreen({ navigation, route }) {
+
     let user = route.params.user
     const [gender, setGender] = useState(0)
     const [date, setDate] = useState(new Date());
@@ -33,17 +34,24 @@ function BirthDayAndSexScreen({ navigation, route }) {
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 40 }}>
                     <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <CheckBox checked={gender === 0 ? true : false} size={24} onPress={() => { setGender(0) }} />
-                            <Icon name='female' color={"pink"} size={60} onPress={() => { setGender(0) }} />
+                            <CheckBox checked={gender === 0 ? true : false} size={18} onPress={() => { setGender(0) }} />
+                            <Icon name='female' color={"pink"} size={30} onPress={() => { setGender(0) }} />
                         </View>
-                        <Text style={{ fontWeight: '500', fontSize: 18 }}>Nữ</Text>
+                        <Text style={{ fontWeight: '500', fontSize: 16 }}>Nữ</Text>
                     </View>
                     <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <CheckBox checked={gender === 1 ? true : false} size={24} onPress={() => { setGender(1) }} />
-                            <Icon name='male' color={BLUE} size={60} onPress={() => { setGender(1) }} />
+                            <CheckBox checked={gender === 1 ? true : false} size={18} onPress={() => { setGender(1) }} />
+                            <Icon name='male' color={BLUE} size={30} onPress={() => { setGender(1) }} />
                         </View>
-                        <Text style={{ fontWeight: '500', fontSize: 18 }}>Nam</Text>
+                        <Text style={{ fontWeight: '500', fontSize: 16 }}>Nam</Text>
+                    </View>
+                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                            <CheckBox checked={gender === 2 ? true : false} size={18} onPress={() => { setGender(2) }} />
+                            <Icon name='male-female' color={"yellow"} size={30} onPress={() => { setGender(2) }} />
+                        </View>
+                        <Text style={{ fontWeight: '500', fontSize: 16 }}>Khác</Text>
                     </View>
                 </View>
             </View>
@@ -95,7 +103,7 @@ function BirthDayAndSexScreen({ navigation, route }) {
                     onPress={() => {
                         let newUser = {
                             ...user,
-                            gender: (gender === 0) ? "female" : "male",
+                            gender: (gender === 0) ? "female" : (gender === 1) ? "male" : "other",
                             birth: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
                         }
                         navigation.push("AvatarScreen", { user: newUser })

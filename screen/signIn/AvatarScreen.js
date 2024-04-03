@@ -62,8 +62,16 @@ function AvatarScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
 
-            <View style={{ width: "100%", padding: 12, backgroundColor: GRAY }}>
+            <View style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', padding: 12, backgroundColor: GRAY }}>
+
                 <Text>Cập nhật ảnh đẹp nhất của bạn</Text>
+
+                <TouchableOpacity
+                    style={{ alignSelf: 'center' }}
+                >
+                    <Text style={{ fontWeight: '600', color: BLUE }}>Bỏ qua</Text>
+                </TouchableOpacity>
+
             </View>
             {
                 image === null

@@ -17,6 +17,7 @@ import kho from "../imagess/kho.png";
 import clock from "../imagess/clock.png";
 import camera from "../imagess/camera.png";
 import home from "../imagess/home.png";
+import { Avatar } from "react-native-elements";
 
 function PersonalScreen({ navigation }) {
 
@@ -49,23 +50,11 @@ function PersonalScreen({ navigation }) {
             alignItems: "center",
           }}
         >
-          <View
-            style={{
-              borderWidth: 3,
-              borderColor: "#ffffff",
-              width: 120,
-              height: 120,
-              borderRadius: 120 / 2,
-              justifyContent: "center",
-              alignItems: "center",
-              overflow: "hidden"
-            }}
-          >
-            <Image
-              source={ZaloImage}
-              style={{ width: 120, height: 120 }}
-            />
-          </View>
+          <Avatar
+            size={120}
+            rounded
+            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+          />
           <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 15 }}>Lê Văn Luyện</Text>
         </View>
       </View>
