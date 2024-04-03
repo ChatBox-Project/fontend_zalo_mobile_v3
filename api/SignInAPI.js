@@ -1,15 +1,25 @@
 import axios from "axios";
 
-const register = "http://10.0.2.2:3333/api/auth/register"
-const login = "http://10.0.2.2:3333/api/auth/login"
+const apiRegister = "http://10.0.2.2:3333/api/auth/register"
+const apiLogin = "http://10.0.2.2:3333/api/auth/login"
+const apiVerifyOTP = "http://10.0.2.2:3333/api/otp/verify"
+const apiGenerateOTP = "http://10.0.2.2:3333/api/otp/generate"
 
 function Register(account) {
-    return axios.post(register, account)
+    return axios.post(apiRegister, account)
 }
 
 function Login(account) {
-    console.log(account)
-    return axios.post(login, account)
+    return axios.post(apiLogin, account)
 }
 
-export { Register, Login }
+function generateOTP(phoneNumber) {
+    return axios.post(apiGenerateOTP, phoneNumber)
+}
+
+function verifyOTP(data) {
+    console.log(data)
+    return axios.get(apiVerifyOTP, data)
+}
+
+export { Register, Login, generateOTP, verifyOTP }

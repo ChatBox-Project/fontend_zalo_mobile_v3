@@ -3,13 +3,15 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
+import { verifyOTP } from '../../api/SignInAPI';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-function OTPScreen({ navigation, route }) {
+function OTPScreen({ navigation }) {
 
-    const [OTP, setOTP] = React.useState(route.params.OTP)
-    const [inputOTP, setInputOTP] = React.useState("")
+    const [otp, setOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
+    const [loading, setLoading] = React.useState(false)
 
     useEffect(() => {
         const id = setInterval(() => {
@@ -23,14 +25,34 @@ function OTPScreen({ navigation, route }) {
         }
     }, [time])
 
-    useEffect(() => {
-        console.log(OTP)
-    }, [OTP])
 
     function ressetOTP() {
-        setOTP(Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000)
-        setTime(30)
+        // setOTP(Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000)
+        // setTime(30)
     }
+
+    const runVerifyOTP = async () => {
+        setLoading(true)
+        try {
+            const user = await AsyncStorage.getItem("userRegister");
+            if (user !== null) {
+                let userObj = JSON.parse(user)
+                let phoneNumber = userObj.phoneNumber
+                verifyOTP({ phoneNumber: "0348191222", otp: "528074" }).then(req => {
+                    console.log(req)
+                    console.log("ok nha !")
+                    setLoading(false)
+                }).catch(err => {
+                    console.error(err)
+                    setLoading(false)
+                })
+            }
+        } catch (e) {
+            console.error(e)
+            setLoading(false)
+        }
+    };
+
 
     return (
         <View style={styles.container}>
@@ -58,8 +80,8 @@ function OTPScreen({ navigation, route }) {
                 <Input
                     placeholder='Nhập mã OTP'
                     inputStyle={{ fontSize: 16, textAlign: 'center' }}
-                    value={inputOTP}
-                    onChangeText={setInputOTP}
+                    value={otp}
+                    onChangeText={setOTP}
                 />
             </View>
             <View
@@ -84,6 +106,7 @@ function OTPScreen({ navigation, route }) {
             </View>
             <View style={{ alignSelf: 'flex-end' }}>
                 <Button
+                    loading={loading}
                     title={'Tiếp tục'}
                     containerStyle={{
                         width: 100,
@@ -93,13 +116,7 @@ function OTPScreen({ navigation, route }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => {
-                        if (Number(OTP) === Number(inputOTP)) {
-                            alert("Đang phát triển")
-                        } else {
-                            alert("Mã không chính xác")
-                        }
-                    }}
+                    onPress={() => { runVerifyOTP() }}
                 />
             </View>
         </View>
