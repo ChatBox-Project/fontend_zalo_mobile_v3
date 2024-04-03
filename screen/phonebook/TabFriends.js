@@ -13,14 +13,6 @@ function TabFriend({ navigation }) {
             dateOfBirth: new Date(),
             gender: true
         },
-        {
-            id: 2,
-            username: "Trần Khởi My",
-            email: "phutot1111@gmail.com",
-            phone: "0348191482",
-            dateOfBirth: new Date(),
-            gender: true
-        }
     ]);
 
     return (

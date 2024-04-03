@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/Ionicons';
-import AvatarChat from './compoments/AvatarChat';
+import { Avatar } from 'react-native-elements';
 
 function Friend({ friend, navigation }) {
 
@@ -18,8 +18,12 @@ function Friend({ friend, navigation }) {
             }}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                <AvatarChat image={1} />
-                <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 15 }}>{friend?.username}</Text>
+                <Avatar
+                    size={60}
+                    rounded
+                    source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+                />
+                <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 15 }}>{friend?.username}</Text>
             </View>
             <View style={{ width: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 20 }}>
                 <TouchableOpacity style={{ opacity: 0.5 }}>
