@@ -22,23 +22,12 @@ import question from "../imagess/question.png";
 import tran from "../imagess/transfer.png";
 import logout from "../imagess/logout.png";
 import { ScrollView } from "react-native-virtualized-view";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 function SettingScreen({ navigation }) {
 
   const [options, setOptions] = React.useState([
-    { title: "Tài khoản và Bảo mật", image: shield },
-    { title: "Quyển riêng tư", image: lock },
-    { title: "Dung lượng và Dữ liệu", image: data },
-    { title: "Sao lưu và Khôi phục", image: backup },
-    { title: "Thông báo", image: notifi },
-    { title: "Tin nhắn", image: mess },
-    { title: "Cuộc gọi", image: call },
-    { title: "Nhật ký", image: clock },
-    { title: "Danh bạ", image: phonebook },
-    { title: "Giao diện và Ngôn ngữ", image: paint },
-    { title: "Thông tin về Zalo", image: exclamation },
-    { title: "Liên hệ hỗ trợ", image: question },
-    { title: "Chuyển tài khoản", image: tran },
+    { title: "Đăng xuất", icon: <Icon name="logout" size={30} color={"red"} /> }
   ])
 
   return (
@@ -52,57 +41,23 @@ function SettingScreen({ navigation }) {
               <TouchableOpacity
                 key={index}
                 style={{
-                  height: 60,
+                  height: 50,
                   width: "100%",
                   backgroundColor: WHITE,
                   alignItems: "center",
                   flexDirection: "row",
                   borderBottomWidth: 0.2,
+                  paddingHorizontal: 15
                 }}
               >
-                <View>
-                  <Image
-                    source={item.image}
-                    style={{
-                      width: 30,
-                      height: 30,
-                      borderRadius: 50,
-                      marginLeft: 30,
-                    }}
-                  />
-                </View>
+                {item.icon}
                 <View style={{ flexDirection: "column" }}>
-                  <Text style={{ fontSize: 15, marginLeft: 10 }}>{item.title}</Text>
+                  <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 15 }}>{item.title}</Text>
                 </View>
               </TouchableOpacity>
             )
           })
         }
-        <TouchableOpacity
-          style={{
-            height: 50,
-            width: "100%",
-            backgroundColor: WHITE,
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "row",
-            borderBottomWidth: 0.1,
-          }}
-        >
-          <View>
-            <Image
-              source={logout}
-              style={{
-                width: 30,
-                height: 30,
-                borderRadius: 10,
-              }}
-            />
-          </View>
-          <View>
-            <Text style={{ fontSize: 16, marginLeft: 10, fontWeight: "600" }}>Đăng xuất</Text>
-          </View>
-        </TouchableOpacity>
       </ScrollView>
     </View>
   );
