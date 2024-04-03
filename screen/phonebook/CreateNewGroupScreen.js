@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { FlatList, Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/EvilIcons';
-import { Button, CheckBox } from 'react-native-elements';
+import { Avatar, Button, CheckBox } from 'react-native-elements';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE } from '../colors/Colors';
-import AvatarChat from '../../util/friend/compoments/AvatarChat';
 
 function CreateNewGroupScreen({ navigation }) {
 
@@ -66,12 +65,10 @@ function CreateNewGroupScreen({ navigation }) {
                             image === null ?
                                 <Icon name='camera' color={"gray"} size={25} />
                                 :
-                                <Image source={{ uri: image }}
-                                    style={{
-                                        width: 50,
-                                        height: 50,
-                                        borderRadius: 25,
-                                    }}
+                                <Avatar
+                                    size={60}
+                                    rounded
+                                    source={{ uri: image }}
                                 />
                         }
                     </TouchableOpacity>
@@ -95,7 +92,11 @@ function CreateNewGroupScreen({ navigation }) {
                         return (
                             <TouchableOpacity style={{ width: "100%", flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 8 }}>
                                 <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                    <AvatarChat image={data.item.image} />
+                                    <Avatar
+                                        size={60}
+                                        rounded
+                                        source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+                                    />
                                     <Text style={{ fontSize: 16, marginLeft: 15, fontWeight: '600' }}>{data.item.name}</Text>
                                 </View>
                                 <CheckBox checked={checks.includes(data.item.id)} size={18} onPress={() => { enterCheck(data.item.id) }} />

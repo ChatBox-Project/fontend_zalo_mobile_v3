@@ -17,23 +17,6 @@ function GroupScreen({ navigation }) {
             userId: null,
             messageId: null
         },
-        {
-            groupId: 2,
-            chatBoxId: 1,
-            groupName: "Cộng Đồng IT Việt",
-            groupMembers: null,
-            groupLeaderId: null,
-            userId: null,
-            messageId: null
-        }, {
-            groupId: 3,
-            chatBoxId: 1,
-            groupName: "Cộng Đồng IT Việt",
-            groupMembers: null,
-            groupLeaderId: null,
-            userId: null,
-            messageId: null
-        }
     ])
 
     return (
