@@ -2,6 +2,7 @@ import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import AvatarChat from '../../util/friend/compoments/AvatarChat';
 import { BLUE } from '../colors/Colors';
+import { Avatar } from 'react-native-elements';
 
 function IsFriendPhoneBookScreen({ navigation }) {
     const [friends, setFriends] = React.useState([
@@ -33,7 +34,11 @@ function IsFriendPhoneBookScreen({ navigation }) {
                                 marginVertical: 10
                             }}>
                             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                                <AvatarChat image={1} />
+                                <Avatar
+                                    size={60}
+                                    rounded
+                                    source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+                                />
                                 <View>
                                     <Text style={{ fontSize: 16, marginLeft: 15, fontWeight: '600' }}>{data.item.name}</Text>
                                     <Text style={{ fontSize: 14, marginLeft: 15, color: "gray" }}>Tên Zalo: {data.item.nameZalo}</Text>
