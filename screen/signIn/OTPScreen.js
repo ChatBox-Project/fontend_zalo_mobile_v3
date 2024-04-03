@@ -38,9 +38,9 @@ function OTPScreen({ navigation }) {
             if (user !== null) {
                 let userObj = JSON.parse(user)
                 let phoneNumber = userObj.phoneNumber
-                verifyOTP({ phoneNumber: "0348191222", otp: "528074" }).then(req => {
-                    console.log(req)
-                    console.log("ok nha !")
+                verifyOTP({ phoneNumber, otp }).then(req => {
+                    alert("Xác thực thành công !")
+                    navigation.push("SignIn")
                     setLoading(false)
                 }).catch(err => {
                     console.error(err)

@@ -3,11 +3,9 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE } from '../colors/Colors';
 
-function SignInScreen({ navigation, route }) {
+function SignInScreen({ navigation }) {
 
-    const account = route.params.account
-
-    const [name, setName] = React.useState("")
+    const [firstName, setFirstName] = React.useState("")
     const [errorName, setErrorName] = React.useState("")
 
     function validate() {
@@ -15,23 +13,16 @@ function SignInScreen({ navigation, route }) {
         let checkPass = true;
         const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{2,40}$/
 
-        if (!name) {
+        if (!firstName) {
             checkPass = false
             setErrorName("VUI LÒNG NHẬP TRƯỜNG NÀY")
-        } else if (!name.match(regexName)) {
+        } else if (!firstName.match(regexName)) {
             checkPass = false
             setErrorName("HỌ TÊN PHẢI TỪ 4-20 KÝ TỰ VÀ KHÔNG CHỨA KÍ TỰ ĐẶC BIỆT HOẶC SỐ")
         }
 
         if (checkPass) {
-            navigation.push("BirthDayAndSexScreen", {
-                account: {
-                    ...account,
-                    profile: {
-                        name
-                    }
-                }
-            })
+            navigation.push("BirthDayAndSexScreen", { user: { firstName } })
         }
     }
 
@@ -42,8 +33,8 @@ function SignInScreen({ navigation, route }) {
                 <Input
                     placeholder='Gồm 2-40 ký tự'
                     inputStyle={{ fontSize: 16 }}
-                    value={name}
-                    onChangeText={setName}
+                    value={firstName}
+                    onChangeText={setFirstName}
                     onChange={() => {
                         if (errorName) {
                             setErrorName("")

@@ -5,12 +5,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
-import { updateAccountInformation } from '../../api/SignInAPI';
+import { CreateProfile } from '../../api/SignInAPI';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 function AvatarScreen({ navigation, route }) {
 
-    const account1 = route.params.account
-
+    const user = route.params.user
     const [image, setImage] = useState(null);
 
     const pickImage = async () => {
@@ -30,26 +30,30 @@ function AvatarScreen({ navigation, route }) {
 
     function updateAccountInformationNew() {
         if (image) {
-            const profile1 = account1.profile
-
-            const updateAccount = {
-                ...account1,
-                profile: {
-                    ...profile1,
-                    image: image
-                }
-
+            let newUser = {
+                ...user,
+                avatarUrl: image,
+                lastName: "Thiên Phú"
             }
 
-            updateAccountInformation(updateAccount)
-                .then(req => {
-                    if (req.ok) {
-                        alert("Cập nhật thông tin thành công")
-                        navigation.push("LoginAndSignIn")
-                    } else {
-                        alert("Cập nhật thông tin thất bại, vui lòng thử lại sau")
+            const token = async () => {
+                try {
+                    const token = await AsyncStorage.getItem('tokenRegister');
+                    if (token !== null) {
+                        CreateProfile(token, newUser)
+                            .then(req => {
+                                alert("Cập nhật thông tin thành công")
+                                navigation.push("LoginAndSignIn")
+                            }).catch(error => {
+                                console.error(error)
+                            })
                     }
-                })
+                } catch (e) {
+                    console.error(e)
+                }
+            };
+
+            token();
         } else {
             alert("Vui lòng chọn ảnh đại diện để tiếp tục")
         }
