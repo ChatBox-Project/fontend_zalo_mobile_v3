@@ -3,25 +3,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { Login } from '../api/SignInAPI';
-import { useFocusEffect } from '@react-navigation/native';
-import { useDispatch } from 'react-redux'
-import { setAccount } from '../counter/counterSlice';
 
 function LoginScreen({ navigation }) {
-
-    const dispatch = useDispatch()
     const [accounts, setAccounts] = React.useState([])
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [errorPhoneNumber, setErrorPhoneNumber] = React.useState("")
     const [errorPassword, setErrorPassword] = React.useState("")
     const [loading, setLoading] = React.useState(false)
-
-    useFocusEffect(
-        React.useCallback(() => {
-
-        }, [])
-    );
 
     function validateInput() {
         const regexPhoneNumber = /^0[1-9][0-9]{8}$/
