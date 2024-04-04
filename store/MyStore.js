@@ -35,4 +35,12 @@ const saveTokenRegister = async (value) => {
     }
 };
 
-export { getUser, saveTokenRegister, saveUserRegister, getUserRegister }
+const saveTokenAccess = async (value) => {
+    try {
+        await AsyncStorage.setItem('tokenAccess', value);
+    } catch (e) {
+        console.error(e)
+    }
+};
+
+export { getUser, saveTokenRegister, saveUserRegister, getUserRegister, saveTokenAccess }
