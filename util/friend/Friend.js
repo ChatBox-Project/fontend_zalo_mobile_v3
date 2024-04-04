@@ -3,6 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-elements';
+import { BLUE } from '../../screen/colors/Colors';
 
 function Friend({ friend, navigation }) {
 
@@ -23,14 +24,14 @@ function Friend({ friend, navigation }) {
                     rounded
                     source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
                 />
-                <Text style={{ fontSize: 16, fontWeight: 'bold', marginLeft: 15 }}>{friend?.username}</Text>
+                <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 15 }}>{friend?.username}</Text>
             </View>
             <View style={{ width: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 20 }}>
                 <TouchableOpacity style={{ opacity: 0.5 }}>
-                    <Icon name='phone' size={22} />
+                    <Icon name='phone' size={20} color={"green"} />
                 </TouchableOpacity>
                 <TouchableOpacity style={{ opacity: 0.5 }}>
-                    <Icon1 name='videocam-outline' size={24} />
+                    <Icon1 name='videocam-outline' size={22} color={BLUE} />
                 </TouchableOpacity>
             </View>
         </TouchableOpacity>

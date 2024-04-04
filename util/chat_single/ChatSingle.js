@@ -24,7 +24,7 @@ function ChatSingle({ chat }) {
             <View style={{
                 marginLeft: 15
             }}>
-                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: 'bold' }}>Ngô Thiên Phú</Text>
+                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '500' }}>Ngô Thiên Phú</Text>
                 <Text style={{ fontSize: 14, color: "gray" }}>Mai đi chơi nha</Text>
             </View>
         </View>

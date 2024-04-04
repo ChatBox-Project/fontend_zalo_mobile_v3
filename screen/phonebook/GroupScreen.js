@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import { BLUE, GRAY } from '../colors/Colors';
 import ChatGroup from '../../util/chat_group/ChatGroup';
 import { ScrollView } from 'react-native-virtualized-view';
+import { ListItem } from 'react-native-elements';
 
 function GroupScreen({ navigation }) {
 
@@ -25,23 +26,22 @@ function GroupScreen({ navigation }) {
             showsHorizontalScrollIndicator={false}
             style={styles.container}
         >
-            <TouchableOpacity
+            <ListItem
                 onPress={() => { navigation.push("CreateNewGroup") }}
                 style={{
-                    flexDirection: 'row',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center',
-                    paddingHorizontal: 15,
-                    paddingVertical: 10,
                     width: "100%",
-                }}>
-                <View style={{ width: 55, height: 55, borderRadius: 30, backgroundColor: "#e5f3f5", justifyContent: 'center', alignItems: 'center' }}>
-                    <Icon name='addusergroup' color={BLUE} size={25} />
-                </View>
-                <Text style={{ marginLeft: 15, fontSize: 16 }}>Tạo nhóm mới</Text>
-            </TouchableOpacity>
-            <View style={{ width: "100%", paddingHorizontal: 10, paddingVertical: 10, borderTopColor: GRAY, borderTopWidth: 8, flex: 1 }}>
-                <Text style={{ fontWeight: '500', fontSize: 13, paddingBottom: 15 }}>Nhóm đang tham gia (18) </Text>
+                    borderBottomColor: "#cccccc",
+                    borderBottomWidth: 0.2
+                }}
+            >
+                <Icon name='addusergroup' color={BLUE} size={25} />
+                <ListItem.Content>
+                    <ListItem.Title>Tạo nhóm mới</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Chevron color={"black"} />
+            </ListItem>
+            <View style={{ width: "100%", flex: 1 }}>
+                <Text style={{ fontWeight: '500', fontSize: 14, paddingHorizontal: 15, paddingVertical: 15 }}>Nhóm đang tham gia (18) </Text>
                 <FlatList
                     data={groups}
                     renderItem={(data) => {
@@ -60,8 +60,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         flexDirection: 'column',
-        // alignItems: 'center',
-        // justifyContent: 'flex-start',
     },
 });
 

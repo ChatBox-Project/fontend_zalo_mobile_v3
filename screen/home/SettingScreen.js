@@ -39,21 +39,19 @@ function SettingScreen({ navigation }) {
         {
           options.map((option, index) => {
             return (
-              <>
-                <ListItem
-                  key={index}
-                  style={{
-                    width: "100%",
-                    borderTopWidth: 0.2,
-                    borderTopColor: "#cccccc"
-                  }}
-                >
-                  {option.icon}
-                  <ListItem.Content>
-                    <ListItem.Title>{option.title}</ListItem.Title>
-                  </ListItem.Content>
-                </ListItem>
-              </>
+              <ListItem
+                key={index}
+                style={{
+                  width: "100%",
+                  borderBottomWidth: 0.2,
+                  borderBottomColor: "#cccccc"
+                }}
+              >
+                {option.icon}
+                <ListItem.Content>
+                  <ListItem.Title>{option.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
             )
           })
         }
