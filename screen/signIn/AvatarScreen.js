@@ -43,7 +43,7 @@ function AvatarScreen({ navigation, route }) {
                         CreateProfile(token, newUser)
                             .then(req => {
                                 alert("Cập nhật thông tin thành công")
-                                navigation.push("LoginAndSignIn")
+                                navigation.push("Index")
                             }).catch(error => {
                                 console.error(error)
                             })

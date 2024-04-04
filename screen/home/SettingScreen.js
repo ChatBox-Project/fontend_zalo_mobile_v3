@@ -19,7 +19,6 @@ function SettingScreen({ navigation }) {
   ])
 
   function logoutUser() {
-
     const removeToken = async () => {
       try {
         await AsyncStorage.removeItem("tokenRegister");
@@ -29,7 +28,6 @@ function SettingScreen({ navigation }) {
         alert("Đăng xuất thất bại")
       }
     }
-
     removeToken()
   }
 
