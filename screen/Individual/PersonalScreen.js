@@ -8,25 +8,16 @@ import {
   ScrollView,
 } from "react-native";
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
-import ZaloImage from "../imagess/zalo_icon.png";
-import hoboi from "../imagess/hoboi.jpg";
-import pen from "../imagess/pen.png";
-import impo from "../imagess/import.png";
-import photo from "../imagess/photo.png";
-import kho from "../imagess/kho.png";
-import clock from "../imagess/clock.png";
-import camera from "../imagess/camera.png";
-import home from "../imagess/home.png";
 import { Avatar } from "react-native-elements";
 
 function PersonalScreen({ navigation }) {
 
   const [options, setOptions] = React.useState([
-    { title: "Nhập từ Facebook", image: impo },
-    { title: "Ảnh của tôi", image: photo },
-    { title: "Kho khoảnh khắc", image: kho },
-    { title: "Kỉ niệm năm xưa", image: clock },
-    { title: "Video của tôi", image: camera },
+    { title: "Nhập từ Facebook", image: require("../../images/import.png") },
+    { title: "Ảnh của tôi", image: require("../../images/photo.png") },
+    { title: "Kho khoảnh khắc", image: require("../../images/kho.png") },
+    { title: "Kỉ niệm năm xưa", image: require("../../images/clock.png") },
+    { title: "Video của tôi", image: require("../../images/camera.png") },
   ])
 
 
@@ -36,7 +27,7 @@ function PersonalScreen({ navigation }) {
         style={{ paddingBottom: 100 }}
       >
         <Image
-          source={hoboi}
+          source={require("../../images/hoboi.jpg")}
           style={{ width: "100%", height: 200 }}
         />
         <View

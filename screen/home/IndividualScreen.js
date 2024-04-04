@@ -1,13 +1,6 @@
 import React from "react";
 import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
-import abc from "../imagess/zalo_icon.png";
-import music from "../imagess/music.png";
-import xyz from "../imagess/icons8-wallet-64.png";
-import cloud from "../imagess/cloud.png";
-import data from "../imagess/data.png";
-import shield from "../imagess/shield.png";
-import lock from "../imagess/lock.png";
 import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
@@ -45,21 +38,19 @@ function IndividualScreen({ navigation }) {
       {
         options.map((option, index) => {
           return (
-            <>
-              <ListItem
-                key={index}
-                style={{
-                  width: "100%",
-                  borderTopWidth: 0.2,
-                  borderTopColor: "#cccccc"
-                }}
-              >
-                {option.icon}
-                <ListItem.Content>
-                  <ListItem.Title>{option.title}</ListItem.Title>
-                </ListItem.Content>
-              </ListItem>
-            </>
+            <ListItem
+              key={index}
+              style={{
+                width: "100%",
+                borderTopWidth: 0.2,
+                borderTopColor: "#cccccc"
+              }}
+            >
+              {option.icon}
+              <ListItem.Content>
+                <ListItem.Title>{option.title}</ListItem.Title>
+              </ListItem.Content>
+            </ListItem>
           )
         })
       }

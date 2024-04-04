@@ -114,10 +114,10 @@ function LoginScreen({ navigation }) {
                     backgroundColor: BLUE
                 }}
                 onPress={() => {
-                    if (validateInput()) {
-                        checkAccount()
-                    }
-                    // navigation.push("Index")
+                    // if (validateInput()) {
+                    //     checkAccount()
+                    // }
+                    navigation.push("Index")
                 }}
             />
         </View>

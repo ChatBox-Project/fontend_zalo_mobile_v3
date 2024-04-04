@@ -1,6 +1,5 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import AvatarChatGroup from './compoments/AvatarChatGroup'
 import { GRAY } from '../../screen/colors/Colors'
 import { Avatar, ListItem } from 'react-native-elements'
 
