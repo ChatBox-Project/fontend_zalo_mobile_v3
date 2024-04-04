@@ -1,31 +1,47 @@
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
-import AvatarSingle from './compoments/AvatarSingle'
 import AvatarChatGroup from './compoments/AvatarChatGroup'
 import { GRAY } from '../../screen/colors/Colors'
+import { Avatar, ListItem } from 'react-native-elements'
 
-function ChatGroup({ group, navigation }) {
+function ChatGroup({ group }) {
     return (
-        <TouchableOpacity
-            onPress={() => { navigation.push("ChatWindow") }}
+        <View
             style={{
+                width: "100%",
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                borderBottomWidth: 1,
-                borderBottomColor: GRAY
+                borderBottomWidth: 0.2,
+                borderBottomColor: GRAY,
             }}>
+
             <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                <AvatarChatGroup images={null} />
-                <View>
-                    <Text style={{ fontSize: 16, fontWeight: '600' }}>{group.groupName}</Text>
-                    <Text style={{ color: "gray", fontSize: 14 }}>Thanh Nam: này mới đang chỉnh sửa</Text>
-                </View>
+                <ListItem
+                    bottomDivider
+                    style={{
+                        width: "100%",
+                        borderBottomWidth: 0.2,
+                        borderBottomColor: "#cccccc"
+                    }}
+                >
+                    <Avatar
+                        size={60}
+                        rounded
+                        icon={{
+                            name: "group",
+                            type: "material",
+                            size: 40,
+                        }}
+                        containerStyle={{ backgroundColor: "#c2c2c2" }}
+                    />
+                    <ListItem.Content>
+                        <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>Cộng Đồng Chung Sức</ListItem.Title>
+                        <ListItem.Subtitle style={{ marginTop: 5 }}>Vice President</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>
             </View>
-            {/* <View style={{ alignSelf: 'flex-start', marginTop: 10 }}>
-                <Text style={{ fontSize: 12 }}>21 phút</Text>
-            </View> */}
-        </TouchableOpacity>
+        </View>
     )
 }
 

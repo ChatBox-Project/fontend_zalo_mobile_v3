@@ -41,12 +41,26 @@ function GroupScreen({ navigation }) {
                 <ListItem.Chevron color={"black"} />
             </ListItem>
             <View style={{ width: "100%", flex: 1 }}>
-                <Text style={{ fontWeight: '500', fontSize: 14, paddingHorizontal: 15, paddingVertical: 15 }}>Nhóm đang tham gia (18) </Text>
+                <Text style={{
+                    fontWeight: '500',
+                    fontSize: 14,
+                    paddingHorizontal: 15,
+                    paddingVertical: 15,
+                    borderBottomWidth: 0.3,
+                    borderBottomColor: "#cccccc",
+                    backgroundColor: "#fff",
+                    marginTop: 8
+                }}
+                >Nhóm đang tham gia
+                </Text>
                 <FlatList
                     data={groups}
                     renderItem={(data) => {
                         return (
-                            <ChatGroup group={data.item} navigation={navigation} />
+                            <TouchableOpacity
+                                onPress={() => { navigation.push("ChatWindow") }}>
+                                <ChatGroup group={data.item} />
+                            </TouchableOpacity>
                         )
                     }}
                 />
@@ -58,7 +72,7 @@ function GroupScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: GRAY,
         flexDirection: 'column',
     },
 });
