@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { Register, generateOTP } from '../../api/SignInAPI';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { saveTokenRegister, saveUserRegister } from '../../store/MyStore';
 
 function SignInScreen1({ navigation }) {
 
@@ -18,23 +18,6 @@ function SignInScreen1({ navigation }) {
     const [checkBox1, setCheckBox1] = useState(false)
     const [checkBox2, setCheckBox2] = useState(false)
     const [visible1, setVisible1] = useState(false);
-
-    const saveTokenRegister = async (value) => {
-        try {
-            await AsyncStorage.setItem('tokenRegister', value);
-        } catch (e) {
-            console.error(e)
-        }
-    };
-
-    const saveUserRegister = async (user) => {
-        try {
-            const jsonValue = JSON.stringify(user);
-            await AsyncStorage.setItem('userRegister', jsonValue);
-        } catch (e) {
-            console.error(e)
-        }
-    };
 
     const validate = () => {
 

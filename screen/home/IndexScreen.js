@@ -11,22 +11,11 @@ import { BLUE } from '../colors/Colors';
 import PhoneBookScreen from './PhoneBookScreen';
 import IndividualScreen from './IndividualScreen';
 import * as Contacts from 'expo-contacts';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
 function IndexScreen({ navigation }) {
 
-    const getUser = async () => {
-        try {
-            const jsonValue = await AsyncStorage.getItem('user');
-            console.log(JSON.parse(jsonValue))
-        } catch (e) {
-            console.log(e)
-        }
-    };
-
-    getUser()
     // Lấy danh bạ điện thoại
     React.useEffect(() => {
         (async () => {

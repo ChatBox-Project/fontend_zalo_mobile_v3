@@ -4,7 +4,7 @@ import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
 import { verifyOTP } from '../../api/SignInAPI';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserRegister } from '../../store/MyStore';
 
 
 function OTPScreen({ navigation }) {
@@ -33,24 +33,25 @@ function OTPScreen({ navigation }) {
 
     const runVerifyOTP = async () => {
         setLoading(true)
-        try {
-            const user = await AsyncStorage.getItem("userRegister");
-            if (user !== null) {
-                let userObj = JSON.parse(user)
-                let phoneNumber = userObj.phoneNumber
+        getUserRegister().then(req => {
+            const phoneNumber = req.phoneNumber
+            if (phoneNumber) {
                 verifyOTP({ phoneNumber, otp }).then(req => {
+
                     alert("Xác thực thành công !")
                     navigation.push("SignIn")
                     setLoading(false)
+
                 }).catch(err => {
+
                     console.error(err)
                     setLoading(false)
+
                 })
             }
-        } catch (e) {
-            console.error(e)
-            setLoading(false)
-        }
+        }).catch(err => {
+            console.error(err)
+        })
     };
 
 
