@@ -4,28 +4,30 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native'
 
 function LoginAndSignInScreen({ navigation }) {
 
     const [isUser, setIsUser] = React.useState(false)
 
-    React.useEffect(() => {
-        const getData = async () => {
-            try {
-                const value = await AsyncStorage.getItem('tokenRegister');
-                console.log(value)
-                if (value !== null) {
-                    setIsUser(true)
-                } else {
-                    setIsUser(false)
+    useFocusEffect(
+        React.useCallback(() => {
+            const getData = async () => {
+                try {
+                    const value = await AsyncStorage.getItem('tokenRegister');
+                    if (value !== null) {
+                        setIsUser(true)
+                    } else {
+                        setIsUser(false)
+                    }
+                } catch (e) {
+                    console.error(e)
                 }
-            } catch (e) {
-                console.error(e)
-            }
-        };
+            };
 
-        getData()
-    }, [])
+            getData()
+        }, [])
+    );
 
     React.useEffect(() => {
         if (isUser === true) {
