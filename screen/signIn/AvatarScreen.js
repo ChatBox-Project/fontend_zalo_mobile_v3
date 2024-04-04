@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
 import { CreateProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { getTokenRegister } from '../../store/MyStore';
+import { getTokenRegister, saveTokenAccess } from '../../store/MyStore';
 
 function AvatarScreen({ navigation, route }) {
 
@@ -46,7 +46,10 @@ function AvatarScreen({ navigation, route }) {
                                 description: "Cập nhật thông tin thành công",
                                 type: "success",
                             });
-                            navigation.push("Index")
+                            saveTokenAccess(token)
+                                .then(req => {
+                                    navigation.push("Index")
+                                })
                         }).catch(error => {
                             showMessage({
                                 message: "Thông Báo !",
