@@ -1,14 +1,11 @@
 import React from 'react'
-import { Text, TouchableOpacity, View } from 'react-native';
-import AvatarChat from '../friend/compoments/AvatarChat';
-import { GRAY } from '../../screen/colors/Colors';
+import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
-function ChatSingle({ chat, navigation }) {
+function ChatSingle({ chat }) {
 
     return (
-        <TouchableOpacity
-            onPress={() => { navigation.push("ChatWindow") }}
+        <View
             style={{
                 width: "100%",
                 flexDirection: 'row',
@@ -30,7 +27,7 @@ function ChatSingle({ chat, navigation }) {
                 <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: 'bold' }}>Ngô Thiên Phú</Text>
                 <Text style={{ fontSize: 14, color: "gray" }}>Mai đi chơi nha</Text>
             </View>
-        </TouchableOpacity>
+        </View>
     )
 }
 

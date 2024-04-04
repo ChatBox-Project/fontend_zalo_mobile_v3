@@ -15,7 +15,13 @@ function ChatScreen({ navigation }) {
                 }}
                 data={chats}
                 renderItem={() => {
-                    return <ChatSingle navigation={navigation} />
+                    return (
+                        <TouchableOpacity
+                            onPress={() => { navigation.push("ChatWindow") }}
+                        >
+                            <ChatSingle />
+                        </TouchableOpacity>
+                    )
                 }}
             />
         </View>
