@@ -8,61 +8,58 @@ import cloud from "../imagess/cloud.png";
 import data from "../imagess/data.png";
 import shield from "../imagess/shield.png";
 import lock from "../imagess/lock.png";
-import { Avatar } from "react-native-elements";
+import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 
 function IndividualScreen({ navigation }) {
 
   const [options, setOptions] = React.useState([
-    { title: "Cập nhật thông tin", icon: <Icon name="update" size={30} color={BLUE} /> },
-    { title: "Đổi mật khẩu", icon: <Icon1 name="password" size={30} color={BLUE} /> },
+    { title: "Cập nhật thông tin", icon: <Icon name="update" size={25} color={BLUE} /> },
+    { title: "Đổi mật khẩu", icon: <Icon1 name="password" size={25} color={BLUE} /> },
   ])
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
+      <ListItem
         onPress={() => { navigation.push("Personal") }}
         style={{
-          height: 80,
           width: "100%",
-          backgroundColor: WHITE,
-          alignItems: "center",
-          flexDirection: "row",
-          marginBottom: 10,
-          paddingLeft: 15
         }}
       >
         <Avatar
           size={60}
           rounded
-          source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+          source={{ uri: "https://randomuser.me/api/portraits/men/33.jpg" }}
         />
-        <View style={{ marginLeft: 15 }}>
-          <Text style={{ fontSize: 16, fontWeight: "600" }}>Lê Văn Luyện</Text>
-          <Text style={{ fontSize: 12, color: "gray" }}>Xem trang cá nhân</Text>
-        </View>
-      </TouchableOpacity>
+        <ListItem.Content>
+          <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
+            Chris Jackson
+          </ListItem.Title>
+          <ListItem.Subtitle style={{ color: "black" }}>
+            Vice Chairman
+          </ListItem.Subtitle>
+        </ListItem.Content>
+        <ListItem.Chevron color="black" />
+      </ListItem>
       {
         options.map((option, index) => {
           return (
-            <TouchableOpacity
-              style={{
-                flexDirection: "row",
-                justifyContent: "flex-start",
-                alignItems: "center",
-                width: "100%",
-                paddingHorizontal: 15,
-                // borderWidth: 1,
-                height: 50,
-                backgroundColor: "white",
-                marginBottom: 10
-              }}
-              key={index}
-            >
-              {option.icon}
-              <Text style={{ marginLeft: 15, fontWeight: "600", fontSize: 14 }}>{option.title}</Text>
-            </TouchableOpacity>
+            <>
+              <ListItem
+                key={index}
+                style={{
+                  width: "100%",
+                  borderTopWidth: 0.2,
+                  borderTopColor: "#cccccc"
+                }}
+              >
+                {option.icon}
+                <ListItem.Content>
+                  <ListItem.Title>{option.title}</ListItem.Title>
+                </ListItem.Content>
+              </ListItem>
+            </>
           )
         })
       }
