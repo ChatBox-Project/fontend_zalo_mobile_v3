@@ -13,8 +13,11 @@ function LoginAndSignInScreen({ navigation }) {
         const getData = async () => {
             try {
                 const value = await AsyncStorage.getItem('tokenRegister');
+                console.log(value)
                 if (value !== null) {
                     setIsUser(true)
+                } else {
+                    setIsUser(false)
                 }
             } catch (e) {
                 console.error(e)
@@ -30,7 +33,7 @@ function LoginAndSignInScreen({ navigation }) {
         }
     }, [isUser]);
 
-    if (isUser) {
+    if (!isUser) {
         return (
             <View style={styles.container}>
                 <Image
