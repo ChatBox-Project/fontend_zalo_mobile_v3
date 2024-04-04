@@ -12,6 +12,8 @@ function IndividualScreen({ navigation }) {
     { title: "Đổi mật khẩu", icon: <Icon1 name="password" size={25} color={BLUE} /> },
   ])
 
+
+
   return (
     <View style={styles.container}>
       <ListItem

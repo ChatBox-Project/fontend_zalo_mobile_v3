@@ -10,7 +10,6 @@ import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { ScrollView } from "react-native-virtualized-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ListItem } from "react-native-elements";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from "react-native-flash-message";
 import { removeKey } from "../../store/MyStore";
 

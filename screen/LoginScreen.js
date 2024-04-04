@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { Login } from '../api/SignInAPI';
-import { saveTokenAccess } from '../store/MyStore';
+import { saveAccountInformation, saveTokenAccess } from '../store/MyStore';
 
 function LoginScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = React.useState("")
@@ -41,9 +41,21 @@ function LoginScreen({ navigation }) {
         Login({ phoneNumber, password }).then(req => {
             const token = req.data.metadata.token
             saveTokenAccess(token)
-            navigation.push("Index")
-            ressetInput()
-            setLoading(false)
+            getAccount(token)
+                .then(req => {
+                    const user = req.data.metadata.user
+                    saveAccountInformation(user)
+                    navigation.push("Index")
+                    ressetInput()
+                    setLoading(false)
+                })
+                .catch(err => {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: err,
+                        type: "danger",
+                    });
+                })
         }).catch(error => {
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI HOẶC TÀI KHOẢN KHÔNG CHÍNH XÁC")
             ressetInput()
