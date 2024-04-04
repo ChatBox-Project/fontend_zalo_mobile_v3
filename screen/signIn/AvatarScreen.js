@@ -8,7 +8,8 @@ import { BLUE, GRAY } from '../colors/Colors';
 import { CreateProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
 import { getTokenRegister, saveTokenAccess } from '../../store/MyStore';
-import { saveImage } from '../../aws/MyAWS';
+import { BUCKET } from '../../config/Config';
+import { ETBA } from '../../aws/MyAWS'
 
 function AvatarScreen({ navigation, route }) {
 
@@ -32,55 +33,48 @@ function AvatarScreen({ navigation, route }) {
     };
 
     function updateAccountInformationNew() {
-        const params = {
-            Bucket: process.env.BUCKET,
-            key: Date.now().toString(),
-            Body: image.base64,
-            ContentType: image.mimeType
+        if (image) {
+
+            const params = {
+                Bucket: BUCKET,
+                Key: `image${Date.now().toString()}.jpg`,
+                Body: image.base64,
+                ContentType: image.mimeType
+            }
+
+            ETBA.upload(params, async (err, data) => {
+                if (err) {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: err,
+                        type: "danger",
+                    });
+                } else {
+                    console.log(data.Location)
+                    const newUser = {
+                        ...user,
+                        avatarUrl: data.Location,
+                        lastName: "Thiên Phú"
+                    }
+
+                    getTokenRegister()
+                        .then(token => {
+                            CreateProfile(token, newUser)
+                                .then(req => {
+                                    showMessage({
+                                        message: "Thông Báo !",
+                                        description: "Cập nhật thông tin thành công",
+                                        type: "success",
+                                    });
+                                    saveTokenAccess(token)
+                                        .then(req => {
+                                            navigation.push("Index")
+                                        })
+                                })
+                        })
+                }
+            })
         }
-
-        console.log(saveImage(params))
-        // if (image) {
-        //     let newUser = {
-        //         ...user,
-        //         avatarUrl: image,
-        //         lastName: "Thiên Phú"
-        //     }
-
-        //     getTokenRegister()
-        //         .then(token => {
-        //             CreateProfile(token, newUser)
-        //                 .then(req => {
-        //                     showMessage({
-        //                         message: "Thông Báo !",
-        //                         description: "Cập nhật thông tin thành công",
-        //                         type: "success",
-        //                     });
-        //                     saveTokenAccess(token)
-        //                         .then(req => {
-        //                             navigation.push("Index")
-        //                         })
-        //                 }).catch(error => {
-        //                     showMessage({
-        //                         message: "Thông Báo !",
-        //                         description: "Cập nhật thông tin thất bại",
-        //                         type: "warning",
-        //                     });
-        //                 })
-        //         }).catch(err => {
-        //             showMessage({
-        //                 message: "Thông Báo !",
-        //                 description: err,
-        //                 type: "danger",
-        //             });
-        //         })
-        // } else {
-        //     showMessage({
-        //         message: "Thông Báo !",
-        //         description: "Vui lòng chọn ảnh đại diện để tiếp tục",
-        //         type: "warning",
-        //     });
-        // }
     }
 
     return (
