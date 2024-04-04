@@ -6,8 +6,8 @@ import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
 import { CreateProfile } from '../../api/SignInAPI';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { showMessage } from 'react-native-flash-message';
+import { getTokenRegister } from '../../store/MyStore';
 
 function AvatarScreen({ navigation, route }) {
 
@@ -37,36 +37,30 @@ function AvatarScreen({ navigation, route }) {
                 lastName: "Thiên Phú"
             }
 
-            const token = async () => {
-                try {
-                    const token = await AsyncStorage.getItem('tokenRegister');
-                    if (token !== null) {
-                        CreateProfile(token, newUser)
-                            .then(req => {
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "Cập nhật thông tin thành công",
-                                    type: "success",
-                                });
-                                navigation.push("Index")
-                            }).catch(error => {
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "Cập nhật thông tin thất bại",
-                                    type: "warning",
-                                });
-                            })
-                    }
-                } catch (e) {
+            getTokenRegister()
+                .then(token => {
+                    CreateProfile(token, newUser)
+                        .then(req => {
+                            showMessage({
+                                message: "Thông Báo !",
+                                description: "Cập nhật thông tin thành công",
+                                type: "success",
+                            });
+                            navigation.push("Index")
+                        }).catch(error => {
+                            showMessage({
+                                message: "Thông Báo !",
+                                description: "Cập nhật thông tin thất bại",
+                                type: "warning",
+                            });
+                        })
+                }).catch(err => {
                     showMessage({
                         message: "Thông Báo !",
                         description: err,
                         type: "danger",
                     });
-                }
-            };
-
-            token();
+                })
         } else {
             showMessage({
                 message: "Thông Báo !",
