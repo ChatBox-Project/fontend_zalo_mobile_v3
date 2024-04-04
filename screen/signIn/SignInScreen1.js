@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { Button, CheckBox, Dialog, Input } from 'react-native-elements';
+import { StyleSheet, Text, View } from 'react-native';
+import { Button, CheckBox, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { Register, generateOTP } from '../../api/SignInAPI';
 import { saveTokenRegister, saveUserRegister } from '../../store/MyStore';
+import { showMessage } from "react-native-flash-message";
 
 function SignInScreen1({ navigation }) {
 
@@ -17,7 +18,6 @@ function SignInScreen1({ navigation }) {
 
     const [checkBox1, setCheckBox1] = useState(false)
     const [checkBox2, setCheckBox2] = useState(false)
-    const [visible1, setVisible1] = useState(false);
 
     const validate = () => {
 
@@ -56,7 +56,11 @@ function SignInScreen1({ navigation }) {
                 setErrorPasswordAgain("MẬT KHẨU KHÔNG TRÙNG")
             } else if (!checkBox1 || !checkBox2) {
                 checkPass = false
-                toggleDialog1()
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Vui lòng xác nhận điều khoản dịch vụ",
+                    type: "warning",
+                });
             }
 
             if (checkPass) {
@@ -86,11 +90,6 @@ function SignInScreen1({ navigation }) {
 
         }
     }
-
-    const toggleDialog1 = () => {
-        setVisible1(!visible1);
-    };
-
     const ressetTextInput = () => {
         setPhoneNumber("")
         setPassword("")
@@ -184,13 +183,6 @@ function SignInScreen1({ navigation }) {
                 // onPress={() => { navigation.push("OTPScreen") }}
                 />
             </View>
-            <Dialog
-                isVisible={visible1}
-                onBackdropPress={toggleDialog1}
-            >
-                <Dialog.Title title="Xác Nhận" />
-                <Text>Để tiếp tục, vui lòng xác nhận các điều khoản dịch vụ !</Text>
-            </Dialog>
         </View>
     )
 }

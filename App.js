@@ -19,6 +19,7 @@ import { Text, TextInput, View } from 'react-native';
 import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
 import ChatWindow from './util/chat_window/chat_window';
+import FlashMessage from 'react-native-flash-message';
 
 const Stack = createNativeStackNavigator();
 
@@ -164,6 +165,7 @@ export default function App() {
           })}
         />
       </Stack.Navigator>
+      <FlashMessage location="top" />
     </NavigationContainer>
   );
 }
