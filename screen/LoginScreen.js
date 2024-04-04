@@ -3,9 +3,9 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { Login } from '../api/SignInAPI';
+import { saveTokenAccess } from '../store/MyStore';
 
 function LoginScreen({ navigation }) {
-    const [accounts, setAccounts] = React.useState([])
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [errorPhoneNumber, setErrorPhoneNumber] = React.useState("")
@@ -39,6 +39,8 @@ function LoginScreen({ navigation }) {
     function checkAccount() {
         setLoading(true)
         Login({ phoneNumber, password }).then(req => {
+            const token = req.data.metadata.token
+            saveTokenAccess(token)
             navigation.push("Index")
             ressetInput()
             setLoading(false)
@@ -103,10 +105,10 @@ function LoginScreen({ navigation }) {
                     backgroundColor: BLUE
                 }}
                 onPress={() => {
-                    // if (validateInput()) {
-                    //     checkAccount()
-                    // }
-                    navigation.push("Index")
+                    if (validateInput()) {
+                        checkAccount()
+                    }
+                    // navigation.push("Index")
                 }}
             />
         </View>

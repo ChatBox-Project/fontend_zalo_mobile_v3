@@ -29,6 +29,7 @@ function LoginAndSignInScreen({ navigation }) {
                                     description: err,
                                     type: "danger",
                                 });
+                                setIsUser(false)
                             })
                     } else {
                         setIsUser(false)
