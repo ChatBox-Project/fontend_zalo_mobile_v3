@@ -5,10 +5,20 @@ import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native'
+import { getAccount } from '../api/SignInAPI'
 
 function LoginAndSignInScreen({ navigation }) {
 
     const [isUser, setIsUser] = React.useState(false)
+
+    const getAccountInformation = async (user) => {
+        try {
+            const jsonValue = JSON.stringify(user);
+            await AsyncStorage.setItem('user', jsonValue);
+        } catch (e) {
+            console.error(e)
+        }
+    };
 
     useFocusEffect(
         React.useCallback(() => {
@@ -16,7 +26,15 @@ function LoginAndSignInScreen({ navigation }) {
                 try {
                     const value = await AsyncStorage.getItem('tokenRegister');
                     if (value !== null) {
-                        setIsUser(true)
+                        getAccount(value)
+                            .then(req => {
+                                const user = req.data.metadata.user
+                                getAccountInformation(user)
+                                setIsUser(true)
+                            })
+                            .catch(err => {
+                                console.error(err)
+                            })
                     } else {
                         setIsUser(false)
                     }
