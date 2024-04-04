@@ -54,7 +54,7 @@ function PersonalScreen({ navigation }) {
             size={130}
             rounded
             source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-            containerStyle={{ borderWidth: 4, borderColor: "#cccccc" }}
+            containerStyle={{ borderWidth: 4, borderColor: GRAY }}
           />
           <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>Ngô Thiên Phú</Text>
         </View>
@@ -79,12 +79,12 @@ function PersonalScreen({ navigation }) {
                       paddingHorizontal: 10,
                       marginTop: 10,
                       height: 50,
-                      borderRadius: 10,
-                      // borderWidth: 1
+                      borderRadius: 5,
+                      borderWidth: 0.5
                     }}
                   >
                     <Image source={item.image} style={{ width: 20, height: 20 }} />
-                    <Text style={{ marginLeft: 10, fontWeight: "500" }}>
+                    <Text style={{ marginLeft: 10, fontWeight: "500", fontSize: 14 }}>
                       {item.title}
                     </Text>
                   </TouchableOpacity>
@@ -104,7 +104,7 @@ function PersonalScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: GRAY,
+    backgroundColor: "#fff",
   },
 });
 

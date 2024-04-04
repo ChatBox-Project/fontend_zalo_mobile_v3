@@ -1,6 +1,5 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import AvatarChat from '../../util/friend/compoments/AvatarChat';
 import { BLUE } from '../colors/Colors';
 import { Avatar } from 'react-native-elements';
 

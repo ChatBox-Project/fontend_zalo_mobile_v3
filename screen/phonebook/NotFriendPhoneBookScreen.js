@@ -1,7 +1,6 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
 import { BLUE } from '../colors/Colors';
-import AvatarChat from '../../util/friend/compoments/AvatarChat';
 import { Avatar } from 'react-native-elements';
 
 function NotFriendPhoneBookScreen({ navigation }) {
