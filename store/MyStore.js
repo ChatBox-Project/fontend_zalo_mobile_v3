@@ -74,6 +74,15 @@ const saveAccountInformation = async (user) => {
     }
 };
 
+const removeKey = async (key) => {
+    try {
+        const result = await AsyncStorage.removeItem("tokenAccess");
+        return result
+    } catch (e) {
+        console.error(e)
+    }
+}
+
 export {
     getUser,
     saveTokenRegister,
@@ -82,5 +91,6 @@ export {
     saveTokenAccess,
     getTokenAccess,
     getTokenRegister,
-    saveAccountInformation
+    saveAccountInformation,
+    removeKey
 }

@@ -11,6 +11,8 @@ import { ScrollView } from "react-native-virtualized-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ListItem } from "react-native-elements";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage } from "react-native-flash-message";
+import { removeKey } from "../../store/MyStore";
 
 function SettingScreen({ navigation }) {
 
@@ -19,16 +21,19 @@ function SettingScreen({ navigation }) {
   ])
 
   function logoutUser() {
-    const removeToken = async () => {
-      try {
-        await AsyncStorage.removeItem("tokenRegister");
-        alert("Đăng xuất thành công")
+    removeKey("tokenAccess")
+      .then(req => {
+        showMessage({
+          message: "Đăng xuất thành công !",
+          type: "success",
+        });
         navigation.push("LoginAndSignIn")
-      } catch (e) {
-        alert("Đăng xuất thất bại")
-      }
-    }
-    removeToken()
+      }).catch(err => {
+        showMessage({
+          message: err,
+          type: "danger",
+        });
+      })
   }
 
   return (
