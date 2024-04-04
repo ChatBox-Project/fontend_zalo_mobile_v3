@@ -16,7 +16,7 @@ function LoginAndSignInScreen({ navigation }) {
         React.useCallback(() => {
             getTokenAccess()
                 .then(value => {
-                    if (value) {
+                    if (value !== undefined) {
                         getAccount(value)
                             .then(req => {
                                 const user = req.data.metadata.user

@@ -4,6 +4,8 @@ import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
+import { useFocusEffect } from "@react-navigation/native";
+import { getUser } from "../../store/MyStore";
 
 function IndividualScreen({ navigation }) {
 
@@ -12,6 +14,16 @@ function IndividualScreen({ navigation }) {
     { title: "Đổi mật khẩu", icon: <Icon1 name="password" size={25} color={BLUE} /> },
   ])
 
+  const [user, setUser] = React.useState("")
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser()
+        .then(user => {
+          setUser(user)
+        })
+    }, [])
+  );
 
 
   return (
@@ -29,10 +41,10 @@ function IndividualScreen({ navigation }) {
         />
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            Chris Jackson
+            {user.firstName}
           </ListItem.Title>
-          <ListItem.Subtitle style={{ color: "black" }}>
-            Vice Chairman
+          <ListItem.Subtitle style={{ color: "gray" }}>
+            Xem trang cá nhân
           </ListItem.Subtitle>
         </ListItem.Content>
         <ListItem.Chevron color="black" />

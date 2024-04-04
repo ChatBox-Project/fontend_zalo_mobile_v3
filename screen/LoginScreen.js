@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login } from '../api/SignInAPI';
+import { Login, getAccount } from '../api/SignInAPI';
 import { saveAccountInformation, saveTokenAccess } from '../store/MyStore';
 
 function LoginScreen({ navigation }) {
