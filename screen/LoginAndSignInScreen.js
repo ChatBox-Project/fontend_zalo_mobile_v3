@@ -3,9 +3,9 @@ import ZaloImage from "../images/zalo_icon.png"
 import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect } from '@react-navigation/native'
 import { getAccount } from '../api/SignInAPI'
+import { getTokenRegister } from '../store/MyStore'
 
 function LoginAndSignInScreen({ navigation }) {
 
@@ -22,9 +22,8 @@ function LoginAndSignInScreen({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            const getData = async () => {
-                try {
-                    const value = await AsyncStorage.getItem('tokenRegister');
+            getTokenRegister()
+                .then(value => {
                     if (value !== null) {
                         getAccount(value)
                             .then(req => {
@@ -38,12 +37,7 @@ function LoginAndSignInScreen({ navigation }) {
                     } else {
                         setIsUser(false)
                     }
-                } catch (e) {
-                    console.error(e)
-                }
-            };
-
-            getData()
+                })
         }, [])
     );
 
