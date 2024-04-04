@@ -7,6 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
 import { CreateProfile } from '../../api/SignInAPI';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { showMessage } from 'react-native-flash-message';
 
 function AvatarScreen({ navigation, route }) {
 
@@ -42,20 +43,36 @@ function AvatarScreen({ navigation, route }) {
                     if (token !== null) {
                         CreateProfile(token, newUser)
                             .then(req => {
-                                alert("Cập nhật thông tin thành công")
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: "Cập nhật thông tin thành công",
+                                    type: "success",
+                                });
                                 navigation.push("Index")
                             }).catch(error => {
-                                console.error(error)
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: "Cập nhật thông tin thất bại",
+                                    type: "warning",
+                                });
                             })
                     }
                 } catch (e) {
-                    console.error(e)
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: err,
+                        type: "danger",
+                    });
                 }
             };
 
             token();
         } else {
-            alert("Vui lòng chọn ảnh đại diện để tiếp tục")
+            showMessage({
+                message: "Thông Báo !",
+                description: "Vui lòng chọn ảnh đại diện để tiếp tục",
+                type: "warning",
+            });
         }
     }
 
