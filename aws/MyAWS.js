@@ -8,4 +8,14 @@ AWS.config.update({
 
 const s3 = new AWS.S3();
 
-export { s3 }
+function saveImage(params) {
+    s3.upload(params, async (err, data) => {
+        if (err) {
+            console.error(err)
+        } else {
+            return data.Location
+        }
+    })
+}
+
+export { saveImage }
