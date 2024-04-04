@@ -3,8 +3,9 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
-import { verifyOTP } from '../../api/SignInAPI';
+import { generateOTP, verifyOTP } from '../../api/SignInAPI';
 import { getUserRegister } from '../../store/MyStore';
+import { showMessage } from 'react-native-flash-message';
 
 
 function OTPScreen({ navigation }) {
@@ -27,8 +28,31 @@ function OTPScreen({ navigation }) {
 
 
     function ressetOTP() {
-        // setOTP(Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000)
-        // setTime(30)
+        getUserRegister().then(req => {
+            const phoneNumber = req.phoneNumber
+            if (phoneNumber) {
+                generateOTP({ phoneNumber }).then(req => {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: "Đã gửi lại mã OTP",
+                        type: "info",
+                    });
+                    setTime(30)
+                }).catch(err => {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: err,
+                        type: "danger",
+                    });
+                })
+            }
+        }).catch(err => {
+            showMessage({
+                message: "Thông Báo !",
+                description: err,
+                type: "danger",
+            });
+        })
     }
 
     const runVerifyOTP = async () => {
@@ -38,19 +62,31 @@ function OTPScreen({ navigation }) {
             if (phoneNumber) {
                 verifyOTP({ phoneNumber, otp }).then(req => {
 
-                    alert("Xác thực thành công !")
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: "Xác thực thành công",
+                        type: "success",
+                    });
                     navigation.push("SignIn")
                     setLoading(false)
 
                 }).catch(err => {
 
-                    console.error(err)
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: "Xác thực thất bại",
+                        type: "danger",
+                    });
                     setLoading(false)
-
+                    setOTP("")
                 })
             }
         }).catch(err => {
-            console.error(err)
+            showMessage({
+                message: "Thông Báo !",
+                description: err,
+                type: "danger",
+            });
         })
     };
 
