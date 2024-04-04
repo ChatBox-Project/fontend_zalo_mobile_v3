@@ -69,9 +69,9 @@ function PersonalScreen({ navigation }) {
                       marginHorizontal: 5,
                       paddingHorizontal: 10,
                       marginTop: 10,
-                      height: 50,
-                      borderRadius: 5,
-                      borderWidth: 0.5
+                      height: 40,
+                      borderRadius: 2,
+                      borderWidth: 0.2
                     }}
                   >
                     <Image source={item.image} style={{ width: 20, height: 20 }} />
@@ -95,7 +95,7 @@ function PersonalScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: GRAY,
   },
 });
 
