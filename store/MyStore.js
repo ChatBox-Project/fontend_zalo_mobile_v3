@@ -65,4 +65,22 @@ const getTokenAccess = async () => {
     }
 };
 
-export { getUser, saveTokenRegister, saveUserRegister, getUserRegister, saveTokenAccess, getTokenAccess, getTokenRegister }
+const saveAccountInformation = async (user) => {
+    try {
+        const jsonValue = JSON.stringify(user);
+        await AsyncStorage.setItem('user', jsonValue);
+    } catch (e) {
+        console.error(e)
+    }
+};
+
+export {
+    getUser,
+    saveTokenRegister,
+    saveUserRegister,
+    getUserRegister,
+    saveTokenAccess,
+    getTokenAccess,
+    getTokenRegister,
+    saveAccountInformation
+}

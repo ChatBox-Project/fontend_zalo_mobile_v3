@@ -5,34 +5,30 @@ import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
 import { useFocusEffect } from '@react-navigation/native'
 import { getAccount } from '../api/SignInAPI'
-import { getTokenRegister } from '../store/MyStore'
+import { getTokenAccess, saveAccountInformation } from '../store/MyStore'
+import { showMessage } from 'react-native-flash-message'
 
 function LoginAndSignInScreen({ navigation }) {
 
     const [isUser, setIsUser] = React.useState(false)
 
-    const getAccountInformation = async (user) => {
-        try {
-            const jsonValue = JSON.stringify(user);
-            await AsyncStorage.setItem('user', jsonValue);
-        } catch (e) {
-            console.error(e)
-        }
-    };
-
     useFocusEffect(
         React.useCallback(() => {
-            getTokenRegister()
+            getTokenAccess()
                 .then(value => {
-                    if (value !== null) {
+                    if (value) {
                         getAccount(value)
                             .then(req => {
                                 const user = req.data.metadata.user
-                                getAccountInformation(user)
+                                saveAccountInformation(user)
                                 setIsUser(true)
                             })
                             .catch(err => {
-                                console.error(err)
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: err,
+                                    type: "danger",
+                                });
                             })
                     } else {
                         setIsUser(false)
