@@ -23,6 +23,7 @@ import tran from "../imagess/transfer.png";
 import logout from "../imagess/logout.png";
 import { ScrollView } from "react-native-virtualized-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { ListItem } from "react-native-elements";
 
 function SettingScreen({ navigation }) {
 
@@ -36,25 +37,23 @@ function SettingScreen({ navigation }) {
         showsVerticalScrollIndicator={false}
       >
         {
-          options.map((item, index) => {
+          options.map((option, index) => {
             return (
-              <TouchableOpacity
-                key={index}
-                style={{
-                  height: 50,
-                  width: "100%",
-                  backgroundColor: WHITE,
-                  alignItems: "center",
-                  flexDirection: "row",
-                  borderBottomWidth: 0.2,
-                  paddingHorizontal: 15
-                }}
-              >
-                {item.icon}
-                <View style={{ flexDirection: "column" }}>
-                  <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 15 }}>{item.title}</Text>
-                </View>
-              </TouchableOpacity>
+              <>
+                <ListItem
+                  key={index}
+                  style={{
+                    width: "100%",
+                    borderTopWidth: 0.2,
+                    borderTopColor: "#cccccc"
+                  }}
+                >
+                  {option.icon}
+                  <ListItem.Content>
+                    <ListItem.Title>{option.title}</ListItem.Title>
+                  </ListItem.Content>
+                </ListItem>
+              </>
             )
           })
         }
