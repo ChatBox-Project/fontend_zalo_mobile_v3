@@ -10,6 +10,7 @@ import { showMessage } from 'react-native-flash-message';
 import { getTokenRegister, saveTokenAccess } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
 import { ETBA } from '../../aws/MyAWS'
+import { base64ToArrayBuffer, convertBase64ToBuffer } from '../../util/function/MyFunction';
 
 function AvatarScreen({ navigation, route }) {
 
@@ -22,10 +23,7 @@ function AvatarScreen({ navigation, route }) {
             allowsEditing: true,
             aspect: [4, 3],
             quality: 1,
-            base64: true
         });
-
-        // console.log(result);
 
         if (!result.canceled) {
             setImage(result.assets[0]);
@@ -35,44 +33,47 @@ function AvatarScreen({ navigation, route }) {
     function updateAccountInformationNew() {
         if (image) {
 
-            const params = {
-                Bucket: BUCKET,
-                Key: `image${Date.now().toString()}.jpg`,
-                Body: image.base64,
-                ContentType: image.mimeType
-            }
+            convertBase64ToBuffer(image.uri).then(buffer => {
 
-            ETBA.upload(params, async (err, data) => {
-                if (err) {
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: err,
-                        type: "danger",
-                    });
-                } else {
-                    console.log(data.Location)
-                    const newUser = {
-                        ...user,
-                        avatarUrl: data.Location,
-                        lastName: "Thiên Phú"
-                    }
-
-                    getTokenRegister()
-                        .then(token => {
-                            CreateProfile(token, newUser)
-                                .then(req => {
-                                    showMessage({
-                                        message: "Thông Báo !",
-                                        description: "Cập nhật thông tin thành công",
-                                        type: "success",
-                                    });
-                                    saveTokenAccess(token)
-                                        .then(req => {
-                                            navigation.push("Index")
-                                        })
-                                })
-                        })
+                const params = {
+                    Bucket: BUCKET,
+                    Key: `image${Date.now().toString()}.jpg`,
+                    Body: buffer,
+                    ContentType: image.mimeType
                 }
+
+                ETBA.upload(params, async (err, data) => {
+                    if (err) {
+                        showMessage({
+                            message: "Thông Báo !",
+                            description: err,
+                            type: "danger",
+                        });
+                    } else {
+
+                        const newUser = {
+                            ...user,
+                            avatarUrl: data.Location,
+                            lastName: "Thiên Phú"
+                        }
+
+                        getTokenRegister()
+                            .then(token => {
+                                CreateProfile(token, newUser)
+                                    .then(req => {
+                                        showMessage({
+                                            message: "Thông Báo !",
+                                            description: "Cập nhật thông tin thành công",
+                                            type: "success",
+                                        });
+                                        saveTokenAccess(token)
+                                            .then(req => {
+                                                navigation.push("Index")
+                                            })
+                                    })
+                            })
+                    }
+                })
             })
         }
     }
@@ -154,7 +155,9 @@ function AvatarScreen({ navigation, route }) {
                     buttonStyle={{
                         backgroundColor: BLUE
                     }}
-                    onPress={() => { updateAccountInformationNew() }}
+                    onPress={() => {
+                        updateAccountInformationNew()
+                    }}
                 />
             </View>
         </View>
