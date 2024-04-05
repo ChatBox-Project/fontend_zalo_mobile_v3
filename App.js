@@ -20,7 +20,6 @@ import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
 import ChatWindow from './util/chat_window/chat_window';
 import FlashMessage from 'react-native-flash-message';
-global.Buffer = require('buffer').Buffer;
 
 const Stack = createNativeStackNavigator();
 

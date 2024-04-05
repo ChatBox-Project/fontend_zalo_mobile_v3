@@ -20,6 +20,7 @@ function IndividualScreen({ navigation }) {
     React.useCallback(() => {
       getUser()
         .then(user => {
+          console.log(user)
           setUser(user)
         })
     }, [])
@@ -37,7 +38,7 @@ function IndividualScreen({ navigation }) {
         <Avatar
           size={60}
           rounded
-          source={{ uri: "https://randomuser.me/api/portraits/men/33.jpg" }}
+          source={{ uri: user.avatarUrl }}
         />
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Button, CheckBox, Input } from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
@@ -10,12 +10,13 @@ import { showMessage } from 'react-native-flash-message';
 import { getTokenRegister, saveTokenAccess } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
 import { ETBA } from '../../aws/MyAWS'
-import { base64ToArrayBuffer, convertBase64ToBuffer } from '../../util/function/MyFunction';
+import { convertBase64ToBuffer } from '../../util/function/MyFunction';
 
 function AvatarScreen({ navigation, route }) {
 
     const user = route.params.user
     const [image, setImage] = useState(null);
+    const [loading, setLoading] = React.useState(false)
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -31,6 +32,7 @@ function AvatarScreen({ navigation, route }) {
     };
 
     function updateAccountInformationNew() {
+        setLoading(true)
         if (image) {
 
             convertBase64ToBuffer(image.uri).then(buffer => {
@@ -46,9 +48,10 @@ function AvatarScreen({ navigation, route }) {
                     if (err) {
                         showMessage({
                             message: "Thông Báo !",
-                            description: err,
+                            description: err.message,
                             type: "danger",
                         });
+                        setLoading(false)
                     } else {
 
                         const newUser = {
@@ -68,6 +71,7 @@ function AvatarScreen({ navigation, route }) {
                                         });
                                         saveTokenAccess(token)
                                             .then(req => {
+                                                setLoading(false)
                                                 navigation.push("Index")
                                             })
                                     })
@@ -146,6 +150,7 @@ function AvatarScreen({ navigation, route }) {
 
             <View style={{ alignSelf: 'flex-end' }}>
                 <Button
+                    loading={loading}
                     title={'Tiếp tục'}
                     containerStyle={{
                         width: 100,

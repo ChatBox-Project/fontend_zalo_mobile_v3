@@ -1,4 +1,5 @@
 import * as FileSystem from 'expo-file-system';
+var Buffer = require('buffer/').Buffer
 
 async function convertBase64ToBuffer(uri) {
     const imageInfo = await FileSystem.getInfoAsync(uri);
