@@ -1,16 +1,17 @@
 import React, { useState } from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
-import { CreateProfile } from '../../api/SignInAPI';
+import { CreateProfile, getAccount } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { getTokenRegister, saveTokenAccess } from '../../store/MyStore';
+import { getTokenRegister, saveAccountInformation, saveTokenAccess } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
 import { ETBA } from '../../aws/MyAWS'
 import { convertBase64ToBuffer } from '../../util/function/MyFunction';
+import { Avatar } from "react-native-elements";
 
 function AvatarScreen({ navigation, route }) {
 
@@ -34,16 +35,13 @@ function AvatarScreen({ navigation, route }) {
     function updateAccountInformationNew() {
         setLoading(true)
         if (image) {
-
             convertBase64ToBuffer(image.uri).then(buffer => {
-
                 const params = {
                     Bucket: BUCKET,
                     Key: `image${Date.now().toString()}.jpg`,
                     Body: buffer,
                     ContentType: image.mimeType
                 }
-
                 ETBA.upload(params, async (err, data) => {
                     if (err) {
                         showMessage({
@@ -63,18 +61,45 @@ function AvatarScreen({ navigation, route }) {
                         getTokenRegister()
                             .then(token => {
                                 CreateProfile(token, newUser)
+                                getAccount(token)
                                     .then(req => {
+                                        try {
+                                            const user = req.data.metadata.user
+                                            saveAccountInformation(user)
+                                            saveTokenAccess(token)
+                                            showMessage({
+                                                message: "Thông Báo !",
+                                                description: "Cập nhật thông tin thành công",
+                                                type: "success",
+                                            });
+                                            setLoading(false)
+                                            navigation.push("Index")
+                                        } catch (error) {
+                                            showMessage({
+                                                message: "Thông Báo !",
+                                                description: "SERVER IS ERROR",
+                                                type: "danger",
+                                            });
+                                            setLoading(false)
+                                        }
+                                    })
+                                    .catch(err => {
                                         showMessage({
                                             message: "Thông Báo !",
-                                            description: "Cập nhật thông tin thành công",
-                                            type: "success",
+                                            description: err,
+                                            type: "danger",
                                         });
-                                        saveTokenAccess(token)
-                                            .then(req => {
-                                                setLoading(false)
-                                                navigation.push("Index")
-                                            })
+                                        setLoading(false)
+
                                     })
+                            }).catch(err => {
+                                console.log(err)
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: "GET TOKENREGISTER IS ERROR",
+                                    type: "danger",
+                                });
+                                setLoading(false)
                             })
                     }
                 })
@@ -130,13 +155,13 @@ function AvatarScreen({ navigation, route }) {
                         </View>
                     )
                     :
-                    <Image source={{ uri: image.uri }}
-                        style={{
-                            width: 120,
-                            height: 120,
-                            borderRadius: 60,
-                            marginBottom: 20,
+                    <Avatar
+                        size={130}
+                        rounded
+                        source={{ uri: image.uri }}
+                        containerStyle={{
                             marginTop: 60,
+                            marginBottom: 15
                         }}
                     />
             }
