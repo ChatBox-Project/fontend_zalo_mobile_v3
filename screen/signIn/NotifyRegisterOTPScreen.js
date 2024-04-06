@@ -5,6 +5,14 @@ import { BLUE } from '../colors/Colors';
 
 function NotifyRegisterOTPScreen({ navigation }) {
 
+    function rollBack() {
+        navigation.push("LoginAndSignIn")
+    }
+
+    function verifyOTP() {
+
+    }
+
     return (
         <View style={styles.container} >
             <View
@@ -28,6 +36,7 @@ function NotifyRegisterOTPScreen({ navigation }) {
                 }}
             >
                 <Button
+                    onPress={() => { rollBack() }}
                     title={"Quay lại"}
                     buttonStyle={{
                         backgroundColor: BLUE
