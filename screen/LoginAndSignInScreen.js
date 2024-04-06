@@ -26,7 +26,7 @@ function LoginAndSignInScreen({ navigation }) {
                             .catch(err => {
                                 showMessage({
                                     message: "Thông Báo !",
-                                    description: err,
+                                    description: "GET ACCOUNT IS ERROR",
                                     type: "danger",
                                 });
                                 setIsUser(false)
