@@ -2,15 +2,31 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Avatar } from "react-native-elements";
 import { BLUE } from '../colors/Colors';
+import { saveTokenRegister, saveUserRegister } from '../../store/MyStore';
+import { generateOTP } from '../../api/SignInAPI';
 
-function NotifyRegisterOTPScreen({ navigation }) {
+function NotifyRegisterOTPScreen({ navigation, route }) {
+
+    const data = route.params?.data
+    const [loading, setLoading] = React.useState(false)
 
     function rollBack() {
         navigation.push("LoginAndSignIn")
     }
 
     function verifyOTP() {
-
+        setLoading(true)
+        saveTokenRegister(data.token)
+        saveUserRegister(data.userRegister)
+        const phoneNumber = data.userRegister.phoneNumber
+        generateOTP({ phoneNumber }).then(req => {
+            // console.log(req)
+            navigation.push("OTPScreen")
+            setLoading(false)
+        }).catch(err => {
+            console.error(err)
+            setLoading(false)
+        })
     }
 
     return (
@@ -43,6 +59,8 @@ function NotifyRegisterOTPScreen({ navigation }) {
                     }}
                 />
                 <Button
+                    onPress={() => { verifyOTP() }}
+                    loading={loading}
                     title={"Xác thực OTP"}
                     buttonStyle={{
                         backgroundColor: "#2ecc71"

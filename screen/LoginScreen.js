@@ -36,8 +36,8 @@ function LoginScreen({ navigation }) {
         return checkPass
     }
 
-    function checkRegisterOTP() {
-        navigation.push("NotifyRegisterOTPScreen")
+    function checkRegisterOTP(data) {
+        navigation.push("NotifyRegisterOTPScreen", { data })
     }
 
     function checkAccount() {
@@ -47,7 +47,8 @@ function LoginScreen({ navigation }) {
             const token = req.data.metadata.token
             const verify = req.data.metadata.user.verified
             if (verify === false) {
-                checkRegisterOTP()
+                const userRegister = req.data.metadata.user
+                checkRegisterOTP({ token, userRegister })
                 setLoading(false)
                 ressetInput()
             } else {
