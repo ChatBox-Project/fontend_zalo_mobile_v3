@@ -3,7 +3,7 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { Login, getAccount } from '../api/SignInAPI';
-import { saveAccountInformation, saveTokenAccess } from '../store/MyStore';
+import { saveAccountInformation, saveTokenAccess, saveTokenRegister } from '../store/MyStore';
 
 function LoginScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = React.useState("")
@@ -36,6 +36,12 @@ function LoginScreen({ navigation }) {
         return checkPass
     }
 
+    function checkRegisterOTP(verify) {
+        if (verify === false) {
+            navigation.push("")
+        }
+    }
+
     function checkAccount() {
         setLoading(true)
         Login({ phoneNumber, password }).then(req => {
@@ -52,7 +58,7 @@ function LoginScreen({ navigation }) {
                 .catch(err => {
                     showMessage({
                         message: "Thông Báo !",
-                        description: err,
+                        description: "GET ACCOUNT IS ERROR",
                         type: "danger",
                     });
                 })
