@@ -62,37 +62,41 @@ function AvatarScreen({ navigation, route }) {
                             .then(token => {
                                 // console.log(token)
                                 CreateProfile(token, newUser)
-                                getAccount(token)
                                     .then(req => {
-                                        try {
-                                            const user = req.data.metadata.user
-                                            // console.log(user)
-                                            saveAccountInformation(user)
-                                            saveTokenAccess(token)
-                                            showMessage({
-                                                message: "Thông Báo !",
-                                                description: "Cập nhật thông tin thành công",
-                                                type: "success",
-                                            });
-                                            setLoading(false)
-                                            navigation.push("Index")
-                                        } catch (error) {
-                                            showMessage({
-                                                message: "Thông Báo !",
-                                                description: "SERVER IS ERROR",
-                                                type: "danger",
-                                            });
-                                            setLoading(false)
-                                        }
-                                    })
-                                    .catch(err => {
-                                        showMessage({
-                                            message: "Thông Báo !",
-                                            description: err,
-                                            type: "danger",
-                                        });
-                                        setLoading(false)
+                                        getAccount(token)
+                                            .then(req => {
+                                                try {
+                                                    const user = req.data.metadata.user
+                                                    // console.log(user)
+                                                    saveAccountInformation(user)
+                                                    saveTokenAccess(token)
+                                                    showMessage({
+                                                        message: "Thông Báo !",
+                                                        description: "Cập nhật thông tin thành công",
+                                                        type: "success",
+                                                    });
+                                                    setLoading(false)
+                                                    navigation.push("Index")
+                                                } catch (error) {
+                                                    showMessage({
+                                                        message: "Thông Báo !",
+                                                        description: "SERVER IS ERROR",
+                                                        type: "danger",
+                                                    });
+                                                    setLoading(false)
+                                                }
+                                            })
+                                            .catch(err => {
+                                                showMessage({
+                                                    message: "Thông Báo !",
+                                                    description: err,
+                                                    type: "danger",
+                                                });
+                                                setLoading(false)
+                                            })
 
+                                    }).catch(err => {
+                                        console.log(err)
                                     })
                             }).catch(err => {
                                 console.log(err)

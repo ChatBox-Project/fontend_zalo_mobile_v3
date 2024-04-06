@@ -42,7 +42,7 @@ function IndividualScreen({ navigation }) {
         />
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            {user.firstName}
+            {user?.firstName}
           </ListItem.Title>
           <ListItem.Subtitle style={{ color: "gray" }}>
             Xem trang cá nhân
