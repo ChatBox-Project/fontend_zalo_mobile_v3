@@ -38,7 +38,7 @@ function IndividualScreen({ navigation }) {
         <Avatar
           size={60}
           rounded
-          source={{ uri: user.avatarUrl }}
+          source={{ uri: user?.avatarUrl }}
         />
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>

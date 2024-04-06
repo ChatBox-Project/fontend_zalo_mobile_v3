@@ -48,6 +48,8 @@ function LoginScreen({ navigation }) {
             const verify = req.data.metadata.user.verified
             if (verify === false) {
                 checkRegisterOTP()
+                setLoading(false)
+                ressetInput()
             } else {
                 saveTokenAccess(token)
                 getAccount(token)

@@ -169,7 +169,7 @@ export default function App() {
           name="NotifyRegisterOTPScreen"
           component={NotifyRegisterOTPScreen}
           options={({ navigation, route }) => ({
-            headerTitle: "",
+            headerTitle: "Xác Thực Tài Khoản",
           })}
         />
       </Stack.Navigator>
