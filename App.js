@@ -20,6 +20,7 @@ import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
 import ChatWindow from './util/chat_window/chat_window';
 import FlashMessage from 'react-native-flash-message';
+import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -160,6 +161,13 @@ export default function App() {
         <Stack.Screen
           name="ChatWindow"
           component={ChatWindow}
+          options={({ navigation, route }) => ({
+            headerTitle: "",
+          })}
+        />
+        <Stack.Screen
+          name="NotifyRegisterOTPScreen"
+          component={NotifyRegisterOTPScreen}
           options={({ navigation, route }) => ({
             headerTitle: "",
           })}

@@ -36,32 +36,36 @@ function LoginScreen({ navigation }) {
         return checkPass
     }
 
-    function checkRegisterOTP(verify) {
-        if (verify === false) {
-            navigation.push("")
-        }
+    function checkRegisterOTP() {
+        navigation.push("NotifyRegisterOTPScreen")
     }
 
     function checkAccount() {
         setLoading(true)
         Login({ phoneNumber, password }).then(req => {
+            // console.log(req)
             const token = req.data.metadata.token
-            saveTokenAccess(token)
-            getAccount(token)
-                .then(req => {
-                    const user = req.data.metadata.user
-                    saveAccountInformation(user)
-                    navigation.push("Index")
-                    ressetInput()
-                    setLoading(false)
-                })
-                .catch(err => {
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "GET ACCOUNT IS ERROR",
-                        type: "danger",
-                    });
-                })
+            const verify = req.data.metadata.user.verified
+            if (verify === false) {
+                checkRegisterOTP()
+            } else {
+                saveTokenAccess(token)
+                getAccount(token)
+                    .then(req => {
+                        const user = req.data.metadata.user
+                        saveAccountInformation(user)
+                        navigation.push("Index")
+                        ressetInput()
+                        setLoading(false)
+                    })
+                    .catch(err => {
+                        showMessage({
+                            message: "Thông Báo !",
+                            description: "GET ACCOUNT IS ERROR",
+                            type: "danger",
+                        });
+                    })
+            }
         }).catch(error => {
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI HOẶC TÀI KHOẢN KHÔNG CHÍNH XÁC")
             ressetInput()
