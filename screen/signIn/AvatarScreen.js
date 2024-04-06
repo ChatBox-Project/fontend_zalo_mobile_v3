@@ -60,11 +60,13 @@ function AvatarScreen({ navigation, route }) {
 
                         getTokenRegister()
                             .then(token => {
+                                // console.log(token)
                                 CreateProfile(token, newUser)
                                 getAccount(token)
                                     .then(req => {
                                         try {
                                             const user = req.data.metadata.user
+                                            // console.log(user)
                                             saveAccountInformation(user)
                                             saveTokenAccess(token)
                                             showMessage({
