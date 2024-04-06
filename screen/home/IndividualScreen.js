@@ -20,7 +20,7 @@ function IndividualScreen({ navigation }) {
     React.useCallback(() => {
       getUser()
         .then(user => {
-          console.log(user)
+          // console.log(user)
           setUser(user)
         })
     }, [])

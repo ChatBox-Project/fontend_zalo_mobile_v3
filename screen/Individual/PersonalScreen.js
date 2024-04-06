@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar } from "react-native-elements";
+import { useFocusEffect } from "@react-navigation/native";
+import { getUser } from "../../store/MyStore";
 
 function PersonalScreen({ navigation }) {
 
@@ -19,6 +21,18 @@ function PersonalScreen({ navigation }) {
     { title: "Kỉ niệm năm xưa", image: require("../../images/clock.png") },
     { title: "Video của tôi", image: require("../../images/camera.png") },
   ])
+
+  const [user, setUser] = React.useState(null)
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getUser()
+        .then(user => {
+          // console.log(user)
+          setUser(user)
+        })
+    }, [])
+  );
 
 
   return (
@@ -44,10 +58,10 @@ function PersonalScreen({ navigation }) {
           <Avatar
             size={130}
             rounded
-            source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+            source={{ uri: user?.avatarUrl }}
             containerStyle={{ borderWidth: 4, borderColor: GRAY }}
           />
-          <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>Ngô Thiên Phú</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.firstName}</Text>
         </View>
       </View>
       <View style={{ height: 80 }}>
