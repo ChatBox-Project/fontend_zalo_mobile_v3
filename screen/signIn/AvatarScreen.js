@@ -5,9 +5,9 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Icon1 from 'react-native-vector-icons/FontAwesome5';
 import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
-import { CreateProfile, getAccount } from '../../api/SignInAPI';
+import { GetUserInformation, UpdateAllProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { getTokenRegister, saveAccountInformation, saveTokenAccess } from '../../store/MyStore';
+import { getTokenRegister, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
 import { ETBA } from '../../aws/MyAWS'
 import { convertBase64ToBuffer } from '../../util/function/MyFunction';
@@ -16,8 +16,7 @@ import { Avatar } from "react-native-elements";
 function AvatarScreen({ navigation, route }) {
 
     const profile = route.params.profile
-
-    console.log(profile)
+    // console.log(profile)
     const [image, setImage] = useState(null);
     const [loading, setLoading] = React.useState(false)
 
@@ -34,83 +33,77 @@ function AvatarScreen({ navigation, route }) {
         }
     };
 
+
+    const updateProfile = (data) => {
+        const newProfile = {
+            ...profile,
+            avatarUrl: data.Location,
+        }
+
+        return newProfile
+    }
+
+    const createParams = (buffer) => {
+        const params = {
+            Bucket: BUCKET,
+            Key: `image${Date.now().toString()}.jpg`,
+            Body: buffer,
+            ContentType: image.mimeType
+        }
+
+        return params
+    }
+
+    const upateImageToS3 = async (params) => {
+        return await ETBA.upload(params).promise()
+    }
+
     function updateAccountInformationNew() {
         setLoading(true)
         if (image) {
             convertBase64ToBuffer(image.uri).then(buffer => {
-                const params = {
-                    Bucket: BUCKET,
-                    Key: `image${Date.now().toString()}.jpg`,
-                    Body: buffer,
-                    ContentType: image.mimeType
-                }
-                ETBA.upload(params, async (err, data) => {
-                    if (err) {
-                        showMessage({
-                            message: "Thông Báo !",
-                            description: err.message,
-                            type: "danger",
-                        });
-                        setLoading(false)
-                    } else {
 
-                        const newUser = {
-                            ...user,
-                            avatarUrl: data.Location,
-                            lastName: "Thiên Phú"
-                        }
-
+                const params = createParams(buffer)
+                upateImageToS3(params)
+                    .then(data => {
                         getTokenRegister()
                             .then(token => {
-                                // console.log(token)
-                                CreateProfile(token, newUser)
+                                const newProfile = updateProfile(data)
+                                // console.log(newProfile)
+                                UpdateAllProfile(token, newProfile)
                                     .then(req => {
-                                        getAccount(token)
-                                            .then(req => {
-                                                try {
-                                                    const user = req.data.metadata.user
-                                                    // console.log(user)
-                                                    saveAccountInformation(user)
-                                                    saveTokenAccess(token)
-                                                    showMessage({
-                                                        message: "Thông Báo !",
-                                                        description: "Cập nhật thông tin thành công",
-                                                        type: "success",
-                                                    });
-                                                    setLoading(false)
-                                                    navigation.push("Index")
-                                                } catch (error) {
-                                                    showMessage({
-                                                        message: "Thông Báo !",
-                                                        description: "SERVER IS ERROR",
-                                                        type: "danger",
-                                                    });
-                                                    setLoading(false)
-                                                }
-                                            })
-                                            .catch(err => {
+                                        GetUserInformation(token)
+                                            .then(userInfromation => {
+                                                // console.log(req)
+                                                saveUserInformation(userInfromation)
+                                                saveTokenAccess(token)
+                                                setLoading(false)
                                                 showMessage({
                                                     message: "Thông Báo !",
-                                                    description: err,
+                                                    description: "Cập nhật thông tin thành công",
+                                                    type: "success",
+                                                });
+                                                navigation.push("Index")
+                                            }).catch(err => {
+                                                showMessage({
+                                                    message: "Thông Báo !",
+                                                    description: err.response.data.message,
                                                     type: "danger",
                                                 });
                                                 setLoading(false)
                                             })
-
-                                    }).catch(err => {
-                                        console.log(err)
+                                    }
+                                    ).catch(err => {
+                                        showMessage({
+                                            message: "Thông Báo !",
+                                            description: err.response.data.message,
+                                            type: "danger",
+                                        });
+                                        setLoading(false)
                                     })
-                            }).catch(err => {
-                                console.log(err)
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "GET TOKENREGISTER IS ERROR",
-                                    type: "danger",
-                                });
-                                setLoading(false)
                             })
-                    }
-                })
+
+                    })
             })
         }
     }
