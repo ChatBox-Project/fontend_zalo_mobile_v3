@@ -8,8 +8,9 @@ import { getUserRegister } from '../../store/MyStore';
 import { showMessage } from 'react-native-flash-message';
 
 
-function OTPScreen({ navigation }) {
+function OTPScreen({ navigation, route }) {
 
+    const phoneNumber = route.params?.phoneNumber
     const [otp, setOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
     const [loading, setLoading] = React.useState(false)
@@ -28,66 +29,60 @@ function OTPScreen({ navigation }) {
 
 
     function ressetOTP() {
-        getUserRegister().then(req => {
-            const phoneNumber = req.phoneNumber
-            if (phoneNumber) {
-                generateOTP({ phoneNumber }).then(req => {
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "Đã gửi lại mã OTP",
-                        type: "info",
-                    });
-                    setTime(30)
-                }).catch(err => {
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: err,
-                        type: "danger",
-                    });
-                })
-            }
-        }).catch(err => {
+        if (phoneNumber) {
+            generateOTP({ phoneNumber }).then(req => {
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Đã gửi lại mã OTP",
+                    type: "info",
+                });
+                setTime(30)
+            }).catch(err => {
+                showMessage({
+                    message: "Thông Báo !",
+                    description: err,
+                    type: "danger",
+                });
+            })
+        } else {
             showMessage({
                 message: "Thông Báo !",
-                description: err,
+                description: "THÔNG TIN LỖI VUI LÒNG THỬ LẠI SAU",
                 type: "danger",
             });
-        })
+        }
     }
 
     const runVerifyOTP = async () => {
         setLoading(true)
-        getUserRegister().then(req => {
-            const phoneNumber = req.phoneNumber
-            if (phoneNumber) {
-                verifyOTP({ phoneNumber, otp }).then(req => {
+        if (phoneNumber) {
+            verifyOTP({ phoneNumber, otp }).then(req => {
 
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "Xác thực thành công",
-                        type: "success",
-                    });
-                    navigation.push("SignIn")
-                    setLoading(false)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Xác thực thành công",
+                    type: "success",
+                });
+                navigation.push("SignIn")
+                setLoading(false)
 
-                }).catch(err => {
-
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "Xác thực thất bại",
-                        type: "danger",
-                    });
-                    setLoading(false)
-                    setOTP("")
-                })
-            }
-        }).catch(err => {
+            }).catch(err => {
+                const errorMessage = err.response.data.message
+                showMessage({
+                    message: "Thông Báo !",
+                    description: errorMessage,
+                    type: "danger",
+                });
+                setLoading(false)
+                setOTP("")
+            })
+        } else {
             showMessage({
                 message: "Thông Báo !",
-                description: err,
+                description: "THÔNG TIN LỖI VUI LÒNG THỬ LẠI SAU",
                 type: "danger",
             });
-        })
+        }
     };
 
 

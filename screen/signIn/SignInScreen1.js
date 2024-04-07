@@ -67,11 +67,11 @@ function SignInScreen1({ navigation }) {
                 setLoading(true)
                 Register({ phoneNumber, password }).then((rep) => {
                     // console.log(rep.data.metadata.token)
+                    // console.log(rep)
                     saveTokenRegister(rep.data.metadata.token)
-                    saveUserRegister(rep.data.metadata.user)
                     generateOTP({ phoneNumber }).then(req => {
                         // console.log(req)
-                        navigation.push("OTPScreen")
+                        navigation.push("OTPScreen", { phoneNumber })
                         ressetTextInput()
                         setLoading(false)
                     }).catch(err => {
@@ -79,12 +79,14 @@ function SignInScreen1({ navigation }) {
                         setLoading(false)
                     })
                 }).catch((error) => {
-                    let status = error.response.data.status;
-                    if (status === 400) {
-                        setErrorPhoneNumber("SỐ ĐIỆN THOẠI ĐÃ ĐƯỢC ĐĂNG KÍ")
-                        ressetTextInput()
-                        setLoading(false)
-                    }
+                    const messageError = error.response.data.message
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: messageError,
+                        type: "danger",
+                    });
+                    ressetTextInput()
+                    setLoading(false)
                 })
             }
 
