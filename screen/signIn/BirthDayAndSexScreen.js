@@ -7,7 +7,8 @@ import { BLUE, GRAY } from '../colors/Colors';
 
 function BirthDayAndSexScreen({ navigation, route }) {
 
-    let user = route.params.user
+    let profile = route.params.profile
+    // console.log(profile)
     const [gender, setGender] = useState(0)
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false)
@@ -23,6 +24,14 @@ function BirthDayAndSexScreen({ navigation, route }) {
         setMode(modeToShow)
     }
 
+    const updateProfile = () => {
+        const newProfile = {
+            ...profile,
+            gender: (gender === 0) ? "female" : (gender === 1) ? "male" : "other",
+            birth: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+        }
+        return newProfile
+    }
 
     return (
         <View style={styles.container}>
@@ -98,12 +107,8 @@ function BirthDayAndSexScreen({ navigation, route }) {
                         backgroundColor: BLUE
                     }}
                     onPress={() => {
-                        let newUser = {
-                            ...user,
-                            gender: (gender === 0) ? "female" : (gender === 1) ? "male" : "other",
-                            birth: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
-                        }
-                        navigation.push("AvatarScreen", { user: newUser })
+                        const newProfile = updateProfile()
+                        navigation.push("AvatarScreen", { profile: newProfile })
                     }}
                 />
             </View>

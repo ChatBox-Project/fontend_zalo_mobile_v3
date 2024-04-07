@@ -6,6 +6,7 @@ const apiVerifyOTP = "http://10.0.2.2:3333/api/otp/verify"
 const apiGenerateOTP = "http://10.0.2.2:3333/api/otp/generate"
 const createProfile = "http://10.0.2.2:3333/api/users/create"
 const GetAccount = "http://10.0.2.2:3333/api/users/getAccount"
+const updateUser = "http://10.0.2.2:3333/api/users"
 
 function Register(account) {
     return axios.post(apiRegister, account)
@@ -31,12 +32,20 @@ function CreateProfile(token, user) {
     })
 }
 
-function getAccount(tokenAccess) {
+function getAccount(token) {
     return axios.get(GetAccount, {
         headers: {
-            token: tokenAccess
+            token
         }
     })
 }
 
-export { Register, Login, generateOTP, verifyOTP, CreateProfile, getAccount }
+function UpdateUser(token, data) {
+    return axios.patch(updateUser, data, {
+        headers: {
+            token
+        }
+    })
+}
+
+export { Register, Login, generateOTP, verifyOTP, CreateProfile, getAccount, UpdateUser }

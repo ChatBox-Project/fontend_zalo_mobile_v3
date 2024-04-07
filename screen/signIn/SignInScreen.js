@@ -2,30 +2,29 @@ import React from 'react'
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE } from '../colors/Colors';
+import { showMessage } from 'react-native-flash-message';
 
 function SignInScreen({ navigation }) {
 
-    const [firstName, setFirstName] = React.useState("")
+    const [name, setName] = React.useState("")
     const [errorName, setErrorName] = React.useState("")
+    const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{2,40}$/
 
     function validate() {
-
         let checkPass = true;
-        const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{2,40}$/
 
-        if (!firstName) {
+        if (!name) {
             checkPass = false
             setErrorName("VUI LÒNG NHẬP TRƯỜNG NÀY")
-        } else if (!firstName.match(regexName)) {
+        } else if (!name.match(regexName)) {
             checkPass = false
             setErrorName("HỌ TÊN PHẢI TỪ 4-20 KÝ TỰ VÀ KHÔNG CHỨA KÍ TỰ ĐẶC BIỆT HOẶC SỐ")
         }
 
         if (checkPass) {
-            navigation.push("BirthDayAndSexScreen", { user: { firstName } })
+            navigation.push("BirthDayAndSexScreen", { profile: { name } })
         }
     }
-
     return (
         <View style={styles.container}>
             <View style={{ width: "95%", marginTop: 15, marginLeft: 10 }}>
@@ -33,8 +32,8 @@ function SignInScreen({ navigation }) {
                 <Input
                     placeholder='Gồm 2-40 ký tự'
                     inputStyle={{ fontSize: 16 }}
-                    value={firstName}
-                    onChangeText={setFirstName}
+                    value={name}
+                    onChangeText={setName}
                     onChange={() => {
                         if (errorName) {
                             setErrorName("")
