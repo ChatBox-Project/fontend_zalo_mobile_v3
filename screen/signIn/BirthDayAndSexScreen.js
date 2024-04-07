@@ -13,6 +13,23 @@ function BirthDayAndSexScreen({ navigation, route }) {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false)
     const [mode, setMode] = useState('date')
+    const [typeSex, setTypeSex] = React.useState([
+        {
+            title: "Nữ",
+            icon: <Icon name='female' color={"pink"} size={25} onPress={() => { setGender(0) }} />,
+            value: 0
+        },
+        {
+            title: "Nam",
+            icon: <Icon name='male' color={BLUE} size={25} onPress={() => { setGender(1) }} />,
+            value: 1
+        },
+        {
+            title: "Khác",
+            icon: <Icon name='male-female' color={"yellow"} size={25} onPress={() => { setGender(2) }} />,
+            value: 2
+        }
+    ])
 
     const onChange = (e, selectedDate) => {
         setShow(false)
@@ -41,24 +58,18 @@ function BirthDayAndSexScreen({ navigation, route }) {
             <View style={{ width: "100%", padding: 10, borderBottomWidth: 10, borderBottomColor: "rgba(244, 244, 244, 1)", height: 150 }}>
                 <Text style={{ fontWeight: '600', fontSize: 16 }}>Giới tính</Text>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 40 }}>
-                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <CheckBox title={"Nữ"} checked={gender === 0 ? true : false} size={18} onPress={() => { setGender(0) }} />
-                            <Icon name='female' color={"pink"} size={25} onPress={() => { setGender(0) }} />
-                        </View>
-                    </View>
-                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <CheckBox title={"Nam"} checked={gender === 1 ? true : false} size={18} onPress={() => { setGender(1) }} />
-                            <Icon name='male' color={BLUE} size={25} onPress={() => { setGender(1) }} />
-                        </View>
-                    </View>
-                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                            <CheckBox title={"Khác"} checked={gender === 2 ? true : false} size={18} onPress={() => { setGender(2) }} />
-                            <Icon name='male-female' color={"yellow"} size={25} onPress={() => { setGender(2) }} />
-                        </View>
-                    </View>
+                    {
+                        typeSex.map((sex, index) => {
+                            return (
+                                <View key={index} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                        <CheckBox title={sex.title} checked={gender === sex.value ? true : false} size={18} onPress={() => { setGender(sex.value) }} />
+                                        {sex.icon}
+                                    </View>
+                                </View>
+                            )
+                        })
+                    }
                 </View>
             </View>
             <View style={{ width: "100%", padding: 10, height: 200 }}>

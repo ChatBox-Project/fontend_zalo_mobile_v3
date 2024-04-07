@@ -15,7 +15,9 @@ import { Avatar } from "react-native-elements";
 
 function AvatarScreen({ navigation, route }) {
 
-    const user = route.params.user
+    const profile = route.params.profile
+
+    console.log(profile)
     const [image, setImage] = useState(null);
     const [loading, setLoading] = React.useState(false)
 
