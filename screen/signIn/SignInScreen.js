@@ -8,7 +8,7 @@ function SignInScreen({ navigation }) {
 
     const [name, setName] = React.useState("")
     const [errorName, setErrorName] = React.useState("")
-    const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{2,40}$/
+    const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{6,40}$/
 
     function validate() {
         let checkPass = true;
@@ -18,7 +18,7 @@ function SignInScreen({ navigation }) {
             setErrorName("VUI LÒNG NHẬP TRƯỜNG NÀY")
         } else if (!name.match(regexName)) {
             checkPass = false
-            setErrorName("HỌ TÊN PHẢI TỪ 4-20 KÝ TỰ VÀ KHÔNG CHỨA KÍ TỰ ĐẶC BIỆT HOẶC SỐ")
+            setErrorName("HỌ TÊN PHẢI TỪ 6-20 KÝ TỰ VÀ KHÔNG CHỨA KÍ TỰ ĐẶC BIỆT HOẶC SỐ")
         }
 
         if (checkPass) {

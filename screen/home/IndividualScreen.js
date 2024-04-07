@@ -5,7 +5,7 @@ import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 import { useFocusEffect } from "@react-navigation/native";
-import { getUser } from "../../store/MyStore";
+import { getUserInformation } from "../../store/MyStore";
 
 function IndividualScreen({ navigation }) {
 
@@ -18,9 +18,8 @@ function IndividualScreen({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      getUser()
+      getUserInformation()
         .then(user => {
-          // console.log(user)
           setUser(user)
         })
     }, [])
@@ -42,7 +41,7 @@ function IndividualScreen({ navigation }) {
         />
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            {user?.firstName}
+            {user?.name}
           </ListItem.Title>
           <ListItem.Subtitle style={{ color: "gray" }}>
             Xem trang cá nhân

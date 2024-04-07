@@ -10,7 +10,7 @@ import {
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
-import { getUser } from "../../store/MyStore";
+import { getUserInformation } from "../../store/MyStore";
 
 function PersonalScreen({ navigation }) {
 
@@ -26,9 +26,8 @@ function PersonalScreen({ navigation }) {
 
   useFocusEffect(
     React.useCallback(() => {
-      getUser()
+      getUserInformation()
         .then(user => {
-          // console.log(user)
           setUser(user)
         })
     }, [])
@@ -61,7 +60,7 @@ function PersonalScreen({ navigation }) {
             source={{ uri: user?.avatarUrl }}
             containerStyle={{ borderWidth: 4, borderColor: GRAY }}
           />
-          <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.firstName}</Text>
+          <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.name}</Text>
         </View>
       </View>
       <View style={{ height: 80 }}>

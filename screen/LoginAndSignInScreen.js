@@ -4,8 +4,8 @@ import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
 import { BLUE, GRAY } from './colors/Colors'
 import { useFocusEffect } from '@react-navigation/native'
-import { getAccount } from '../api/SignInAPI'
-import { getTokenAccess, saveAccountInformation } from '../store/MyStore'
+import { GetUserInformation } from '../api/SignInAPI'
+import { getTokenAccess, saveUserInformation } from '../store/MyStore'
 import { showMessage } from 'react-native-flash-message'
 
 function LoginAndSignInScreen({ navigation }) {
@@ -15,20 +15,16 @@ function LoginAndSignInScreen({ navigation }) {
     useFocusEffect(
         React.useCallback(() => {
             getTokenAccess()
-                .then(value => {
-                    if (value !== undefined) {
-                        getAccount(value)
+                .then(token => {
+                    if (token !== undefined) {
+                        GetUserInformation(token)
                             .then(req => {
-                                const user = req.data.metadata.user
-                                saveAccountInformation(user)
+                                const user = req?.data?.metadata?.user
+                                // console.log(user)
+                                saveUserInformation(user)
                                 setIsUser(true)
                             })
                             .catch(err => {
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "GET ACCOUNT IS ERROR",
-                                    type: "danger",
-                                });
                                 setIsUser(false)
                             })
                     } else {

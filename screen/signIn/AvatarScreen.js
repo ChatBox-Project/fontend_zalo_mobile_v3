@@ -73,9 +73,10 @@ function AvatarScreen({ navigation, route }) {
                                 UpdateAllProfile(token, newProfile)
                                     .then(req => {
                                         GetUserInformation(token)
-                                            .then(userInfromation => {
+                                            .then(req => {
                                                 // console.log(req)
-                                                saveUserInformation(userInfromation)
+                                                const user = req?.data?.metadata?.user
+                                                saveUserInformation(user)
                                                 saveTokenAccess(token)
                                                 setLoading(false)
                                                 showMessage({
