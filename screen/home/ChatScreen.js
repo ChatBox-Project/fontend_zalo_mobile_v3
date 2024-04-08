@@ -1,10 +1,29 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ChatSingle from '../../util/chat_single/ChatSingle';
+import { getTokenAccess } from '../../store/MyStore';
+import { GetAllChatBox } from '../../api/ChatBoxAPI';
 
 function ChatScreen({ navigation }) {
 
-    const [chats, setChats] = React.useState([1])
+    const [chats, setChats] = React.useState([])
+
+    React.useEffect(() => {
+        getTokenAccess()
+            .then(tokenAccess => {
+                GetAllChatBox(tokenAccess)
+                    .then(req => {
+                        // console.log(req)
+                        const chatBox = req.data.metadata.chatBox
+                        setChats(chatBox)
+                    }).catch(err => {
+                        console.error(err)
+                    })
+            }).catch(err => {
+                console.error(err)
+            })
+    }, [])
+
 
     return (
         <View style={styles.container} >
