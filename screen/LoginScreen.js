@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login, GetAccountInformation } from '../api/SignInAPI';
-import { saveAccountInformation, saveTokenAccess } from '../store/MyStore';
+import { Login, GetAccountInformation, GetUserInformation } from '../api/SignInAPI';
+import { saveUserInformation, saveTokenAccess } from '../store/MyStore';
+import { showMessage } from 'react-native-flash-message';
 
 function LoginScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = React.useState("")
@@ -57,21 +58,23 @@ function LoginScreen({ navigation }) {
                         setLoading(false)
                         ressetInput()
                     } else {
-                        saveTokenAccess(token)
-                        getAccount(token)
+                        GetUserInformation(token)
                             .then(req => {
                                 const user = req.data.metadata.user
-                                saveAccountInformation(user)
+                                saveUserInformation(user)
+                                saveTokenAccess(token)
                                 navigation.push("Index")
                                 ressetInput()
                                 setLoading(false)
                             })
                             .catch(err => {
+                                // console.log(err)
                                 showMessage({
                                     message: "Thông Báo !",
                                     description: "GET ACCOUNT IS ERROR",
                                     type: "danger",
                                 });
+                                setLoading(false)
                             })
                     }
                 }).catch(err => {
