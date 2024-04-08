@@ -3,24 +3,45 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Input, Button } from 'react-native-elements'
 import { regexPhoneNumber } from '../regex/MyRegex';
 import { BLUE, GRAY } from './colors/Colors';
+import { generateOTP } from '../api/SignInAPI';
 
 function ForgotPassWordScreen({ navigation }) {
 
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [errorMessage, setErrorMessage] = React.useState("")
+    const [loading, setLoading] = React.useState(false)
 
     function checkValidatePhoneNumber() {
 
+        let check = true
+
         if (!phoneNumber) {
             setErrorMessage("VUI LÒNG NHẬP TRƯỜNG NÀY")
+            check = false
         } else {
-            if (phoneNumber.match(regexPhoneNumber)) {
-                setErrorMessage("ok")
-            } else {
+            if (!phoneNumber.match(regexPhoneNumber)) {
                 setErrorMessage("SỐ ĐIỆN THOẠI KHÔNG HỢP LỆ")
+                check = false
             }
         }
 
+        return check
+    }
+
+    function verifyOTP() {
+        setLoading(true)
+        if (checkValidatePhoneNumber()) {
+            generateOTP({ phoneNumber }).then(req => {
+                // console.log(req)
+                navigation.push("OTPScreen", { phoneNumber, type: 2 })
+                setLoading(false)
+            }).catch(err => {
+                console.error(err)
+                setLoading(false)
+            })
+        } else {
+            setLoading(false)
+        }
     }
 
     return (
@@ -43,8 +64,9 @@ function ForgotPassWordScreen({ navigation }) {
                     onChange={() => { setErrorMessage("") }}
                 />
                 <Button
+                    loading={loading}
                     title={"Xác thực"}
-                    onPress={() => { checkValidatePhoneNumber() }}
+                    onPress={() => { verifyOTP() }}
                     buttonStyle={{
                         alignSelf: 'flex-end',
                         backgroundColor: BLUE

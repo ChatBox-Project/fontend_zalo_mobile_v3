@@ -66,6 +66,8 @@ function OTPScreen({ navigation, route }) {
                 });
                 if (type === 1) {
                     navigation.push("SignIn")
+                } else if (type === 2) {
+                    navigation.push("ChangePassWordScreen", { phoneNumber })
                 }
                 setLoading(false)
 
@@ -109,7 +111,7 @@ function OTPScreen({ navigation, route }) {
                 }}>
                 <Icon name='phone-volume' size={30} color={BLUE} />
             </View>
-            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số (+84) 9999 9999</Text>
+            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số {phoneNumber}</Text>
             <Text>Vui lòng nhập mã xác nhận</Text>
             <View style={{ width: "35%", marginTop: 15 }}>
                 <Input

@@ -22,6 +22,7 @@ import ChatWindow from './util/chat_window/chat_window';
 import FlashMessage from 'react-native-flash-message';
 import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
 import ForgotPasswordScreen from './screen/ForgotPassWordScreen';
+import ChangePassWordScreen from './screen/ChangePassWordScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -38,17 +39,24 @@ export default function App() {
         }}
       >
         <Stack.Screen
-          name="ForgotPasswordScreen"
-          component={ForgotPasswordScreen}
-          options={({ navigation, route }) => ({
-            headerTitle: "Quên mật khẩu"
-          })}
-        />
-        <Stack.Screen
           name="LoginAndSignIn"
           component={LoginAndSignInScreen}
           options={({ navigation, route }) => ({
             headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="ChangePassWordScreen"
+          component={ChangePassWordScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Đổi mật khẩu"
+          })}
+        />
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Quên mật khẩu"
           })}
         />
         <Stack.Screen
