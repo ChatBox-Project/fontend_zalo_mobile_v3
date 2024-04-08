@@ -8,6 +8,7 @@ import { generateOTP } from '../../api/SignInAPI';
 function NotifyRegisterOTPScreen({ navigation, route }) {
 
     const data = route.params?.data
+    console.log(data)
     const [loading, setLoading] = React.useState(false)
 
     function rollBack() {
@@ -17,11 +18,12 @@ function NotifyRegisterOTPScreen({ navigation, route }) {
     function verifyOTP() {
         setLoading(true)
         saveTokenRegister(data.token)
-        saveUserRegister(data.userRegister)
-        const phoneNumber = data.userRegister.phoneNumber
+        saveUserRegister(data.accountRegister)
+        const phoneNumber = data.accountRegister.phoneNumber
+        // console.log(phoneNumber)
         generateOTP({ phoneNumber }).then(req => {
             // console.log(req)
-            navigation.push("OTPScreen")
+            navigation.push("OTPScreen", { phoneNumber, type: 1 })
             setLoading(false)
         }).catch(err => {
             console.error(err)

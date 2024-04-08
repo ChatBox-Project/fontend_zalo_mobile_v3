@@ -10,6 +10,8 @@ import { showMessage } from 'react-native-flash-message';
 function OTPScreen({ navigation, route }) {
 
     const phoneNumber = route.params?.phoneNumber
+    const type = route.params?.type
+    console.log(type)
     const [otp, setOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
     const [loading, setLoading] = React.useState(false)
@@ -62,7 +64,9 @@ function OTPScreen({ navigation, route }) {
                     description: "Xác thực thành công",
                     type: "success",
                 });
-                navigation.push("SignIn")
+                if (type === 1) {
+                    navigation.push("SignIn")
+                }
                 setLoading(false)
 
             }).catch(err => {

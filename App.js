@@ -30,7 +30,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="ForgotPasswordScreen"
+        initialRouteName="LoginAndSignIn"
         screenOptions={{
           headerStyle: { backgroundColor: BLUE },
           headerTitleStyle: { color: WHITE },

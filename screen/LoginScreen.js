@@ -2,8 +2,8 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login, getAccount } from '../api/SignInAPI';
-import { saveAccountInformation, saveTokenAccess, saveTokenRegister } from '../store/MyStore';
+import { Login, GetAccountInformation } from '../api/SignInAPI';
+import { saveAccountInformation, saveTokenAccess } from '../store/MyStore';
 
 function LoginScreen({ navigation }) {
     const [phoneNumber, setPhoneNumber] = React.useState("")
@@ -37,6 +37,7 @@ function LoginScreen({ navigation }) {
     }
 
     function checkRegisterOTP(data) {
+        // console.log(data)
         navigation.push("NotifyRegisterOTPScreen", { data })
     }
 
@@ -45,32 +46,39 @@ function LoginScreen({ navigation }) {
         Login({ phoneNumber, password }).then(req => {
             // console.log(req)
             const token = req.data.metadata.token
-            const verify = req.data.metadata.user.verified
-            if (verify === false) {
-                const userRegister = req.data.metadata.user
-                // console.log(userRegister)
-                checkRegisterOTP({ token, userRegister })
-                setLoading(false)
-                ressetInput()
-            } else {
-                saveTokenAccess(token)
-                getAccount(token)
-                    .then(req => {
-                        const user = req.data.metadata.user
-                        saveAccountInformation(user)
-                        navigation.push("Index")
-                        ressetInput()
+            GetAccountInformation(token)
+                .then(accountInformation => {
+                    // console.log(accountInformation)
+                    const verify = accountInformation.data.metadata.account.verified
+                    if (verify === false) {
+                        const accountRegister = accountInformation.data.metadata.account
+                        // console.log(accountRegister)
+                        checkRegisterOTP({ token, accountRegister })
                         setLoading(false)
-                    })
-                    .catch(err => {
-                        showMessage({
-                            message: "Thông Báo !",
-                            description: "GET ACCOUNT IS ERROR",
-                            type: "danger",
-                        });
-                    })
-            }
+                        ressetInput()
+                    } else {
+                        saveTokenAccess(token)
+                        getAccount(token)
+                            .then(req => {
+                                const user = req.data.metadata.user
+                                saveAccountInformation(user)
+                                navigation.push("Index")
+                                ressetInput()
+                                setLoading(false)
+                            })
+                            .catch(err => {
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: "GET ACCOUNT IS ERROR",
+                                    type: "danger",
+                                });
+                            })
+                    }
+                }).catch(err => {
+                    console.log(err)
+                })
         }).catch(error => {
+            console.log(error)
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI HOẶC TÀI KHOẢN KHÔNG CHÍNH XÁC")
             ressetInput()
             setLoading(false)

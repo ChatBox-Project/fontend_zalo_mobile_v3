@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Input, Button } from 'react-native-elements'
 import { regexPhoneNumber } from '../regex/MyRegex';
-import { showMessage } from 'react-native-flash-message';
 import { BLUE, GRAY } from './colors/Colors';
 
 function ForgotPassWordScreen({ navigation }) {

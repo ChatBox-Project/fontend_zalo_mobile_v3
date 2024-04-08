@@ -5,7 +5,7 @@ const apiLogin = "http://10.0.2.2:3333/api/auth/login"
 const apiVerifyOTP = "http://10.0.2.2:3333/api/otp/verify"
 const apiGenerateOTP = "http://10.0.2.2:3333/api/otp/generate"
 const updateAllProfile = "http://10.0.2.2:3333/api/users"
-const getAccountInformation = "http://10.0.2.2:3333/api/users/getAccount"
+const getAccountInformation = "http://10.0.2.2:3333/api/account"
 const updateUser = "http://10.0.2.2:3333/api/users"
 const getUserInformation = "http://10.0.2.2:3333/api/users"
 

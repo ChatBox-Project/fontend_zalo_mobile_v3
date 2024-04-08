@@ -71,7 +71,7 @@ function SignInScreen1({ navigation }) {
                     saveTokenRegister(rep.data.metadata.token)
                     generateOTP({ phoneNumber }).then(req => {
                         // console.log(req)
-                        navigation.push("OTPScreen", { phoneNumber })
+                        navigation.push("OTPScreen", { phoneNumber, type: 1 })
                         ressetTextInput()
                         setLoading(false)
                     }).catch(err => {
