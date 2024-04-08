@@ -21,6 +21,7 @@ import AddFriend from './screen/phonebook/AddFriendScreen';
 import ChatWindow from './util/chat_window/chat_window';
 import FlashMessage from 'react-native-flash-message';
 import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
+import ForgotPasswordScreen from './screen/ForgotPassWordScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,13 +30,20 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator
-        initialRouteName="LoginAndSignIn"
+        initialRouteName="ForgotPasswordScreen"
         screenOptions={{
           headerStyle: { backgroundColor: BLUE },
           headerTitleStyle: { color: WHITE },
           headerTintColor: WHITE,
         }}
       >
+        <Stack.Screen
+          name="ForgotPasswordScreen"
+          component={ForgotPasswordScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Quên mật khẩu"
+          })}
+        />
         <Stack.Screen
           name="LoginAndSignIn"
           component={LoginAndSignInScreen}
