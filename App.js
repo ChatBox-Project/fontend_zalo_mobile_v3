@@ -23,6 +23,7 @@ import FlashMessage from 'react-native-flash-message';
 import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
 import ForgotPasswordScreen from './screen/ForgotPassWordScreen';
 import ChangePassWordScreen from './screen/ChangePassWordScreen';
+import ChangePasswordScreenAfterLogin from './screen/home/ChangePasswordScreenAfterLogin';
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,13 @@ export default function App() {
           component={LoginAndSignInScreen}
           options={({ navigation, route }) => ({
             headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="ChangePasswordScreenAfterLogin"
+          component={ChangePasswordScreenAfterLogin}
+          options={({ navigation, route }) => ({
+            headerTitle: "Đổi mật khẩu"
           })}
         />
         <Stack.Screen

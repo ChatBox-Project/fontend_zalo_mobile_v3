@@ -9,6 +9,7 @@ const getAccountInformation = "http://10.0.2.2:3333/api/account"
 const updateUser = "http://10.0.2.2:3333/api/users"
 const getUserInformation = "http://10.0.2.2:3333/api/users"
 const changeForgotPassword = "http://10.0.2.2:3333/api/account/forgotpw"
+const changePassword = "http://10.0.2.2:3333/api/account/changepw"
 
 function Register(account) {
     return axios.post(apiRegister, account)
@@ -69,6 +70,17 @@ function ChangePasswordForgot(phoneNumber, newPassword) {
     )
 }
 
+function ChangePassword(token, newPassword) {
+    return axios.put(changePassword,
+        { pw: newPassword },
+        {
+            headers: {
+                token
+            }
+        }
+    )
+}
+
 export {
     Register,
     Login,
@@ -78,5 +90,6 @@ export {
     GetAccountInformation,
     UpdateUserProfile,
     GetUserInformation,
-    ChangePasswordForgot
+    ChangePasswordForgot,
+    ChangePassword
 }

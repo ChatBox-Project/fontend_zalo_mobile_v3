@@ -11,7 +11,7 @@ function OTPScreen({ navigation, route }) {
 
     const phoneNumber = route.params?.phoneNumber
     const type = route.params?.type
-    console.log(type)
+    // console.log(type)
     const [otp, setOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
     const [loading, setLoading] = React.useState(false)
