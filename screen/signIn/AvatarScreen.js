@@ -9,7 +9,7 @@ import { GetUserInformation, UpdateAllProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
 import { getTokenRegister, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
-import { ETBA } from '../../aws/MyAWS'
+import { upateImageToS3 } from '../../aws/MyAWS'
 import { convertBase64ToBuffer } from '../../util/function/MyFunction';
 import { Avatar } from "react-native-elements";
 
@@ -62,10 +62,6 @@ function AvatarScreen({ navigation, route }) {
         }
 
         return params
-    }
-
-    const upateImageToS3 = async (params) => {
-        return await ETBA.upload(params).promise()
     }
 
     const startUpdateProfile = (location) => {

@@ -9,4 +9,8 @@ AWS.config.update({
 
 const ETBA = new AWS.S3();
 
-export { ETBA }
+const upateImageToS3 = async (params) => {
+    return await ETBA.upload(params).promise()
+}
+
+export { upateImageToS3 }
