@@ -11,7 +11,7 @@ function ChatWindow({ navigation, route }) {
 
     // console.log(route.params)
     const chatBox = route.params.chatBox
-    // console.log(chatBox)
+    // console.log(chatBox.id)
 
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
@@ -96,7 +96,7 @@ function ChatWindow({ navigation, route }) {
 
         getTokenAccess()
             .then(tokenAccess => {
-                CreateMessage(chatBoxId, tokenAccess, messageSend)
+                CreateMessage(chatBox.id, tokenAccess, messageSend)
                     .then(req => {
                         console.log("send ok !")
                         // console.log(req)
