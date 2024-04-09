@@ -11,14 +11,22 @@ function ChatScreen({ navigation }) {
     React.useEffect(() => {
         getTokenAccess()
             .then(tokenAccess => {
-                GetAllChatBox(tokenAccess)
-                    .then(req => {
-                        // console.log(req)
-                        const chatBox = req.data.metadata.chatBox
-                        setChats(chatBox)
-                    }).catch(err => {
-                        console.error(err)
-                    })
+
+                const id = setInterval(() => {
+                    // console.log(1)
+                    GetAllChatBox(tokenAccess)
+                        .then(req => {
+                            // console.log(req)
+                            const chatBox = req.data.metadata.chatBox
+                            setChats(chatBox)
+                        }).catch(err => {
+                            console.error(err)
+                        })
+                }, 2000);
+
+                return () => {
+                    clearInterval(id)
+                }
             }).catch(err => {
                 console.error(err)
             })
