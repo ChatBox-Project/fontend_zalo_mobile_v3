@@ -7,8 +7,13 @@ import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
+import { getTokenAccess } from '../../store/MyStore';
+import { CreateMessage } from '../../api/ChatBoxAPI';
 
-function ChatWindow({ navigation }) {
+function ChatWindow({ navigation, route }) {
+
+    const chatBoxId = route.params.chatBoxId
+    console.log(chatBoxId)
 
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
@@ -63,18 +68,40 @@ function ChatWindow({ navigation }) {
         },
     ];
 
-
     React.useEffect(() => {
         navigation.setOptions({
             headerTitle: "Ngô Thiên Phú"
         });
     }, [])
 
+    function createMessage(message) {
+
+        const messageSend = {
+            "messageType": "string",
+            "contentMessage": message
+        }
+
+        getTokenAccess()
+            .then(tokenAccess => {
+                CreateMessage(chatBoxId, tokenAccess, messageSend)
+                    .then(req => {
+                        console.log("send ok !")
+                    }).catch(err => {
+                        console.log(err)
+                    })
+            })
+    }
+
     return (
         <View style={styles.container} >
             <GiftedChat
                 messages={messages}
-                onSend={messages => onSend(messages)}
+                onSend={
+                    (messages) => {
+                        onSend(messages)
+                        createMessage(messages[0].text)
+                    }
+                }
                 user={{
                     _id: 1,
                 }}
