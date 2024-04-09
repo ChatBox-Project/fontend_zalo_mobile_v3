@@ -4,7 +4,7 @@ import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
-import { getTokenAccess } from '../../store/MyStore';
+import { getTokenAccess, getUserInformation } from '../../store/MyStore';
 import { CreateMessage, GetAllMessage } from '../../api/ChatBoxAPI';
 
 function ChatWindow({ navigation, route }) {
@@ -12,37 +12,59 @@ function ChatWindow({ navigation, route }) {
     // console.log(route.params)
     const chatBox = route.params.chatBox
     // console.log(chatBox.id)
-
+    const [userSender, setUserSender] = React.useState({})
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
 
+
     React.useEffect(() => {
         getTokenAccess()
             .then(tokenAccess => {
-                GetAllMessage(chatBox.id, tokenAccess)
-                    .then(messages => {
-                        setMessages(convertFormartMessage(messages.data))
-                        console.log("get all message success")
-                        // console.log(messages.data)
-                    }).catch(err => {
-                        console.log(err)
+                getUserInformation(tokenAccess)
+                    .then(user => {
+                        setUserSender(user)
+                        GetAllMessage(chatBox.id, tokenAccess)
+                            .then(messages => {
+                                setMessages(convertFormartMessage(messages.data))
+                                console.log("get all message success")
+                                // console.log(messages.data)
+                            }).catch(err => {
+                                console.log(err)
+                            })
                     })
             })
     }, [])
 
     function convertFormartMessage(messages) {
         return messages.map(message => {
-            return {
-                _id: message.id,
-                text: message.contentMessage,
-                createdAt: message.createDateTime,
-                user: {
-                    _id: message.senderId,
-                    name: 'React Native',
-                    avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
-                },
+            // console.log(userSender.id)
+            // console.log(message.sender_id)
+            // console.log(message)
+            console.log(userSender.id === message.senderId)
+            if (userSender.id === message.senderId) {
+                return {
+                    _id: message.id,
+                    text: message.contentMessage,
+                    createdAt: message.createDateTime,
+                    user: {
+                        _id: message.senderId,
+                    },
+                }
+            } else {
+                return {
+                    _id: message.id,
+                    text: message.contentMessage,
+                    createdAt: message.createDateTime,
+                    user: {
+                        _id: message.senderId,
+                        name: 'React Native',
+                        avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
+                    },
+                }
+
             }
+
         })
     }
 
@@ -59,8 +81,6 @@ function ChatWindow({ navigation, route }) {
             aspect: [4, 3],
             quality: 1,
         });
-
-        // console.log(result);
 
         if (!result.canceled) {
             setImage(result.assets[0].uri);
@@ -88,7 +108,6 @@ function ChatWindow({ navigation, route }) {
 
 
     function createMessage(message) {
-
         const messageSend = {
             "messageType": "string",
             "contentMessage": message
@@ -119,7 +138,7 @@ function ChatWindow({ navigation, route }) {
                     }
                 }
                 user={{
-                    _id: chatBox.sender_id,
+                    _id: userSender.id,
                 }}
             />
             <Button
