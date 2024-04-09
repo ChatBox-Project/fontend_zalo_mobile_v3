@@ -18,7 +18,7 @@
     "aws-sdk": "^2.1592.0",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
-    "expo": "~50.0.14",
+    "expo": "^50.0.15",
     "expo-contacts": "~12.8.2",
     "expo-file-system": "^16.0.8",
     "expo-image-picker": "~14.7.1",

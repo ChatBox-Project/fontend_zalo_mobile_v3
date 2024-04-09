@@ -19,6 +19,7 @@ function AvatarScreen({ navigation, route }) {
     // console.log(profile)
     const [image, setImage] = useState(null);
     const [loading, setLoading] = React.useState(false)
+    const [pass, setPass] = React.useState(false)
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -35,9 +36,18 @@ function AvatarScreen({ navigation, route }) {
 
 
     const updateProfile = (data) => {
+        if (data) {
+            const newProfile = {
+                ...profile,
+                avatarUrl: data.Location,
+            }
+
+            return newProfile
+        }
+
         const newProfile = {
             ...profile,
-            avatarUrl: data.Location,
+            avatarUrl: "",
         }
 
         return newProfile
@@ -58,54 +68,58 @@ function AvatarScreen({ navigation, route }) {
         return await ETBA.upload(params).promise()
     }
 
-    function updateAccountInformationNew() {
-        setLoading(true)
-        if (image) {
-            convertBase64ToBuffer(image.uri).then(buffer => {
+    const startUpdateProfile = (location) => {
+        getTokenRegister()
+            .then(token => {
+                const newProfile = updateProfile(location)
+                // console.log(newProfile)
+                UpdateAllProfile(token, newProfile)
+                    .then(req => {
+                        GetUserInformation(token)
+                            .then(req => {
+                                // console.log(req)
+                                const user = req?.data?.metadata?.user
+                                saveUserInformation(user)
+                                saveTokenAccess(token)
+                                setLoading(false)
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: "Cập nhật thông tin thành công",
+                                    type: "success",
+                                });
+                                navigation.push("Index")
+                            }).catch(err => {
+                                showMessage({
+                                    message: "Thông Báo !",
+                                    description: err.response.data.message,
+                                    type: "danger",
+                                });
+                                setLoading(false)
+                            })
+                    }
+                    ).catch(err => {
+                        showMessage({
+                            message: "Thông Báo !",
+                            description: err.response.data.message,
+                            type: "danger",
+                        });
+                        setLoading(false)
+                    })
+            })
+    }
 
+    function updateAccountInformationNew(pass) {
+        if (image && pass === false) {
+            setLoading(true)
+            convertBase64ToBuffer(image.uri).then(buffer => {
                 const params = createParams(buffer)
                 upateImageToS3(params)
                     .then(data => {
-                        getTokenRegister()
-                            .then(token => {
-                                const newProfile = updateProfile(data)
-                                // console.log(newProfile)
-                                UpdateAllProfile(token, newProfile)
-                                    .then(req => {
-                                        GetUserInformation(token)
-                                            .then(req => {
-                                                // console.log(req)
-                                                const user = req?.data?.metadata?.user
-                                                saveUserInformation(user)
-                                                saveTokenAccess(token)
-                                                setLoading(false)
-                                                showMessage({
-                                                    message: "Thông Báo !",
-                                                    description: "Cập nhật thông tin thành công",
-                                                    type: "success",
-                                                });
-                                                navigation.push("Index")
-                                            }).catch(err => {
-                                                showMessage({
-                                                    message: "Thông Báo !",
-                                                    description: err.response.data.message,
-                                                    type: "danger",
-                                                });
-                                                setLoading(false)
-                                            })
-                                    }
-                                    ).catch(err => {
-                                        showMessage({
-                                            message: "Thông Báo !",
-                                            description: err.response.data.message,
-                                            type: "danger",
-                                        });
-                                        setLoading(false)
-                                    })
-                            })
-
+                        startUpdateProfile(data)
                     })
             })
+        } else {
+            startUpdateProfile("")
         }
     }
 
@@ -117,6 +131,9 @@ function AvatarScreen({ navigation, route }) {
                 <Text>Cập nhật ảnh đẹp nhất của bạn</Text>
 
                 <TouchableOpacity
+                    onPress={() => {
+                        updateAccountInformationNew(true)
+                    }}
                     style={{ alignSelf: 'center' }}
                 >
                     <Text style={{ fontWeight: '600', color: BLUE }}>Bỏ qua</Text>
@@ -188,7 +205,7 @@ function AvatarScreen({ navigation, route }) {
                         backgroundColor: BLUE
                     }}
                     onPress={() => {
-                        updateAccountInformationNew()
+                        updateAccountInformationNew(false)
                     }}
                 />
             </View>
