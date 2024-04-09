@@ -19,7 +19,17 @@ function CreateMessage(idChatBox, tokenAccess, messages) {
     })
 }
 
+function GetAllMessage(idChatBox, tokenAccess) {
+    const createMessage = `http://10.0.2.2:3333/api/chat/${idChatBox}/messages`
+    return axios.get(createMessage, {
+        headers: {
+            token: tokenAccess
+        }
+    })
+}
+
 export {
     GetAllChatBox,
-    CreateMessage
+    CreateMessage,
+    GetAllMessage
 }

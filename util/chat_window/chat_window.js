@@ -1,38 +1,50 @@
 import React from 'react'
-import { Button, FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Icon1 from 'react-native-vector-icons/Entypo';
-import Icon2 from 'react-native-vector-icons/FontAwesome';
+import { Button, StyleSheet, View } from 'react-native';
 import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { getTokenAccess } from '../../store/MyStore';
-import { CreateMessage } from '../../api/ChatBoxAPI';
+import { CreateMessage, GetAllMessage } from '../../api/ChatBoxAPI';
 
 function ChatWindow({ navigation, route }) {
 
-    const chatBoxId = route.params.chatBoxId
-    console.log(chatBoxId)
+    // console.log(route.params)
+    const chatBox = route.params.chatBox
+    // console.log(chatBox)
 
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
 
     React.useEffect(() => {
-        setMessages([
-            {
-                _id: 1,
-                text: 'Hello developer',
-                createdAt: new Date(),
+        getTokenAccess()
+            .then(tokenAccess => {
+                GetAllMessage(chatBox.id, tokenAccess)
+                    .then(messages => {
+                        setMessages(convertFormartMessage(messages.data))
+                        console.log("get all message success")
+                        // console.log(messages.data)
+                    }).catch(err => {
+                        console.log(err)
+                    })
+            })
+    }, [])
+
+    function convertFormartMessage(messages) {
+        return messages.map(message => {
+            return {
+                _id: message.id,
+                text: message.contentMessage,
+                createdAt: message.createDateTime,
                 user: {
-                    _id: 2,
+                    _id: message.senderId,
                     name: 'React Native',
                     avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
                 },
-            },
-        ])
-    }, [])
+            }
+        })
+    }
 
     const onSend = React.useCallback((messages = []) => {
         setMessages(previousMessages =>
@@ -74,6 +86,7 @@ function ChatWindow({ navigation, route }) {
         });
     }, [])
 
+
     function createMessage(message) {
 
         const messageSend = {
@@ -86,11 +99,13 @@ function ChatWindow({ navigation, route }) {
                 CreateMessage(chatBoxId, tokenAccess, messageSend)
                     .then(req => {
                         console.log("send ok !")
+                        // console.log(req)
                     }).catch(err => {
                         console.log(err)
                     })
             })
     }
+
 
     return (
         <View style={styles.container} >
@@ -98,12 +113,13 @@ function ChatWindow({ navigation, route }) {
                 messages={messages}
                 onSend={
                     (messages) => {
+                        console.log(messages)
                         onSend(messages)
                         createMessage(messages[0].text)
                     }
                 }
                 user={{
-                    _id: 1,
+                    _id: chatBox.sender_id,
                 }}
             />
             <Button

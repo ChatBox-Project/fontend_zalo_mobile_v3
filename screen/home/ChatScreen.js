@@ -41,10 +41,10 @@ function ChatScreen({ navigation }) {
                     width: "100%",
                 }}
                 data={chats}
-                renderItem={(chatBox) => {
+                renderItem={(chatBoxs) => {
                     return (
                         <TouchableOpacity
-                            onPress={() => { navigation.push("ChatWindow", { chatBoxId: chatBox.item.id }) }}
+                            onPress={() => { navigation.push("ChatWindow", { chatBox: chatBoxs.item }) }}
                         >
                             <ChatSingle />
                         </TouchableOpacity>
