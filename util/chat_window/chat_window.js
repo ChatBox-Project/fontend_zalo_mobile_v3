@@ -24,14 +24,21 @@ function ChatWindow({ navigation, route }) {
                 getUserInformation(tokenAccess)
                     .then(user => {
                         setUserSender(user)
-                        GetAllMessage(chatBox.id, tokenAccess)
-                            .then(messages => {
-                                setMessages(convertFormartMessage(messages.data))
-                                console.log("get all message success")
-                                // console.log(messages.data)
-                            }).catch(err => {
-                                console.log(err)
-                            })
+                        const id = setInterval(() => {
+                            // console.log(1)
+                            GetAllMessage(chatBox.id, tokenAccess)
+                                .then(messages => {
+                                    setMessages(convertFormartMessage(messages.data))
+                                    // console.log("get all message success")
+                                    // console.log(messages.data)
+                                }).catch(err => {
+                                    console.log(err)
+                                })
+                        }, 2000);
+
+                        return () => {
+                            clearInterval(id)
+                        }
                     })
             })
     }, [])
@@ -132,7 +139,7 @@ function ChatWindow({ navigation, route }) {
                 messages={messages}
                 onSend={
                     (messages) => {
-                        console.log(messages)
+                        // console.log(messages)
                         onSend(messages)
                         createMessage(messages[0].text)
                     }
