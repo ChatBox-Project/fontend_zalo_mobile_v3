@@ -32,19 +32,21 @@ function ChatWindow({ navigation, route }) {
             const tokenAccess = await getTokenAccess()
             const userInformation = await getUserInformation(tokenAccess)
             setUserSender(userInformation)
-            const id = setInterval(() => {
-                const runGetAllMessage = async () => {
-                    const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
-                    // console.log(reqMessages.data)
-                    setMessages(
-                        convertFormartMessage(reqMessages.data)
-                    )
-                }
-                runGetAllMessage()
-            }, 2000);
+            if (tokenAccess) {
+                const id = setInterval(() => {
+                    const runGetAllMessage = async () => {
+                        const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
+                        // console.log(reqMessages.data)
+                        setMessages(
+                            convertFormartMessage(reqMessages.data)
+                        )
+                    }
+                    runGetAllMessage()
+                }, 2000);
 
-            return () => {
-                clearInterval(id)
+                return () => {
+                    clearInterval(id)
+                }
             }
         } catch (error) {
             console.error(error)
