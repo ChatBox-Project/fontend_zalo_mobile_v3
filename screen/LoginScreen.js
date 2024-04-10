@@ -2,11 +2,13 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login, GetAccountInformation, GetUserInformation } from '../api/SignInAPI';
-import { saveUserInformation, saveTokenAccess } from '../store/MyStore';
+import { Login, GetAccountInformation } from '../api/SignInAPI';
+import { saveUserInformation, saveTokenAccess, getUserInformation } from '../store/MyStore';
 import { showMessage } from 'react-native-flash-message';
+import { regexPassword, regexPhoneNumber } from '../regex/MyRegex';
 
 function LoginScreen({ navigation }) {
+
     const [phoneNumber, setPhoneNumber] = React.useState("")
     const [password, setPassword] = React.useState("")
     const [errorPhoneNumber, setErrorPhoneNumber] = React.useState("")
@@ -14,8 +16,7 @@ function LoginScreen({ navigation }) {
     const [loading, setLoading] = React.useState(false)
 
     function validateInput() {
-        const regexPhoneNumber = /^0[1-9][0-9]{8}$/
-        const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+
         let checkPass = true
 
         if (!phoneNumber) {
@@ -38,54 +39,43 @@ function LoginScreen({ navigation }) {
     }
 
     function checkRegisterOTP(data) {
-        // console.log(data)
         navigation.push("NotifyRegisterOTPScreen", { data })
     }
 
-    function checkAccount() {
+    async function checkAccount() {
         setLoading(true)
-        Login({ phoneNumber, password }).then(req => {
-            // console.log(req)
-            const token = req.data.metadata.token
-            GetAccountInformation(token)
-                .then(accountInformation => {
-                    // console.log(accountInformation)
-                    const verify = accountInformation.data.metadata.account.verified
-                    if (verify === false) {
-                        const accountRegister = accountInformation.data.metadata.account
-                        // console.log(accountRegister)
-                        checkRegisterOTP({ token, accountRegister })
-                        setLoading(false)
-                        ressetInput()
-                    } else {
-                        GetUserInformation(token)
-                            .then(req => {
-                                const user = req.data.metadata.user
-                                saveUserInformation(user)
-                                saveTokenAccess(token)
-                                navigation.push("Index")
-                                ressetInput()
-                                setLoading(false)
-                            })
-                            .catch(err => {
-                                // console.log(err)
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "GET ACCOUNT IS ERROR",
-                                    type: "danger",
-                                });
-                                setLoading(false)
-                            })
-                    }
-                }).catch(err => {
-                    console.log(err)
-                })
-        }).catch(error => {
-            console.log(error)
-            setErrorPhoneNumber("SỐ ĐIỆN THOẠI HOẶC TÀI KHOẢN KHÔNG CHÍNH XÁC")
-            ressetInput()
+        try {
+            const repLogin = await Login({ phoneNumber, password })
+            const tokenAccess = repLogin.data.metadata.token
+            // console.log(tokenAccess)
+            const reqAccountInformation = await GetAccountInformation(tokenAccess)
+            // console.log(reqAccountInformation)
+            const verify = reqAccountInformation.data.metadata.account.verified
+            const accountInformation = reqAccountInformation.data.metadata.account
+            // console.log(verify)
+            if (verify === false) {
+                checkRegisterOTP({ tokenAccess, accountInformation })
+                setLoading(false)
+                ressetInput()
+            } else {
+                const reqUserInformation = await getUserInformation(tokenAccess)
+                // console.log(reqUserInformation)
+                const userInformation = reqUserInformation
+                saveUserInformation(userInformation)
+                saveTokenAccess(tokenAccess)
+                navigation.push("Index")
+                ressetInput()
+                setLoading(false)
+            }
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger"
+            })
             setLoading(false)
-        })
+        }
     }
 
     function ressetInput() {

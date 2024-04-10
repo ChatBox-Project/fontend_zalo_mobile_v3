@@ -4,31 +4,46 @@ import { Button, Avatar } from "react-native-elements";
 import { BLUE } from '../colors/Colors';
 import { saveTokenRegister, saveUserRegister } from '../../store/MyStore';
 import { generateOTP } from '../../api/SignInAPI';
+import { showMessage } from 'react-native-flash-message';
 
 function NotifyRegisterOTPScreen({ navigation, route }) {
 
-    const data = route.params?.data
-    console.log(data)
+    const data = route.params.data
+    // console.log(data)
+
     const [loading, setLoading] = React.useState(false)
 
     function rollBack() {
         navigation.push("LoginAndSignIn")
     }
 
-    function verifyOTP() {
-        setLoading(true)
-        saveTokenRegister(data.token)
-        saveUserRegister(data.accountRegister)
-        const phoneNumber = data.accountRegister.phoneNumber
-        // console.log(phoneNumber)
-        generateOTP({ phoneNumber }).then(req => {
-            // console.log(req)
-            navigation.push("OTPScreen", { phoneNumber, type: 1 })
-            setLoading(false)
-        }).catch(err => {
+    async function verifyOTP() {
+        try {
+            setLoading(true)
+            saveTokenRegister(data.tokenAccess)
+            saveUserRegister(data.accountInformation)
+            const phoneNumber = data.accountInformation.phoneNumber
+            if (phoneNumber) {
+                await generateOTP({ phoneNumber })
+                navigation.push("OTPScreen", { phoneNumber, type: 1 })
+                setLoading(false)
+            } else {
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "PHONE NUMBER IS NOT EXISTS",
+                    type: "danger"
+                })
+                setLoading(false)
+            }
+        } catch (error) {
             console.error(err)
+            showMessage({
+                message: "Thông Báo !",
+                description: err.message,
+                type: "danger"
+            })
             setLoading(false)
-        })
+        }
     }
 
     return (
