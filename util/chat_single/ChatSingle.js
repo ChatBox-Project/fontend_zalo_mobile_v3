@@ -1,14 +1,24 @@
 import React from 'react'
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
+import { GetUserInformationById } from '../../api/SignInAPI';
+import { getTokenAccess } from '../../store/MyStore';
 
 function ChatSingle({ chatBox, userInformation }) {
-    // console.log(chatBox)
-    // console.log(userInformation)
-    // React.useEffect(() => {
-    //     const userReciever = (chatBox.user1_id === userInformation.id) ? chatBox.user2_id : chatBox.user2_id
+    console.log(chatBox)
+    console.log(userInformation)
 
-    // })
+    React.useEffect(() => {
+        const startGetUserInformationById = async () => {
+            const userReciever = (chatBox.user1_id === userInformation.id) ? chatBox.user2_id : chatBox.user1_id
+            const tokenAccess = await getTokenAccess()
+            const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
+            // console.log(reqUserReciever)
+        }
+
+        startGetUserInformationById()
+
+    })
 
     return (
         <View
