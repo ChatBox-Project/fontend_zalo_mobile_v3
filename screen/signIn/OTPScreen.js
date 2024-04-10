@@ -29,22 +29,23 @@ function OTPScreen({ navigation, route }) {
     }, [time])
 
 
-    function ressetOTP() {
+    async function ressetOTP() {
         if (phoneNumber) {
-            generateOTP({ phoneNumber }).then(req => {
+            try {
+                await generateOTP({ phoneNumber })
                 showMessage({
                     message: "Thông Báo !",
                     description: "Đã gửi lại mã OTP",
                     type: "info",
                 });
                 setTime(30)
-            }).catch(err => {
+            } catch (error) {
                 showMessage({
                     message: "Thông Báo !",
-                    description: err,
+                    description: err.message,
                     type: "danger",
                 });
-            })
+            }
         } else {
             showMessage({
                 message: "Thông Báo !",
@@ -55,10 +56,10 @@ function OTPScreen({ navigation, route }) {
     }
 
     const runVerifyOTP = async () => {
-        setLoading(true)
         if (phoneNumber) {
-            verifyOTP({ phoneNumber, otp }).then(req => {
-
+            try {
+                setLoading(true)
+                await verifyOTP({ phoneNumber, otp })
                 showMessage({
                     message: "Thông Báo !",
                     description: "Xác thực thành công",
@@ -70,17 +71,15 @@ function OTPScreen({ navigation, route }) {
                     navigation.push("ChangePassWordScreen", { phoneNumber })
                 }
                 setLoading(false)
-
-            }).catch(err => {
-                const errorMessage = err.response.data.message
+            } catch (error) {
                 showMessage({
                     message: "Thông Báo !",
-                    description: errorMessage,
+                    description: error.message,
                     type: "danger",
                 });
                 setLoading(false)
                 setOTP("")
-            })
+            }
         } else {
             showMessage({
                 message: "Thông Báo !",
