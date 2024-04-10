@@ -1,22 +1,15 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import ChatSingle from '../../util/chat_single/ChatSingle';
-import { getTokenAccess, getUserInformation } from '../../store/MyStore';
+import { getTokenAccess } from '../../store/MyStore';
 import { GetAllChatBox } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
 
 function ChatScreen({ navigation }) {
 
     const [chats, setChats] = React.useState([])
-    const [userInformation, setUserInformation] = React.useState({})
 
     React.useEffect(() => {
-        const startGetUserInformation = async () => {
-            const tokenAccess = await getTokenAccess()
-            const userInformationNew = await getUserInformation(tokenAccess)
-            setUserInformation(userInformationNew)
-        }
-        startGetUserInformation()
         getAllChatBox()
     }, [])
 
@@ -74,7 +67,7 @@ function ChatScreen({ navigation }) {
                         <TouchableOpacity
                             onPress={() => { navigation.push("ChatWindow", { chatBox: chatBox.item }) }}
                         >
-                            <ChatSingle chatBox={chatBox.item} userInformation={userInformation} />
+                            <ChatSingle chatBox={chatBox.item} />
                         </TouchableOpacity>
                     )
                 }}
