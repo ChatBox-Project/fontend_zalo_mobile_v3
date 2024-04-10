@@ -3,12 +3,12 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE } from '../colors/Colors';
 import { showMessage } from 'react-native-flash-message';
+import { regexName } from '../../regex/MyRegex';
 
 function SignInScreen({ navigation }) {
 
     const [name, setName] = React.useState("")
     const [errorName, setErrorName] = React.useState("")
-    const regexName = /^[^\d!@#$%^&*()_+={}[\]|\\;:'",<.>\?]{6,40}$/
 
     function validate() {
         let checkPass = true;

@@ -3,8 +3,9 @@ import { StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { Register, generateOTP } from '../../api/SignInAPI';
-import { saveTokenRegister, saveUserRegister } from '../../store/MyStore';
+import { saveTokenRegister } from '../../store/MyStore';
 import { showMessage } from "react-native-flash-message";
+import { regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
 
 function SignInScreen1({ navigation }) {
 
@@ -22,8 +23,6 @@ function SignInScreen1({ navigation }) {
     const validate = () => {
 
         let checkPass = true
-        const regexPhoneNumber = /^0[1-9][0-9]{8}$/
-        const regexPassword = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
 
         if (!phoneNumber) {
             checkPass = false
@@ -64,34 +63,34 @@ function SignInScreen1({ navigation }) {
             }
 
             if (checkPass) {
-                setLoading(true)
-                Register({ phoneNumber, password }).then((rep) => {
-                    // console.log(rep.data.metadata.token)
-                    // console.log(rep)
-                    saveTokenRegister(rep.data.metadata.token)
-                    generateOTP({ phoneNumber }).then(req => {
-                        // console.log(req)
-                        navigation.push("OTPScreen", { phoneNumber, type: 1 })
-                        ressetTextInput()
-                        setLoading(false)
-                    }).catch(err => {
-                        console.error(err)
-                        setLoading(false)
-                    })
-                }).catch((error) => {
-                    const messageError = error.response.data.message
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: messageError,
-                        type: "danger",
-                    });
-                    ressetTextInput()
-                    setLoading(false)
-                })
+                registerAccount()
             }
 
         }
     }
+
+
+    async function registerAccount() {
+        try {
+            setLoading(true)
+            const reqRegister = await Register({ phoneNumber, password })
+            const tokenRegister = reqRegister.data.metadata.token
+            await saveTokenRegister(tokenRegister)
+            await generateOTP({ phoneNumber })
+            navigation.push("OTPScreen", { phoneNumber, type: 1 })
+            ressetTextInput()
+            setLoading(false)
+        } catch (error) {
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger",
+            });
+            ressetTextInput()
+            setLoading(false)
+        }
+    }
+
     const ressetTextInput = () => {
         setPhoneNumber("")
         setPassword("")
