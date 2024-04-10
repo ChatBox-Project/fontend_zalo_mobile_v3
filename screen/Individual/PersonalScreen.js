@@ -68,12 +68,25 @@ function PersonalScreen({ navigation }) {
             alignItems: "center",
           }}
         >
-          <Avatar
-            size={130}
-            rounded
-            source={{ uri: user?.avatarUrl }}
-            containerStyle={{ borderWidth: 4, borderColor: GRAY }}
-          />
+          {
+            user?.avatarUrl
+              ?
+              <Avatar
+                size={130}
+                rounded
+                source={{ uri: user?.avatarUrl }}
+                containerStyle={{ borderWidth: 4, borderColor: GRAY }}
+              />
+              :
+              <Avatar
+                size={130}
+                rounded
+                icon={{ name: 'user', type: 'font-awesome' }}
+                containerStyle={{
+                  backgroundColor: "#cccccc"
+                }}
+              />
+          }
           <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.name}</Text>
         </View>
       </View>

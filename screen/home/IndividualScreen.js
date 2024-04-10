@@ -66,11 +66,24 @@ function IndividualScreen({ navigation }) {
           width: "100%",
         }}
       >
-        <Avatar
-          size={60}
-          rounded
-          source={{ uri: user?.avatarUrl }}
-        />
+        {
+          user.avatarUrl ?
+            <Avatar
+              size={60}
+              rounded
+              source={{ uri: user?.avatarUrl }}
+            />
+            :
+            <Avatar
+              size={60}
+              rounded
+              icon={{ name: 'user', type: 'font-awesome' }}
+              containerStyle={{
+                backgroundColor: "#cccccc"
+              }}
+            />
+
+        }
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
             {user?.name}
