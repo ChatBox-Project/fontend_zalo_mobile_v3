@@ -5,20 +5,21 @@ import { GetUserInformationById } from '../../api/SignInAPI';
 import { getTokenAccess } from '../../store/MyStore';
 
 function ChatSingle({ chatBox, userInformation }) {
-    console.log(chatBox)
-    console.log(userInformation)
+    // console.log(chatBox)
+    // console.log(userInformation)
+
+    const [userRecieverIformation, setUserReciverInformation] = React.useState({})
 
     React.useEffect(() => {
         const startGetUserInformationById = async () => {
             const userReciever = (chatBox.user1_id === userInformation.id) ? chatBox.user2_id : chatBox.user1_id
             const tokenAccess = await getTokenAccess()
             const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
-            // console.log(reqUserReciever)
+            setUserReciverInformation(reqUserReciever.data.metadata.user)
         }
 
         startGetUserInformationById()
-
-    })
+    }, [])
 
     return (
         <View
@@ -35,12 +36,12 @@ function ChatSingle({ chatBox, userInformation }) {
             <Avatar
                 size={60}
                 rounded
-                source={{ uri: userInformation.avatarUrl }}
+                source={{ uri: userRecieverIformation.avatarUrl }}
             />
             <View style={{
                 marginLeft: 15
             }}>
-                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '500' }}>Ngo Thien Phu</Text>
+                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '500' }}>{userRecieverIformation.name}</Text>
                 <Text style={{ fontSize: 14, color: "gray" }}>Mai đi chơi nha</Text>
             </View>
         </View>
