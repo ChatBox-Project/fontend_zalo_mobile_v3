@@ -3,34 +3,50 @@ import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native
 import ChatSingle from '../../util/chat_single/ChatSingle';
 import { getTokenAccess } from '../../store/MyStore';
 import { GetAllChatBox } from '../../api/ChatBoxAPI';
+import { showMessage } from 'react-native-flash-message';
 
 function ChatScreen({ navigation }) {
 
     const [chats, setChats] = React.useState([])
 
     React.useEffect(() => {
-        getTokenAccess()
-            .then(tokenAccess => {
-
-                const id = setInterval(() => {
-                    // console.log(1)
-                    GetAllChatBox(tokenAccess)
-                        .then(req => {
-                            // console.log(req)
-                            const chatBox = req.data.metadata.chatBox
-                            setChats(chatBox)
-                        }).catch(err => {
-                            console.error(err)
-                        })
-                }, 2000);
-
-                return () => {
-                    clearInterval(id)
-                }
-            }).catch(err => {
-                console.error(err)
-            })
+        getAllChatBox()
     }, [])
+
+    async function getAllChatBox() {
+        try {
+            const tokenAccess = await getTokenAccess()
+            const id = setInterval(() => {
+                runGetChatBoxs = async () => {
+                    try {
+                        const reqChatBox = await GetAllChatBox(tokenAccess)
+                        const chatBoxs = reqChatBox.data.metadata.chatBox
+                        setChats(chatBoxs)
+                    } catch (error) {
+                        console.error(error)
+                        showMessage({
+                            message: "Thông Báo !",
+                            description: err.message,
+                            type: "danger"
+                        })
+                    }
+                }
+
+                runGetChatBoxs()
+            }, 2000);
+
+            return () => {
+                clearInterval(id)
+            }
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: err.message,
+                type: "danger"
+            })
+        }
+    }
 
 
     return (
