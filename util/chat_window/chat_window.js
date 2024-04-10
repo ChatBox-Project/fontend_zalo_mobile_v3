@@ -156,11 +156,30 @@ function ChatWindow({ navigation, route }) {
         }
     }
 
+    // async function updateMessage(messageId) {
+    //     try {
+    //         const tokenAccess = await getTokenAccess()
+    //         await RemoveMessage(chatBox.id, messageId, tokenAccess)
+    //         showMessage({
+    //             message: "ĐÃ XÓA TIN NHẮN",
+    //             type: "success"
+    //         })
+    //     } catch (error) {
+    //         console.error(error)
+    //         showMessage({
+    //             message: "Thông Báo !",
+    //             description: error.message,
+    //             type: "danger"
+    //         })
+    //     }
+    // }
+
     async function onLongPressChat(context, message) {
         if (message.text) {
             const options = [
                 'Copy Text',
                 'Remove',
+                'Update',
                 'Cancel',
             ];
             const cancelButtonIndex = options.length - 1;
