@@ -16,33 +16,37 @@ function ChatScreen({ navigation }) {
     async function getAllChatBox() {
         try {
             const tokenAccess = await getTokenAccess()
-            const id = setInterval(() => {
-                runGetChatBoxs = async () => {
-                    try {
-                        const reqChatBox = await GetAllChatBox(tokenAccess)
-                        const chatBoxs = reqChatBox.data.metadata.chatBox
-                        setChats(chatBoxs)
-                    } catch (error) {
-                        console.error(error)
-                        showMessage({
-                            message: "Thông Báo !",
-                            description: err.message,
-                            type: "danger"
-                        })
+            // console.log(tokenAccess)
+            if (tokenAccess) {
+                const id = setInterval(() => {
+                    runGetChatBoxs = async () => {
+                        try {
+                            const reqChatBox = await GetAllChatBox(tokenAccess)
+                            const chatBoxs = reqChatBox.data.metadata.chatBox
+                            setChats(chatBoxs)
+                        } catch (error) {
+                            console.error(error)
+                            showMessage({
+                                message: "Thông Báo !",
+                                description: error.message,
+                                type: "danger"
+                            })
+                        }
                     }
+
+                    runGetChatBoxs()
+                }, 2000);
+
+                return () => {
+                    clearInterval(id)
                 }
-
-                runGetChatBoxs()
-            }, 2000);
-
-            return () => {
-                clearInterval(id)
             }
+
         } catch (error) {
             console.error(error)
             showMessage({
                 message: "Thông Báo !",
-                description: err.message,
+                description: error.message,
                 type: "danger"
             })
         }

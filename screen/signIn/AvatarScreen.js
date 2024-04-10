@@ -7,7 +7,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
 import { GetUserInformation, UpdateAllProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { getTokenRegister, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
+import { getTokenRegister, removeKey, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
 import { BUCKET } from '../../config/Config';
 import { upateImageToS3 } from '../../aws/MyAWS'
 import { convertBase64ToBuffer } from '../../util/function/MyFunction';
@@ -19,7 +19,6 @@ function AvatarScreen({ navigation, route }) {
     // console.log(profile)
     const [image, setImage] = useState(null);
     const [loading, setLoading] = React.useState(false)
-    const [pass, setPass] = React.useState(false)
 
     const pickImage = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -41,15 +40,12 @@ function AvatarScreen({ navigation, route }) {
                 ...profile,
                 avatarUrl: data.Location,
             }
-
             return newProfile
         }
-
         const newProfile = {
             ...profile,
             avatarUrl: "",
         }
-
         return newProfile
     }
 
@@ -60,60 +56,63 @@ function AvatarScreen({ navigation, route }) {
             Body: buffer,
             ContentType: image.mimeType
         }
-
         return params
     }
 
-    const startUpdateProfile = (location) => {
-        getTokenRegister()
-            .then(token => {
-                const newProfile = updateProfile(location)
-                // console.log(newProfile)
-                UpdateAllProfile(token, newProfile)
-                    .then(req => {
-                        GetUserInformation(token)
-                            .then(req => {
-                                // console.log(req)
-                                const user = req?.data?.metadata?.user
-                                saveUserInformation(user)
-                                saveTokenAccess(token)
-                                setLoading(false)
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: "Cập nhật thông tin thành công",
-                                    type: "success",
-                                });
-                                navigation.push("Index")
-                            }).catch(err => {
-                                showMessage({
-                                    message: "Thông Báo !",
-                                    description: err.response.data.message,
-                                    type: "danger",
-                                });
-                                setLoading(false)
-                            })
-                    }
-                    ).catch(err => {
-                        showMessage({
-                            message: "Thông Báo !",
-                            description: err.response.data.message,
-                            type: "danger",
-                        });
-                        setLoading(false)
-                    })
-            })
+    const startUpdateProfile = async (location) => {
+        try {
+            const tokenRegister = await getTokenRegister()
+            const newProfile = await updateProfile(location)
+
+            await UpdateAllProfile(tokenRegister, newProfile)
+            const reqUserInformation = await GetUserInformation(tokenRegister)
+            // console.log(reqUserInformation)
+            const userInformation = reqUserInformation.data.metadata.user
+            await saveUserInformation(userInformation)
+            // console.log(tokenRegister)
+            await saveTokenAccess(tokenRegister)
+            // await removeKey("tokenRegister")
+
+            setLoading(false)
+            showMessage({
+                message: "Thông Báo !",
+                description: "Cập nhật thông tin thành công",
+                type: "success",
+            });
+            navigation.push("Index")
+        } catch (error) {
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger",
+            });
+            setLoading(false)
+        }
     }
 
-    function updateAccountInformationNew(pass) {
+    async function updateAccountInformationNew(pass) {
         if (image && pass === false) {
-            setLoading(true)
-            convertBase64ToBuffer(image.uri).then(buffer => {
+            try {
+                setLoading(true)
+                const buffer = await convertBase64ToBuffer(image.uri)
                 const params = createParams(buffer)
-                upateImageToS3(params)
-                    .then(data => {
-                        startUpdateProfile(data)
-                    })
-            })
+                const data = await upateImageToS3(params)
+                await startUpdateProfile(data)
+            } catch (error) {
+                showMessage({
+                    message: "Thông Báo !",
+                    description: error.message,
+                    type: "danger",
+                });
+                setLoading(false)
+            }
+            // convertBase64ToBuffer(image.uri).then(buffer => {
+            //     const params = createParams(buffer)
+            //     upateImageToS3(params)
+            //         .then(data => {
+            //             startUpdateProfile(data)
+            //         })
+            // })
         } else {
             startUpdateProfile("")
         }
