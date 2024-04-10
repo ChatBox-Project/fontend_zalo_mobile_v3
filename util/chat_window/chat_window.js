@@ -6,6 +6,7 @@ import { GiftedChat } from 'react-native-gifted-chat'
 import { getTokenAccess, getUserInformation } from '../../store/MyStore';
 import { CreateMessage, GetAllMessage, RemoveMessage } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
+import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
 
 function ChatWindow({ navigation, route }) {
 
@@ -15,14 +16,25 @@ function ChatWindow({ navigation, route }) {
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
+    const [userRecieverIformation, setUserReciverInformation] = React.useState({})
 
     React.useEffect(() => {
         navigation.setOptions({
-            headerTitle: "Ngô Thiên Phú"
+            headerTitle: `${userRecieverIformation.name}`
         });
-    }, [])
+
+    }, [userRecieverIformation])
 
     React.useEffect(() => {
+        const startGetUserReciverInformation = async () => {
+            const tokenAccess = await getTokenAccess()
+            const reqUserInformationNew = await GetUserInformation(tokenAccess)
+            const userInformation = reqUserInformationNew.data.metadata.user
+            var userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
+            const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
+            setUserReciverInformation(reqUserReciever.data.metadata.user)
+        }
+        startGetUserReciverInformation()
         getAllMessage()
     }, [])
 
