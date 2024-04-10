@@ -10,7 +10,8 @@ import {
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar } from "react-native-elements";
 import { useFocusEffect } from "@react-navigation/native";
-import { getUserInformation } from "../../store/MyStore";
+import { getTokenAccess } from "../../store/MyStore";
+import { GetUserInformation } from "../../api/SignInAPI";
 
 function PersonalScreen({ navigation }) {
 
@@ -27,11 +28,24 @@ function PersonalScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getUserInformation()
-        .then(user => {
-          setUser(user)
-        })
     }, [])
   );
+
+  async function getUserInformation() {
+    try {
+      const tokenAccess = await getTokenAccess()
+      const reqUserInformation = await GetUserInformation(tokenAccess)
+      const userInformation = reqUserInformation.data.metadata.user
+      setUser(userInformation)
+    } catch (error) {
+      console.error(error)
+      showMessage({
+        message: "Thông Báo !",
+        description: err.message,
+        type: "danger"
+      })
+    }
+  }
 
 
   return (
