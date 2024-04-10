@@ -47,24 +47,29 @@ function ChangePassWordScreen({ navigation, route }) {
         setAgaintPassword("")
     }
 
-    const changePassword = () => {
+    const changePassword = async () => {
         setLoading(true)
         if (validatePassword()) {
-            ChangePasswordForgot(phoneNumber, password)
-                .then(req => {
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "Đổi mật khẩu thành công",
-                        type: "success"
-                    })
-                    setLoading(false)
-                    navigation.push("LoginAndSignIn")
-                    ressetInput()
-                }).catch(err => {
-                    console.log(err)
-                    setLoading(false)
-                    ressetInput()
+            try {
+                await ChangePasswordForgot(phoneNumber, password)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Đổi mật khẩu thành công",
+                    type: "success"
                 })
+                setLoading(false)
+                navigation.push("LoginAndSignIn")
+                ressetInput()
+            } catch (error) {
+                console.error(error)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: error.message,
+                    type: "danger"
+                })
+                setLoading(false)
+                ressetInput()
+            }
         } else {
             setLoading(false)
             ressetInput()
@@ -88,6 +93,7 @@ function ChangePassWordScreen({ navigation, route }) {
                     errorMessage={errorPassword}
                     value={password}
                     onChangeText={setPassword}
+                    style={{ fontSize: 16 }}
                     onChange={() => { setErrorPassword("") }}
                     secureTextEntry={true}
                 />
@@ -96,6 +102,7 @@ function ChangePassWordScreen({ navigation, route }) {
                     errorMessage={errorAgaintPassword}
                     value={againtPassword}
                     onChangeText={setAgaintPassword}
+                    style={{ fontSize: 16 }}
                     onChange={() => { setErrorAgaintPassword("") }}
                     secureTextEntry={true}
                 />

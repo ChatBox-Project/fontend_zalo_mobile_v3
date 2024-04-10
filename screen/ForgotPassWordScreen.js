@@ -4,6 +4,7 @@ import { Avatar, Input, Button } from 'react-native-elements'
 import { regexPhoneNumber } from '../regex/MyRegex';
 import { BLUE, GRAY } from './colors/Colors';
 import { generateOTP } from '../api/SignInAPI';
+import { showMessage } from 'react-native-flash-message';
 
 function ForgotPassWordScreen({ navigation }) {
 
@@ -28,17 +29,21 @@ function ForgotPassWordScreen({ navigation }) {
         return check
     }
 
-    function verifyOTP() {
+    async function verifyOTP() {
         setLoading(true)
         if (checkValidatePhoneNumber()) {
-            generateOTP({ phoneNumber }).then(req => {
-                // console.log(req)
+            try {
+                await generateOTP({ phoneNumber })
                 navigation.push("OTPScreen", { phoneNumber, type: 2 })
                 setLoading(false)
-            }).catch(err => {
-                console.error(err)
+            } catch (error) {
+                showMessage({
+                    message: "Thông Báo !",
+                    description: error.message,
+                    type: 'danger'
+                })
                 setLoading(false)
-            })
+            }
         } else {
             setLoading(false)
         }
@@ -61,6 +66,9 @@ function ForgotPassWordScreen({ navigation }) {
                     onChangeText={setPhoneNumber}
                     value={phoneNumber}
                     errorMessage={errorMessage}
+                    style={{
+                        fontSize: 16,
+                    }}
                     onChange={() => { setErrorMessage("") }}
                 />
                 <Button
