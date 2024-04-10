@@ -1,6 +1,5 @@
 import React from 'react'
 import { Button, Clipboard, StyleSheet, View } from 'react-native';
-import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'

@@ -2,7 +2,13 @@ import React from 'react'
 import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 
-function ChatSingle({ chat }) {
+function ChatSingle({ chatBox, userInformation }) {
+    // console.log(chatBox)
+    // console.log(userInformation)
+    // React.useEffect(() => {
+    //     const userReciever = (chatBox.user1_id === userInformation.id) ? chatBox.user2_id : chatBox.user2_id
+
+    // })
 
     return (
         <View
@@ -19,12 +25,12 @@ function ChatSingle({ chat }) {
             <Avatar
                 size={60}
                 rounded
-                source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
+                source={{ uri: userInformation.avatarUrl }}
             />
             <View style={{
                 marginLeft: 15
             }}>
-                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '500' }}>Ngô Thiên Phú</Text>
+                <Text style={{ fontSize: 16, marginBottom: 3, fontWeight: '500' }}>Ngo Thien Phu</Text>
                 <Text style={{ fontSize: 14, color: "gray" }}>Mai đi chơi nha</Text>
             </View>
         </View>

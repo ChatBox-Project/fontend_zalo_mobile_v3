@@ -51,6 +51,15 @@ function GetUserInformation(token) {
     })
 }
 
+function GetUserInformationById(userId, token) {
+    const getUserInformationById = `http://localhost:3333/api/users/${userId}`
+    return axios.get(getUserInformationById, {
+        headers: {
+            token
+        },
+    })
+}
+
 function UpdateUserProfile(token, data) {
     return axios.patch(updateUser, data, {
         headers: {
@@ -91,5 +100,6 @@ export {
     UpdateUserProfile,
     GetUserInformation,
     ChangePasswordForgot,
-    ChangePassword
+    ChangePassword,
+    GetUserInformationById
 }
