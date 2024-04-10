@@ -5,8 +5,8 @@ import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 import { useFocusEffect } from "@react-navigation/native";
-import { getTokenAccess, getUserInformation } from "../../store/MyStore";
-import { GetAccountInformation } from "../../api/SignInAPI";
+import { getTokenAccess } from "../../store/MyStore";
+import { GetAccountInformation, GetUserInformation } from "../../api/SignInAPI";
 
 function IndividualScreen({ navigation }) {
 
@@ -20,28 +20,41 @@ function IndividualScreen({ navigation }) {
   useFocusEffect(
     React.useCallback(() => {
       getUserInformation()
-        .then(user => {
-          setUser(user)
-          // console.log(user)
-        })
     }, [])
   );
 
-  function ChangePassword() {
-    getTokenAccess()
-      .then(tokenAccess => {
-        // console.log(tokenAccess)
-        GetAccountInformation(tokenAccess)
-          .then(accountInformation => {
-            // console.log(accountInformation.data)
-            const phoneNumber = accountInformation.data.metadata.account.phoneNumber
-            navigation.push("ChangePasswordScreenAfterLogin", { phoneNumber })
-          }).catch(err => {
-            console.log(err)
-          })
-      }).catch(err => {
-        console.log(err)
+
+  async function getUserInformation() {
+    try {
+      const tokenAccess = await getTokenAccess()
+      const reqUserInformation = await GetUserInformation(tokenAccess)
+      const userInformation = reqUserInformation.data.metadata.user
+      setUser(userInformation)
+    } catch (error) {
+      console.error(error)
+      showMessage({
+        message: "Thông Báo !",
+        description: err.message,
+        type: "danger"
       })
+    }
+  }
+
+  async function ChangePassword() {
+    try {
+      const tokenAccess = await getTokenAccess()
+      const reqAccountInformation = await GetAccountInformation(tokenAccess)
+      const phoneNumber = reqAccountInformation.data.metadata.account.phoneNumber
+      navigation.push("ChangePasswordScreenAfterLogin", { phoneNumber })
+    } catch (error) {
+      console.error(error)
+      showMessage({
+        message: "Thông Báo !",
+        description: err.message,
+        type: "danger"
+      })
+    }
+
   }
 
 
