@@ -19,6 +19,7 @@ function SettingScreen({ navigation }) {
     try {
 
       removeKey("tokenAccess")
+      removeKey("user")
       showMessage({
         message: "Đăng xuất thành công !",
         type: "success",
@@ -26,10 +27,9 @@ function SettingScreen({ navigation }) {
       navigation.push("LoginAndSignIn")
 
     } catch (error) {
-
       console.error(error)
       showMessage({
-        message: err.message,
+        message: error.message,
         type: "danger",
       });
 
