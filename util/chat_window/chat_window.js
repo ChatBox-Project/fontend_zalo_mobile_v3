@@ -6,48 +6,59 @@ import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { getTokenAccess, getUserInformation } from '../../store/MyStore';
 import { CreateMessage, GetAllMessage } from '../../api/ChatBoxAPI';
+import { showMessage } from 'react-native-flash-message';
 
 function ChatWindow({ navigation, route }) {
 
-    // console.log(route.params)
     const chatBox = route.params.chatBox
-    // console.log(chatBox.id)
+
     const [userSender, setUserSender] = React.useState({})
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
 
     React.useEffect(() => {
-        getTokenAccess()
-            .then(tokenAccess => {
-                getUserInformation(tokenAccess)
-                    .then(user => {
-                        setUserSender(user)
-                        const id = setInterval(() => {
-                            // console.log(1)
-                            GetAllMessage(chatBox.id, tokenAccess)
-                                .then(messages => {
-                                    setMessages(convertFormartMessage(messages.data))
-                                    // console.log("get all message success")
-                                    // console.log(messages.data)
-                                }).catch(err => {
-                                    console.log(err)
-                                })
-                        }, 2000);
-
-                        return () => {
-                            clearInterval(id)
-                        }
-                    })
-            })
+        navigation.setOptions({
+            headerTitle: "Ngô Thiên Phú"
+        });
     }, [])
+
+    React.useEffect(() => {
+        getAllMessage()
+    }, [])
+
+    async function getAllMessage() {
+        try {
+            const tokenAccess = await getTokenAccess()
+            const userInformation = await getUserInformation(tokenAccess)
+            setUserSender(userInformation)
+            const id = setInterval(() => {
+                const runGetAllMessage = async () => {
+                    const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
+                    // console.log(reqMessages.data)
+                    setMessages(
+                        convertFormartMessage(reqMessages.data)
+                    )
+                }
+                runGetAllMessage()
+            }, 2000);
+
+            return () => {
+                clearInterval(id)
+            }
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: err.message,
+                type: "danger"
+            })
+        }
+
+    }
 
     function convertFormartMessage(messages) {
         return messages.map(message => {
-            // console.log(userSender.id)
-            // console.log(message.sender_id)
-            // console.log(message)
-            console.log(userSender.id === message.senderId)
             if (userSender.id === message.senderId) {
                 return {
                     _id: message.id,
@@ -57,20 +68,17 @@ function ChatWindow({ navigation, route }) {
                         _id: message.senderId,
                     },
                 }
-            } else {
-                return {
-                    _id: message.id,
-                    text: message.contentMessage,
-                    createdAt: message.createDateTime,
-                    user: {
-                        _id: message.senderId,
-                        name: 'React Native',
-                        avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
-                    },
-                }
-
             }
-
+            return {
+                _id: message.id,
+                text: message.contentMessage,
+                createdAt: message.createDateTime,
+                user: {
+                    _id: message.senderId,
+                    name: 'React Native',
+                    avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
+                },
+            }
         })
     }
 
@@ -106,29 +114,24 @@ function ChatWindow({ navigation, route }) {
         },
     ];
 
-    React.useEffect(() => {
-        navigation.setOptions({
-            headerTitle: "Ngô Thiên Phú"
-        });
-    }, [])
 
-
-    function createMessage(message) {
+    async function sendMessageText(message) {
         const messageSend = {
             "messageType": "string",
             "contentMessage": message
         }
-
-        getTokenAccess()
-            .then(tokenAccess => {
-                CreateMessage(chatBox.id, tokenAccess, messageSend)
-                    .then(req => {
-                        console.log("send ok !")
-                        // console.log(req)
-                    }).catch(err => {
-                        console.log(err)
-                    })
+        try {
+            const tokenAccess = await getTokenAccess()
+            await CreateMessage(chatBox.id, tokenAccess, messageSend)
+            console.log("send text ok !")
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: err.message,
+                type: "danger"
             })
+        }
     }
 
 
@@ -140,7 +143,7 @@ function ChatWindow({ navigation, route }) {
                     (messages) => {
                         // console.log(messages)
                         onSend(messages)
-                        createMessage(messages[0].text)
+                        sendMessageText(messages[0].text)
                     }
                 }
                 user={{
