@@ -1,12 +1,8 @@
 import React from "react";
 import {
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View,
-  Image,
 } from "react-native";
-import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { ScrollView } from "react-native-virtualized-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ListItem } from "react-native-elements";
@@ -19,20 +15,25 @@ function SettingScreen({ navigation }) {
     { title: "Đăng xuất", icon: <Icon name="logout" size={30} color={"red"} />, click: logoutUser }
   ])
 
-  function logoutUser() {
-    removeKey("tokenAccess")
-      .then(req => {
-        showMessage({
-          message: "Đăng xuất thành công !",
-          type: "success",
-        });
-        navigation.push("LoginAndSignIn")
-      }).catch(err => {
-        showMessage({
-          message: err,
-          type: "danger",
-        });
-      })
+  async function logoutUser() {
+    try {
+
+      removeKey("tokenAccess")
+      showMessage({
+        message: "Đăng xuất thành công !",
+        type: "success",
+      });
+      navigation.push("LoginAndSignIn")
+
+    } catch (error) {
+
+      console.error(error)
+      showMessage({
+        message: err.message,
+        type: "danger",
+      });
+
+    }
   }
 
   return (
