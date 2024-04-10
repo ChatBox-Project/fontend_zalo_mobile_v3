@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, StyleSheet, View } from 'react-native';
+import { Button, Clipboard, StyleSheet, View } from 'react-native';
 import { GRAY } from '../../screen/colors/Colors';
 import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
@@ -118,10 +118,12 @@ function ChatWindow({ navigation, route }) {
 
 
     async function sendMessageText(message) {
+
         const messageSend = {
             "messageType": "string",
             "contentMessage": message
         }
+
         try {
             const tokenAccess = await getTokenAccess()
             await CreateMessage(chatBox.id, tokenAccess, messageSend)
@@ -130,9 +132,34 @@ function ChatWindow({ navigation, route }) {
             console.error(error)
             showMessage({
                 message: "Thông Báo !",
-                description: err.message,
+                description: error.message,
                 type: "danger"
             })
+        }
+    }
+
+    async function onLongPressChat(context, message) {
+        if (message.text) {
+            const options = [
+                'Copy Text',
+                'Remove',
+                'Cancel',
+            ];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex,
+            },
+                (buttonIndex) => {
+                    switch (buttonIndex) {
+                        case 0:
+                            Clipboard.setString(message.text);
+                            break;
+                        case 1:
+                            console.log("đã remove")
+                            break;
+                    }
+                });
         }
     }
 
@@ -140,6 +167,7 @@ function ChatWindow({ navigation, route }) {
     return (
         <View style={styles.container} >
             <GiftedChat
+                alwaysShowSend={true}
                 messages={messages}
                 onSend={
                     (messages) => {
@@ -148,6 +176,9 @@ function ChatWindow({ navigation, route }) {
                         sendMessageText(messages[0].text)
                     }
                 }
+                onLongPress={(context, message) => {
+                    onLongPressChat(context, message)
+                }}
                 user={{
                     _id: userSender.id,
                 }}

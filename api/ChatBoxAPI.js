@@ -28,8 +28,18 @@ function GetAllMessage(idChatBox, tokenAccess) {
     })
 }
 
+function RemoveMessage(boxChatId, messageId, tokenAccess) {
+    const removeMessage = `http://10.0.2.2:3333/api/chat/${boxChatId}/messages/${messageId}`
+    return axios.delete(removeMessage, {
+        headers: {
+            token: tokenAccess
+        }
+    })
+}
+
 export {
     GetAllChatBox,
     CreateMessage,
-    GetAllMessage
+    GetAllMessage,
+    RemoveMessage
 }
