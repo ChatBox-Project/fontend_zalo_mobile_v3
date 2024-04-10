@@ -67,42 +67,32 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
     }
 
 
-    const updatePassword = () => {
-        setLoading(true)
+    const updatePassword = async () => {
         if (validateInput()) {
-            Login({ phoneNumber, password: passwordNow })
-                .then(req => {
-                    const token = req.data.metadata.token
-                    ChangePassword(token, passwordNew)
-                        .then(req => {
-                            removeKey("tokenAccess")
-                                .then(req => {
-                                    showMessage({
-                                        message: "Thông Báo !",
-                                        description: "Đổi mật khẩu thành công, vui lòng đăng nhập lại",
-                                        type: "success"
-                                    })
-                                    ressetInput()
-                                    setLoading(false)
-                                    navigation.push("LoginAndSignIn")
-                                }).catch(err => {
-                                    console.error(err)
-                                })
-                        }).catch(err => {
-                            console.log(err)
-                            ressetInput()
-                            setLoading(false)
-                        })
-                }).catch(err => {
-                    console.log(err)
-                    showMessage({
-                        message: "Thông Báo !",
-                        description: "CẬP NHẬT THẤT BẠI",
-                        type: "danger"
-                    })
-                    ressetInput()
-                    setLoading(false)
+            try {
+                setLoading(true)
+                const reqLogin = await Login({ phoneNumber, password: passwordNow })
+                const tokenAccess = reqLogin.data.metadata.token
+                await ChangePassword(tokenAccess, passwordNew)
+                removeKey("tokenAccess")
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Đổi mật khẩu thành công, vui lòng đăng nhập lại",
+                    type: "success"
                 })
+                ressetInput()
+                setLoading(false)
+                navigation.push("LoginAndSignIn")
+            } catch (error) {
+                console.error(error)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "CẬP NHẬT THẤT BẠI VUI LÒNG THỬ LẠI SAU",
+                    type: "danger"
+                })
+                ressetInput()
+                setLoading(false)
+            }
         } else {
             setLoading(false)
         }
