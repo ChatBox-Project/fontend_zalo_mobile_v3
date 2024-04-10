@@ -17,7 +17,6 @@ function ChatWindow({ navigation, route }) {
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
 
-
     React.useEffect(() => {
         getTokenAccess()
             .then(tokenAccess => {

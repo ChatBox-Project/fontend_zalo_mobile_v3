@@ -14,25 +14,31 @@ function LoginAndSignInScreen({ navigation }) {
 
     useFocusEffect(
         React.useCallback(() => {
-            getTokenAccess()
-                .then(token => {
-                    if (token !== undefined) {
-                        GetUserInformation(token)
-                            .then(req => {
-                                const user = req?.data?.metadata?.user
-                                // console.log(user)
-                                saveUserInformation(user)
-                                setIsUser(true)
-                            })
-                            .catch(err => {
-                                setIsUser(false)
-                            })
-                    } else {
-                        setIsUser(false)
-                    }
-                })
+            checkLogin()
         }, [])
     );
+
+    async function checkLogin() {
+        try {
+            const tokenAccess = await getTokenAccess()
+            if (tokenAccess !== undefined) {
+                const userInformation = await GetUserInformation(tokenAccess)
+                const user = userInformation?.data?.metadata?.user
+                saveUserInformation(user)
+                setIsUser(true)
+            } else {
+                setIsUser(false)
+            }
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger"
+            })
+            setIsUser(false)
+        }
+    }
 
     React.useEffect(() => {
         if (isUser === true) {
@@ -40,7 +46,7 @@ function LoginAndSignInScreen({ navigation }) {
         }
     }, [isUser]);
 
-    if (!isUser) {
+    if (isUser === false) {
         return (
             <View style={styles.container}>
                 <Image
