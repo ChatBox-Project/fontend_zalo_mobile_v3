@@ -81,6 +81,7 @@ function AvatarScreen({ navigation, route }) {
             });
             navigation.push("Index")
         } catch (error) {
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
                 description: error.message,
@@ -99,6 +100,7 @@ function AvatarScreen({ navigation, route }) {
                 const data = await upateImageToS3(params)
                 await startUpdateProfile(data)
             } catch (error) {
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
                     description: error.message,
@@ -106,15 +108,8 @@ function AvatarScreen({ navigation, route }) {
                 });
                 setLoading(false)
             }
-            // convertBase64ToBuffer(image.uri).then(buffer => {
-            //     const params = createParams(buffer)
-            //     upateImageToS3(params)
-            //         .then(data => {
-            //             startUpdateProfile(data)
-            //         })
-            // })
         } else {
-            startUpdateProfile("")
+            await startUpdateProfile("")
         }
     }
 

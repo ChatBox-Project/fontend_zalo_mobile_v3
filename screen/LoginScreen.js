@@ -51,9 +51,10 @@ function LoginScreen({ navigation }) {
             const reqAccountInformation = await GetAccountInformation(tokenAccess)
             // console.log(reqAccountInformation)
             const verify = reqAccountInformation.data.metadata.account.verified
+            const isUser = reqAccountInformation.data.metadata.account.userId
             const accountInformation = reqAccountInformation.data.metadata.account
             // console.log(verify)
-            if (verify === false) {
+            if (verify === false || isUser === null) {
                 checkRegisterOTP({ tokenAccess, accountInformation })
                 setLoading(false)
                 ressetInput()
