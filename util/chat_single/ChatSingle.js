@@ -12,10 +12,11 @@ function ChatSingle({ chatBox, userInformation }) {
 
     React.useEffect(() => {
         const startGetUserInformationById = async () => {
-            const userReciever = (chatBox.user1_id === userInformation.id) ? chatBox.user2_id : chatBox.user1_id
+            const userReciever = (userInformation.id === chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
             const tokenAccess = await getTokenAccess()
             const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
             setUserReciverInformation(reqUserReciever.data.metadata.user)
+            // console.log(reqUserReciever.data.metadata.user)
         }
 
         startGetUserInformationById()

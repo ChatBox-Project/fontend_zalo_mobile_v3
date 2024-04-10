@@ -13,8 +13,8 @@ function ChatScreen({ navigation }) {
     React.useEffect(() => {
         const startGetUserInformation = async () => {
             const tokenAccess = await getTokenAccess()
-            const userInformation = await getUserInformation(tokenAccess)
-            setUserInformation(userInformation)
+            const userInformationNew = await getUserInformation(tokenAccess)
+            setUserInformation(userInformationNew)
         }
         startGetUserInformation()
         getAllChatBox()
