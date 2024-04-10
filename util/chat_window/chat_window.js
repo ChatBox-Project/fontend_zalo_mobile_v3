@@ -5,7 +5,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { BottomSheet, ListItem } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { getTokenAccess, getUserInformation } from '../../store/MyStore';
-import { CreateMessage, GetAllMessage } from '../../api/ChatBoxAPI';
+import { CreateMessage, GetAllMessage, RemoveMessage } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
 
 function ChatWindow({ navigation, route }) {
@@ -138,6 +138,24 @@ function ChatWindow({ navigation, route }) {
         }
     }
 
+    async function removeMessage(messageId) {
+        try {
+            const tokenAccess = await getTokenAccess()
+            await RemoveMessage(chatBox.id, messageId, tokenAccess)
+            showMessage({
+                message: "ĐÃ XÓA TIN NHẮN",
+                type: "success"
+            })
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger"
+            })
+        }
+    }
+
     async function onLongPressChat(context, message) {
         if (message.text) {
             const options = [
@@ -156,7 +174,7 @@ function ChatWindow({ navigation, route }) {
                             Clipboard.setString(message.text);
                             break;
                         case 1:
-                            console.log("đã remove")
+                            removeMessage(message._id)
                             break;
                     }
                 });
