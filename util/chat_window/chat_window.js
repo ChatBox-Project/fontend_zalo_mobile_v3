@@ -1,10 +1,10 @@
 import React from 'react'
-import { Button, Clipboard, StyleSheet, View } from 'react-native';
+import { Clipboard, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import { BottomSheet, ListItem } from 'react-native-elements';
+import { BottomSheet, ListItem, Input, Button } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
-import { getTokenAccess, getUserInformation } from '../../store/MyStore';
-import { CreateMessage, GetAllMessage, RemoveMessage } from '../../api/ChatBoxAPI';
+import { getTokenAccess } from '../../store/MyStore';
+import { CreateMessage, GetAllMessage, RemoveMessage, UpdateMessage } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
 import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
 
@@ -17,6 +17,9 @@ function ChatWindow({ navigation, route }) {
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
+    const [modalVisible, setModalVisible] = React.useState(false);
+    const [messageUpdate, setMessageUpdate] = React.useState("")
+    const [messageUpdateId, setMessageUpdateId] = React.useState("")
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -167,23 +170,30 @@ function ChatWindow({ navigation, route }) {
         }
     }
 
-    // async function updateMessage(messageId) {
-    //     try {
-    //         const tokenAccess = await getTokenAccess()
-    //         await RemoveMessage(chatBox.id, messageId, tokenAccess)
-    //         showMessage({
-    //             message: "ĐÃ XÓA TIN NHẮN",
-    //             type: "success"
-    //         })
-    //     } catch (error) {
-    //         console.error(error)
-    //         showMessage({
-    //             message: "Thông Báo !",
-    //             description: error.message,
-    //             type: "danger"
-    //         })
-    //     }
-    // }
+    function showModal(messageId) {
+        setModalVisible(true)
+        setMessageUpdateId(messageId)
+    }
+
+    async function startUpdateMessage(messageId) {
+        try {
+            const tokenAccess = await getTokenAccess()
+            await UpdateMessage(chatBox.id, messageId, tokenAccess, messageUpdate)
+            showMessage({
+                message: "CẬP NHẬT TIN NHẮN THÀNH CÔNG",
+                type: "success"
+            })
+            setMessageUpdate("")
+        } catch (error) {
+            console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger"
+            })
+            setMessageUpdate("")
+        }
+    }
 
     async function onLongPressChat(context, message) {
         if (message.text) {
@@ -205,6 +215,9 @@ function ChatWindow({ navigation, route }) {
                             break;
                         case 1:
                             removeMessage(message._id)
+                            break;
+                        case 2:
+                            showModal(message._id)
                             break;
                     }
                 });
@@ -249,6 +262,54 @@ function ChatWindow({ navigation, route }) {
                 ))}
             </BottomSheet>
 
+            {/* thanh cập nhật thông tin message */}
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    Alert.alert('Modal has been closed.');
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                        <Text style={styles.modalText}>Nhập nội dung cần cập nhật</Text>
+                        <Input
+                            placeholder='Tin nhắn mới'
+                            style={{ fontSize: 16 }}
+                            onChangeText={setMessageUpdate}
+                            value={messageUpdate}
+                        />
+                        <View style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                            width: "100%"
+                        }}>
+                            <Pressable
+                                style={[styles.button, styles.buttonClose]}
+                                onPress={() => {
+                                    startUpdateMessage(messageUpdateId, messageUpdate)
+                                    setModalVisible(!modalVisible)
+                                }}>
+                                <Text style={styles.textStyle}>Cập nhật</Text>
+                            </Pressable>
+                            <Button
+                                title='Hủy'
+                                buttonStyle={{
+                                    borderRadius: 20,
+                                    padding: 10,
+                                    elevation: 2,
+                                    backgroundColor: "gray"
+                                }}
+                                onPress={() => {
+                                    setModalVisible(!modalVisible)
+                                }}>
+                            </Button>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     )
 }
@@ -259,6 +320,48 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'column',
         justifyContent: 'space-between',
+    },
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: 22,
+    },
+    modalView: {
+        width: "80%",
+        margin: 20,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 35,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: {
+            width: 0,
+            height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5,
+    },
+    button: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+    },
+    buttonOpen: {
+        backgroundColor: '#F194FF',
+    },
+    buttonClose: {
+        backgroundColor: '#2196F3',
+    },
+    textStyle: {
+        color: 'white',
+        fontWeight: 'bold',
+        textAlign: 'center',
+    },
+    modalText: {
+        marginBottom: 15,
+        textAlign: 'center',
     },
 });
 

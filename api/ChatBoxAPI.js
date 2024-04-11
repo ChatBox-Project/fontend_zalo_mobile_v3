@@ -38,8 +38,12 @@ function RemoveMessage(boxChatId, messageId, tokenAccess) {
 }
 
 function UpdateMessage(boxChatId, messageId, tokenAccess, message) {
-    const removeMessage = `http://10.0.2.2:3333/api/chat/${boxChatId}/messages/${messageId}`
-    return axios.delete(removeMessage, message, {
+    const messageNew = {
+        "messageType": "string",
+        "contentMessage": `${message}`
+    }
+    const updateMessage = `http://10.0.2.2:3333/api/chat/${boxChatId}/messages/${messageId}`
+    return axios.put(updateMessage, messageNew, {
         headers: {
             token: tokenAccess
         },
