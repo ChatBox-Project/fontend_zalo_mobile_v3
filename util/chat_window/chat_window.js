@@ -20,7 +20,7 @@ function ChatWindow({ navigation, route }) {
 
     React.useEffect(() => {
         navigation.setOptions({
-            headerTitle: `${userRecieverIformation.name}`
+            headerTitle: `${userRecieverIformation?.name ? userRecieverIformation?.name : ""}`
         });
 
     }, [userRecieverIformation])
