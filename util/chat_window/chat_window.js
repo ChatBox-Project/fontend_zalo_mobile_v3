@@ -13,10 +13,10 @@ function ChatWindow({ navigation, route }) {
     const chatBox = route.params.chatBox
 
     const [userSender, setUserSender] = React.useState({})
+    const [userRecieverIformation, setUserReciverInformation] = React.useState({})
     const [image, setImage] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
-    const [userRecieverIformation, setUserReciverInformation] = React.useState({})
 
     React.useEffect(() => {
         navigation.setOptions({
@@ -27,51 +27,51 @@ function ChatWindow({ navigation, route }) {
 
     React.useEffect(() => {
         const startGetUserReciverInformation = async () => {
-            const tokenAccess = await getTokenAccess()
-            const reqUserInformationNew = await GetUserInformation(tokenAccess)
-            const userInformation = reqUserInformationNew.data.metadata.user
-            var userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
-            const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
-            setUserReciverInformation(reqUserReciever.data.metadata.user)
+            try {
+                const tokenAccess = await getTokenAccess()
+                const reqUserInformationNew = await GetUserInformation(tokenAccess)
+                const userInformation = reqUserInformationNew.data.metadata.user
+                setUserSender(userInformation)
+                const userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
+                const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
+                setUserReciverInformation(reqUserReciever.data.metadata.user)
+                // console.log(reqUserReciever.data.metadata.user)
+
+
+                // lấy tất cả message
+                if (tokenAccess) {
+                    const id = setInterval(() => {
+                        const runGetAllMessage = async () => {
+                            const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
+                            // console.log(reqMessages.data)
+                            setMessages(
+                                convertFormartMessage(reqMessages.data)
+                            )
+                        }
+                        runGetAllMessage()
+                    }, 2000);
+
+                    return () => {
+                        clearInterval(id)
+                    }
+                }
+            } catch (error) {
+                console.error(error)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: err.message,
+                    type: "danger"
+                })
+            }
+
         }
         startGetUserReciverInformation()
-        getAllMessage()
     }, [])
 
-    async function getAllMessage() {
-        try {
-            const tokenAccess = await getTokenAccess()
-            const userInformation = await getUserInformation(tokenAccess)
-            setUserSender(userInformation)
-            if (tokenAccess) {
-                const id = setInterval(() => {
-                    const runGetAllMessage = async () => {
-                        const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
-                        // console.log(reqMessages.data)
-                        setMessages(
-                            convertFormartMessage(reqMessages.data)
-                        )
-                    }
-                    runGetAllMessage()
-                }, 2000);
-
-                return () => {
-                    clearInterval(id)
-                }
-            }
-        } catch (error) {
-            console.error(error)
-            showMessage({
-                message: "Thông Báo !",
-                description: err.message,
-                type: "danger"
-            })
-        }
-
-    }
-
     function convertFormartMessage(messages) {
+
         return messages.map(message => {
+
             if (userSender.id === message.senderId) {
                 return {
                     _id: message.id,
