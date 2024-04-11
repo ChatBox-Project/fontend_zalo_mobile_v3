@@ -150,22 +150,8 @@ export default function App() {
           component={SearchScreen}
           options={({ navigation, route }) => ({
             headerTitle: "",
-            headerLeft: () => {
-              return (
-                <TextInput
-                  placeholder='tên, số điện thoại,...'
-                  style={{
-                    // borderWidth: 1,
-                    backgroundColor: "white",
-                    width: 300,
-                    borderRadius: 5,
-                    paddingHorizontal: 8,
-                    paddingVertical: 4
-                  }}
-                />
-              )
-            },
-            headerBackVisible: true,
+            headerShown: false,
+            // headerBackVisible: true,
           })}
         />
         <Stack.Screen
