@@ -35,11 +35,23 @@ function ChatSingle({ chatBox }) {
                 borderBottomWidth: 0.2,
                 borderBottomColor: "#cccccc"
             }}>
-            <Avatar
-                size={60}
-                rounded
-                source={{ uri: userRecieverIformation.avatarUrl }}
-            />
+            {
+                userRecieverIformation?.avatarUrl ?
+                    <Avatar
+                        size={60}
+                        rounded
+                        source={{ uri: userRecieverIformation.avatarUrl }}
+                    />
+                    :
+                    <Avatar
+                        size={60}
+                        rounded
+                        icon={{ name: 'user', type: 'font-awesome' }}
+                        containerStyle={{
+                            backgroundColor: "#cccccc"
+                        }}
+                    />
+            }
             <View style={{
                 marginLeft: 15
             }}>

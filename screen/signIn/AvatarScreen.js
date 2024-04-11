@@ -92,9 +92,9 @@ function AvatarScreen({ navigation, route }) {
     }
 
     async function updateAccountInformationNew(pass) {
+        setLoading(true)
         if (image && pass === false) {
             try {
-                setLoading(true)
                 const buffer = await convertBase64ToBuffer(image.uri)
                 const params = createParams(buffer)
                 const data = await upateImageToS3(params)
