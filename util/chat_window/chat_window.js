@@ -7,6 +7,8 @@ import { getTokenAccess } from '../../store/MyStore';
 import { CreateMessage, GetAllMessage, RemoveMessage, UpdateMessage } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
 import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
+import Icon from 'react-native-vector-icons/Entypo';
+import { BLUE } from '../../screen/colors/Colors';
 
 function ChatWindow({ navigation, route }) {
 
@@ -124,7 +126,7 @@ function ChatWindow({ navigation, route }) {
         },
         {
             title: 'Cancel',
-            containerStyle: { backgroundColor: 'red' },
+            containerStyle: { backgroundColor: BLUE },
             titleStyle: { color: 'white' },
             onPress: () => setIsVisible(false),
         },
@@ -245,8 +247,10 @@ function ChatWindow({ navigation, route }) {
                 }}
             />
             <Button
-                title='Tùy chọn'
                 onPress={() => { setIsVisible(true) }}
+                icon={
+                    <Icon name="dots-three-horizontal" color="white" size={15} />
+                }
             />
             <BottomSheet modalProps={{}} isVisible={isVisible}>
                 {list.map((l, i) => (
