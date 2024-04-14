@@ -27,9 +27,9 @@ function SettingScreen({ navigation }) {
       navigation.push("LoginAndSignIn")
 
     } catch (error) {
-      console.error(error)
+      console.log(error)
       showMessage({
-        message: error.message,
+        message: error.response.data.message,
         type: "danger",
       });
 

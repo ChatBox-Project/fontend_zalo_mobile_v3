@@ -38,10 +38,10 @@ function PersonalScreen({ navigation }) {
       const userInformation = reqUserInformation.data.metadata.user
       setUser(userInformation)
     } catch (error) {
-      console.error(error)
+      console.log(error)
       showMessage({
         message: "Thông Báo !",
-        description: err.message,
+        description: error.response.data.message,
         type: "danger"
       })
     }

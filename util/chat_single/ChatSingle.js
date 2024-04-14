@@ -3,6 +3,7 @@ import { Text, View } from 'react-native';
 import { Avatar } from 'react-native-elements';
 import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
 import { getTokenAccess } from '../../store/MyStore';
+import { showMessage } from 'react-native-flash-message';
 
 function ChatSingle({ chatBox }) {
     // console.log(chatBox)
@@ -13,12 +14,21 @@ function ChatSingle({ chatBox }) {
 
     React.useEffect(() => {
         const startGetUserReciverInformation = async () => {
-            const tokenAccess = await getTokenAccess()
-            const reqUserInformationNew = await GetUserInformation(tokenAccess)
-            const userInformation = reqUserInformationNew.data.metadata.user
-            var userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
-            const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
-            setUserReciverInformation(reqUserReciever.data.metadata.user)
+            try {
+                const tokenAccess = await getTokenAccess()
+                const reqUserInformationNew = await GetUserInformation(tokenAccess)
+                const userInformation = reqUserInformationNew.data.metadata.user
+                var userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
+                const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
+                setUserReciverInformation(reqUserReciever.data.metadata.user)
+            } catch (error) {
+                console.log(error)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: error.response.data.message,
+                    type: 'danger'
+                })
+            }
         }
         startGetUserReciverInformation()
     }, [])

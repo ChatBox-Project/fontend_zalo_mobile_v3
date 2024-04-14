@@ -81,9 +81,10 @@ function SignInScreen1({ navigation }) {
             ressetTextInput()
             setLoading(false)
         } catch (error) {
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger",
             });
             ressetTextInput()

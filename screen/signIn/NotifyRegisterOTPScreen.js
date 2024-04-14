@@ -36,10 +36,10 @@ function NotifyRegisterOTPScreen({ navigation, route }) {
                 setLoading(false)
             }
         } catch (error) {
-            console.error(err)
+            console.log(err)
             showMessage({
                 message: "Thông Báo !",
-                description: err.message,
+                description: error.response.data.message,
                 type: "danger"
             })
             setLoading(false)

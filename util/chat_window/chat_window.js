@@ -62,10 +62,10 @@ function ChatWindow({ navigation, route }) {
                     }
                 }
             } catch (error) {
-                console.error(error)
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: err.message,
+                    description: error.response.data.message,
                     type: "danger"
                 })
             }
@@ -125,10 +125,10 @@ function ChatWindow({ navigation, route }) {
             await CreateMessage(chatBox.id, tokenAccess, messageSend)
             console.log("send text ok !")
         } catch (error) {
-            console.error(error)
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger"
             })
         }
@@ -148,7 +148,7 @@ function ChatWindow({ navigation, route }) {
             console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger",
             });
         }
@@ -163,10 +163,10 @@ function ChatWindow({ navigation, route }) {
                 type: "success"
             })
         } catch (error) {
-            console.error(error)
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger"
             })
         }
@@ -187,10 +187,10 @@ function ChatWindow({ navigation, route }) {
             })
             setMessageUpdate("")
         } catch (error) {
-            console.error(error)
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger"
             })
             setMessageUpdate("")
@@ -225,7 +225,6 @@ function ChatWindow({ navigation, route }) {
                 });
         }
     }
-
 
     return (
         <View style={styles.container} >

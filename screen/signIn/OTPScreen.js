@@ -40,9 +40,10 @@ function OTPScreen({ navigation, route }) {
                 });
                 setTime(30)
             } catch (error) {
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: err.message,
+                    description: error.response.data.message,
                     type: "danger",
                 });
             }
@@ -72,9 +73,10 @@ function OTPScreen({ navigation, route }) {
                 }
                 setLoading(false)
             } catch (error) {
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: error.message,
+                    description: error.response.data.message,
                     type: "danger",
                 });
                 setLoading(false)

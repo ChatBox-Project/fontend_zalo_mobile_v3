@@ -61,10 +61,10 @@ function ChangePassWordScreen({ navigation, route }) {
                 navigation.push("LoginAndSignIn")
                 ressetInput()
             } catch (error) {
-                console.error(error)
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: error.message,
+                    description: error.response.data.message,
                     type: "danger"
                 })
                 setLoading(false)

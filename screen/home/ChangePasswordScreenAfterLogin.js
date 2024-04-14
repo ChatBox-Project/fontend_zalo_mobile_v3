@@ -84,7 +84,7 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
                 setLoading(false)
                 navigation.push("LoginAndSignIn")
             } catch (error) {
-                console.error(error)
+                console.log(error)
                 showMessage({
                     message: "Thông Báo !",
                     description: "CẬP NHẬT THẤT BẠI VUI LÒNG THỬ LẠI SAU",

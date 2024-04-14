@@ -69,7 +69,7 @@ function AvatarScreen({ navigation, route }) {
             console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.message,
+                description: error.response.data.message,
                 type: "danger",
             });
             setLoading(false)
@@ -86,7 +86,7 @@ function AvatarScreen({ navigation, route }) {
                 console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: error.message,
+                    description: error.response.data.message,
                     type: "danger",
                 });
                 setLoading(false)

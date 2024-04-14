@@ -31,10 +31,10 @@ function IndividualScreen({ navigation }) {
       const userInformation = reqUserInformation.data.metadata.user
       setUser(userInformation)
     } catch (error) {
-      console.error(error)
+      console.log(error)
       showMessage({
         message: "Thông Báo !",
-        description: err.message,
+        description: error.response.data.message,
         type: "danger"
       })
     }
@@ -47,10 +47,10 @@ function IndividualScreen({ navigation }) {
       const phoneNumber = reqAccountInformation.data.metadata.account.phoneNumber
       navigation.push("ChangePasswordScreenAfterLogin", { phoneNumber })
     } catch (error) {
-      console.error(error)
+      console.log(error)
       showMessage({
         message: "Thông Báo !",
-        description: err.message,
+        description: error.response.data.message,
         type: "danger"
       })
     }
