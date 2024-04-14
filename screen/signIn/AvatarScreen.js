@@ -66,12 +66,9 @@ function AvatarScreen({ navigation, route }) {
 
             await UpdateAllProfile(tokenRegister, newProfile)
             const reqUserInformation = await GetUserInformation(tokenRegister)
-            // console.log(reqUserInformation)
             const userInformation = reqUserInformation.data.metadata.user
             await saveUserInformation(userInformation)
-            // console.log(tokenRegister)
             await saveTokenAccess(tokenRegister)
-            // await removeKey("tokenRegister")
 
             setLoading(false)
             showMessage({

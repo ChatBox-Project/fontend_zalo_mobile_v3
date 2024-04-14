@@ -1,6 +1,6 @@
 import React from 'react'
 import { Clipboard, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from "expo-document-picker";
 import { BottomSheet, ListItem, Input, Button } from 'react-native-elements';
 import { GiftedChat } from 'react-native-gifted-chat'
 import { getTokenAccess } from '../../store/MyStore';
@@ -9,6 +9,9 @@ import { showMessage } from 'react-native-flash-message';
 import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
 import Icon from 'react-native-vector-icons/Entypo';
 import { BLUE } from '../../screen/colors/Colors';
+import { convertBase64ToBuffer, createParams } from '../function/MyFunction';
+import { BUCKET } from '../../config/Config';
+import { upateImageToS3 } from '../../aws/MyAWS';
 
 function ChatWindow({ navigation, route }) {
 
@@ -16,7 +19,7 @@ function ChatWindow({ navigation, route }) {
 
     const [userSender, setUserSender] = React.useState({})
     const [userRecieverIformation, setUserReciverInformation] = React.useState({})
-    const [image, setImage] = React.useState(null);
+    const [file, setFile] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -106,23 +109,26 @@ function ChatWindow({ navigation, route }) {
         )
     }, [])
 
-    const pickImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [4, 3],
-            quality: 1,
-        });
+    const UploadFile = () => {
+        const pickDocument = async () => {
+            let result = await DocumentPicker.getDocumentAsync({});
 
-        if (!result.canceled) {
-            setImage(result.assets[0].uri);
-        }
-    };
+            if (result) {
+                setFile(result.assets[0])
+            }
+        };
+
+        pickDocument()
+    }
 
     const list = [
         {
             title: 'Gửi File',
-            onPress: () => pickImage(),
+            onPress: async () => {
+                console.log("đã gửi file"),
+                    UploadFile()
+                sendMessageFile()
+            },
         },
         {
             title: 'Cancel',
@@ -132,11 +138,10 @@ function ChatWindow({ navigation, route }) {
         },
     ];
 
-
     async function sendMessageText(message) {
 
         const messageSend = {
-            "messageType": "string",
+            "messageType": "text",
             "contentMessage": message
         }
 
@@ -152,6 +157,37 @@ function ChatWindow({ navigation, route }) {
                 type: "danger"
             })
         }
+    }
+
+    async function sendMessageFile() {
+
+        if (file) {
+            try {
+                const params = await createParams(file)
+                const data = await upateImageToS3(params)
+                console.log(data)
+            } catch (error) {
+                console.log(error)
+                showMessage({
+                    message: "Thông Báo !",
+                    description: error.message,
+                    type: "danger",
+                });
+            }
+        }
+
+        // try {
+        //     const tokenAccess = await getTokenAccess()
+        //     await CreateMessage(chatBox.id, tokenAccess, messageSend)
+        //     console.log("send text ok !")
+        // } catch (error) {
+        //     console.error(error)
+        //     showMessage({
+        //         message: "Thông Báo !",
+        //         description: error.message,
+        //         type: "danger"
+        //     })
+        // }
     }
 
     async function removeMessage(messageId) {

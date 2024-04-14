@@ -39,7 +39,7 @@ function RemoveMessage(boxChatId, messageId, tokenAccess) {
 
 function UpdateMessage(boxChatId, messageId, tokenAccess, message) {
     const messageNew = {
-        "messageType": "string",
+        "messageType": "text",
         "contentMessage": `${message}`
     }
     const updateMessage = `http://10.0.2.2:3333/api/chat/${boxChatId}/messages/${messageId}`
