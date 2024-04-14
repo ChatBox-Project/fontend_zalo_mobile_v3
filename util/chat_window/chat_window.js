@@ -9,9 +9,8 @@ import { showMessage } from 'react-native-flash-message';
 import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI';
 import Icon from 'react-native-vector-icons/Entypo';
 import { BLUE } from '../../screen/colors/Colors';
-import { convertBase64ToBuffer, createParams } from '../function/MyFunction';
-import { BUCKET } from '../../config/Config';
 import { upateImageToS3 } from '../../aws/MyAWS';
+import { getEndPoint, getMessageType } from '../function/MyFunction';
 
 function ChatWindow({ navigation, route }) {
 
@@ -19,7 +18,6 @@ function ChatWindow({ navigation, route }) {
 
     const [userSender, setUserSender] = React.useState({})
     const [userRecieverIformation, setUserReciverInformation] = React.useState({})
-    const [file, setFile] = React.useState(null);
     const [isVisible, setIsVisible] = React.useState(false);
     const [messages, setMessages] = React.useState([])
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -77,29 +75,8 @@ function ChatWindow({ navigation, route }) {
     }, [])
 
     function convertFormartMessage(messages) {
-
         return messages.map(message => {
-
-            if (userSender.id === message.senderId) {
-                return {
-                    _id: message.id,
-                    text: message.contentMessage,
-                    createdAt: message.createDateTime,
-                    user: {
-                        _id: message.senderId,
-                    },
-                }
-            }
-            return {
-                _id: message.id,
-                text: message.contentMessage,
-                createdAt: message.createDateTime,
-                user: {
-                    _id: message.senderId,
-                    name: 'React Native',
-                    avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
-                },
-            }
+            return getMessageType(message, userSender)
         })
     }
 
@@ -114,7 +91,9 @@ function ChatWindow({ navigation, route }) {
             let result = await DocumentPicker.getDocumentAsync({});
 
             if (result) {
-                setFile(result.assets[0])
+                const file = result.assets[0]
+                await sendMessageFile(file)
+                setIsVisible(!isVisible)
             }
         };
 
@@ -124,11 +103,7 @@ function ChatWindow({ navigation, route }) {
     const list = [
         {
             title: 'Gửi File',
-            onPress: async () => {
-                console.log("đã gửi file"),
-                    UploadFile()
-                sendMessageFile()
-            },
+            onPress: () => { UploadFile() }
         },
         {
             title: 'Cancel',
@@ -159,35 +134,24 @@ function ChatWindow({ navigation, route }) {
         }
     }
 
-    async function sendMessageFile() {
-
-        if (file) {
-            try {
-                const params = await createParams(file)
-                const data = await upateImageToS3(params)
-                console.log(data)
-            } catch (error) {
-                console.log(error)
-                showMessage({
-                    message: "Thông Báo !",
-                    description: error.message,
-                    type: "danger",
-                });
-            }
+    async function sendMessageFile(file) {
+        try {
+            const data = await upateImageToS3(file)
+            const tokenAccess = await getTokenAccess()
+            await CreateMessage(chatBox.id, tokenAccess, { messageType: file.mimeType, contentMessage: data.Location })
+            showMessage({
+                message: "Thông Báo !",
+                description: "Gửi tin nhắn thành công",
+                type: "success",
+            });
+        } catch (error) {
+            console.log(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: error.message,
+                type: "danger",
+            });
         }
-
-        // try {
-        //     const tokenAccess = await getTokenAccess()
-        //     await CreateMessage(chatBox.id, tokenAccess, messageSend)
-        //     console.log("send text ok !")
-        // } catch (error) {
-        //     console.error(error)
-        //     showMessage({
-        //         message: "Thông Báo !",
-        //         description: error.message,
-        //         type: "danger"
-        //     })
-        // }
     }
 
     async function removeMessage(messageId) {

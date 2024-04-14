@@ -29,17 +29,61 @@ const createParams = async (file) => {
 
 const getEndPoint = (uri) => {
     var viTriCuoi = uri.lastIndexOf(".")
-    var endPoint = uri.substring(viTriCuoi + 1).trim()
-    return endPoint
+    if (viTriCuoi !== -1) {
+        var endPoint = uri.substring(viTriCuoi + 1).trim()
+        return endPoint
+    }
+    return ""
 }
 
 
+const getMessageType = (message, userNow) => {
+    let typeMessage = {}
+    if (userNow.id === message.senderId) {
+        typeMessage = {
+            _id: message.id,
+            createdAt: message.createDateTime,
+            user: {
+                _id: message.senderId,
+            },
+        }
+    }
+    typeMessage = {
+        _id: message.id,
+        createdAt: message.createDateTime,
+        user: {
+            _id: message.senderId,
+            name: 'React Native',
+            avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
+        },
+    }
+    const contentMessage = message.contentMessage
+    const endPoint = getEndPoint(contentMessage)
 
+    switch (endPoint) {
+        case "jpg":
+        case "jpeg":
+            typeMessage = {
+                ...typeMessage,
+                image: contentMessage
+            }
+            break;
+        default:
+            typeMessage = {
+                ...typeMessage,
+                text: contentMessage
+            }
+    }
+
+    return typeMessage
+}
 
 
 
 
 export {
     convertBase64ToBuffer,
-    createParams
+    createParams,
+    getEndPoint,
+    getMessageType
 }

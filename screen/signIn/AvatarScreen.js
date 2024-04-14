@@ -7,10 +7,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { BLUE, GRAY } from '../colors/Colors';
 import { GetUserInformation, UpdateAllProfile } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { getTokenRegister, removeKey, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
-import { BUCKET } from '../../config/Config';
+import { getTokenRegister, saveTokenAccess, saveUserInformation } from '../../store/MyStore';
 import { upateImageToS3 } from '../../aws/MyAWS'
-import { convertBase64ToBuffer } from '../../util/function/MyFunction';
 import { Avatar } from "react-native-elements";
 
 function AvatarScreen({ navigation, route }) {
@@ -49,16 +47,6 @@ function AvatarScreen({ navigation, route }) {
         return newProfile
     }
 
-    const createParams = (buffer) => {
-        const params = {
-            Bucket: BUCKET,
-            Key: `image${Date.now().toString()}.jpg`,
-            Body: buffer,
-            ContentType: image.mimeType
-        }
-        return params
-    }
-
     const startUpdateProfile = async (location) => {
         try {
             const tokenRegister = await getTokenRegister()
@@ -92,9 +80,7 @@ function AvatarScreen({ navigation, route }) {
         setLoading(true)
         if (image && pass === false) {
             try {
-                const buffer = await convertBase64ToBuffer(image.uri)
-                const params = createParams(buffer)
-                const data = await upateImageToS3(params)
+                const data = await upateImageToS3(image)
                 await startUpdateProfile(data)
             } catch (error) {
                 console.log(error)

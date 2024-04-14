@@ -1,5 +1,6 @@
 import AWS from "aws-sdk"
 import { ACCESSKEY, REGION, SECRETKEY } from "../config/Config";
+import { createParams } from "../util/function/MyFunction";
 
 AWS.config.update({
     region: REGION,
@@ -9,7 +10,8 @@ AWS.config.update({
 
 const ETBA = new AWS.S3();
 
-const upateImageToS3 = async (params) => {
+const upateImageToS3 = async (file) => {
+    const params = await createParams(file);
     return await ETBA.upload(params).promise()
 }
 
