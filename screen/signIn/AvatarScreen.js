@@ -44,6 +44,8 @@ function AvatarScreen({ navigation, route }) {
             ...profile,
             avatarUrl: "",
         }
+
+        // console.log(newProfile)
         return newProfile
     }
 

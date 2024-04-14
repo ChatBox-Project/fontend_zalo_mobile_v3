@@ -10,16 +10,17 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "1.21.0",
-    "@react-native-community/datetimepicker": "^7.6.1",
-    "@react-navigation/bottom-tabs": "^6.5.14",
-    "@react-navigation/material-top-tabs": "^6.6.8",
-    "@react-navigation/native": "^6.1.10",
-    "@react-navigation/native-stack": "^6.9.18",
-    "aws-sdk": "^2.1592.0",
+    "@react-native-community/datetimepicker": "^7.6.4",
+    "@react-navigation/bottom-tabs": "^6.5.20",
+    "@react-navigation/material-top-tabs": "^6.6.13",
+    "@react-navigation/native": "^6.1.17",
+    "@react-navigation/native-stack": "^6.9.26",
+    "aws-sdk": "^2.1599.0",
     "axios": "^1.6.8",
     "buffer": "^6.0.3",
     "expo": "^50.0.15",
     "expo-contacts": "~12.8.2",
+    "expo-document-picker": "~11.10.1",
     "expo-file-system": "^16.0.8",
     "expo-image-picker": "~14.7.1",
     "expo-status-bar": "~1.11.1",
@@ -31,16 +32,15 @@
     "react-native-flash-message": "^0.4.2",
     "react-native-gifted-chat": "^2.4.0",
     "react-native-pager-view": "6.2.3",
-    "react-native-safe-area-context": "^4.8.2",
-    "react-native-screens": "^3.29.0",
+    "react-native-safe-area-context": "^4.9.0",
+    "react-native-screens": "^3.30.1",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.0.3",
     "react-native-virtualized-view": "^1.0.0",
-    "redux": "^5.0.1",
-    "expo-document-picker": "~11.10.1"
+    "redux": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.20.0"
+    "@babel/core": "^7.24.4"
   },
   "private": true
 }
