@@ -13,6 +13,7 @@ import { upateImageToS3 } from '../../aws/MyAWS';
 import { getMessageType } from '../function/MyFunction';
 import AudioMessage from '../message_type/AudioMessage';
 import AnyMessage from '../message_type/AnyMessage';
+import ImageMessage from '../message_type/ImageMessage';
 
 
 function ChatWindow({ navigation, route }) {
@@ -246,6 +247,7 @@ function ChatWindow({ navigation, route }) {
                 }}
                 renderMessageAudio={(props) => <AudioMessage {...props} />}
                 renderMessageText={(props) => <AnyMessage {...props} />}
+                renderMessageImage={(props) => <ImageMessage {...props} />}
                 user={{
                     _id: userSender.id,
                 }}
