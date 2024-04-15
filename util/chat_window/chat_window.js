@@ -12,8 +12,7 @@ import { BLUE } from '../../screen/colors/Colors';
 import { upateImageToS3 } from '../../aws/MyAWS';
 import { getMessageType } from '../function/MyFunction';
 import AudioMessage from '../message_type/AudioMessage';
-import openUrlInBrowser from '../function/OpenFileInBrowser';
-import { downloadFileFromUri } from '../function/DowloadFile';
+import AnyMessage from '../message_type/AnyMessage';
 
 
 function ChatWindow({ navigation, route }) {
@@ -227,33 +226,6 @@ function ChatWindow({ navigation, route }) {
                             break;
                     }
                 });
-        } else {
-            const options = [
-                'Read File',
-                'Dowload File',
-                'Cancel',
-            ];
-            const cancelButtonIndex = options.length - 1;
-            context.actionSheet().showActionSheetWithOptions({
-                options,
-                cancelButtonIndex,
-            },
-                (buttonIndex) => {
-                    let uri = "";
-                    if ("audio" in message) {
-                        uri = message.audio
-                    } else if ("image" in message) {
-                        uri = message.image
-                    }
-                    switch (buttonIndex) {
-                        case 0:
-                            openUrlInBrowser(uri)
-                            break;
-                        case 1:
-                            downloadFileFromUri(uri)
-                            break;
-                    }
-                });
         }
     }
 
@@ -273,6 +245,7 @@ function ChatWindow({ navigation, route }) {
                     onLongPressChat(context, message)
                 }}
                 renderMessageAudio={(props) => <AudioMessage {...props} />}
+                renderMessageText={(props) => <AnyMessage {...props} />}
                 user={{
                     _id: userSender.id,
                 }}
