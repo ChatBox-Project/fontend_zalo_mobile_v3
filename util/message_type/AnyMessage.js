@@ -17,7 +17,7 @@ function AnyMessage({ currentMessage }) {
 
     if (!isURL(messageContent)) {
         return (
-            <Text style={{ fontSize: 16, paddingHorizontal: 10, paddingVertical: 5, color: "white" }}>{messageContent}</Text>
+            <Text style={{ fontSize: 16, paddingHorizontal: 10, paddingVertical: 5, color: "black" }}>{messageContent}</Text>
         )
     }
 
@@ -39,7 +39,7 @@ function AnyMessage({ currentMessage }) {
             )
         default:
             return (
-                <Text style={{ fontSize: 16, paddingHorizontal: 10, paddingVertical: 5, color: "white" }}>{messageContent}</Text>
+                <Text style={{ fontSize: 16, paddingHorizontal: 10, paddingVertical: 5, color: "black" }}>{messageContent}</Text>
             )
 
     }
