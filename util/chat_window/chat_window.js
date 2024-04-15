@@ -13,6 +13,7 @@ import { upateImageToS3 } from '../../aws/MyAWS';
 import { getMessageType } from '../function/MyFunction';
 import AudioMessage from '../message_type/AudioMessage';
 import openUrlInBrowser from '../function/OpenFileInBrowser';
+import { downloadFileFromUri } from '../function/DowloadFile';
 
 
 function ChatWindow({ navigation, route }) {
@@ -228,7 +229,8 @@ function ChatWindow({ navigation, route }) {
                 });
         } else {
             const options = [
-                'Đọc File',
+                'Read File',
+                'Dowload File',
                 'Cancel',
             ];
             const cancelButtonIndex = options.length - 1;
@@ -237,15 +239,18 @@ function ChatWindow({ navigation, route }) {
                 cancelButtonIndex,
             },
                 (buttonIndex) => {
+                    let uri = "";
+                    if ("audio" in message) {
+                        uri = message.audio
+                    } else if ("image" in message) {
+                        uri = message.image
+                    }
                     switch (buttonIndex) {
                         case 0:
-                            let uri = "";
-                            if ("audio" in message) {
-                                uri = message.audio
-                            } else if ("image" in message) {
-                                uri = message.image
-                            }
                             openUrlInBrowser(uri)
+                            break;
+                        case 1:
+                            downloadFileFromUri(uri)
                             break;
                     }
                 });
