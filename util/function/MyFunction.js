@@ -69,6 +69,12 @@ const getMessageType = (message, userNow) => {
                 image: contentMessage
             }
             break;
+        case "mp3":
+            typeMessage = {
+                ...typeMessage,
+                audio: contentMessage
+            }
+            break;
         default:
             typeMessage = {
                 ...typeMessage,

@@ -10,7 +10,9 @@ import { GetUserInformation, GetUserInformationById } from '../../api/SignInAPI'
 import Icon from 'react-native-vector-icons/Entypo';
 import { BLUE } from '../../screen/colors/Colors';
 import { upateImageToS3 } from '../../aws/MyAWS';
-import { getEndPoint, getMessageType } from '../function/MyFunction';
+import { getMessageType } from '../function/MyFunction';
+import AudioMessage from '../message_type/AudioMessage';
+
 
 function ChatWindow({ navigation, route }) {
 
@@ -138,7 +140,7 @@ function ChatWindow({ navigation, route }) {
         try {
             const data = await upateImageToS3(file)
             const tokenAccess = await getTokenAccess()
-            await CreateMessage(chatBox.id, tokenAccess, { messageType: file.mimeType, contentMessage: data.Location })
+            await CreateMessage(chatBox.id, tokenAccess, { messageType: file.mimeType, messageContent: data.Location })
             showMessage({
                 message: "Thông Báo !",
                 description: "Gửi tin nhắn thành công",
@@ -241,6 +243,7 @@ function ChatWindow({ navigation, route }) {
                 onLongPress={(context, message) => {
                     onLongPressChat(context, message)
                 }}
+                renderMessageAudio={(props) => <AudioMessage {...props} />}
                 user={{
                     _id: userSender.id,
                 }}
