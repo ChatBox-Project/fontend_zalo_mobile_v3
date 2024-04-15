@@ -29,4 +29,7 @@ const downloadFileFromUri = async (uri) => {
 
 
 
-export default downloadFileFromUri;
+export {
+    getFileNameFromUri,
+    downloadFileFromUri
+} 
