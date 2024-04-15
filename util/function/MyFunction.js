@@ -86,8 +86,6 @@ const getMessageType = (message, userNow) => {
 }
 
 
-
-
 export {
     convertBase64ToBuffer,
     createParams,

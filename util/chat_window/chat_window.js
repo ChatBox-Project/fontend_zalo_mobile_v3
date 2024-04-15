@@ -12,6 +12,7 @@ import { BLUE } from '../../screen/colors/Colors';
 import { upateImageToS3 } from '../../aws/MyAWS';
 import { getMessageType } from '../function/MyFunction';
 import AudioMessage from '../message_type/AudioMessage';
+import openUrlInBrowser from '../function/OpenFileInBrowser';
 
 
 function ChatWindow({ navigation, route }) {
@@ -222,6 +223,29 @@ function ChatWindow({ navigation, route }) {
                             break;
                         case 2:
                             showModal(message._id)
+                            break;
+                    }
+                });
+        } else {
+            const options = [
+                'Đọc File',
+                'Cancel',
+            ];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex,
+            },
+                (buttonIndex) => {
+                    switch (buttonIndex) {
+                        case 0:
+                            let uri = "";
+                            if ("audio" in message) {
+                                uri = message.audio
+                            } else if ("image" in message) {
+                                uri = message.image
+                            }
+                            openUrlInBrowser(uri)
                             break;
                     }
                 });
