@@ -39,12 +39,12 @@ const getEndPoint = (uri) => {
 
 const getMessageType = (message, userNow) => {
     let typeMessage = {}
-    if (userNow.id === message.senderId) {
+    if (userNow.id === message.authorId) {
         typeMessage = {
             _id: message.id,
             createdAt: message.createDateTime,
             user: {
-                _id: message.senderId,
+                _id: message.authorId,
             },
         }
     }
@@ -52,12 +52,13 @@ const getMessageType = (message, userNow) => {
         _id: message.id,
         createdAt: message.createDateTime,
         user: {
-            _id: message.senderId,
+            _id: message.authorId,
             name: 'React Native',
             avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
         },
     }
-    const contentMessage = message.contentMessage
+    // console.log(message)
+    const contentMessage = message.messageContent
     const endPoint = getEndPoint(contentMessage)
 
     switch (endPoint) {

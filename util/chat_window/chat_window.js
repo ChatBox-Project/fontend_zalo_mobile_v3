@@ -117,7 +117,7 @@ function ChatWindow({ navigation, route }) {
 
         const messageSend = {
             "messageType": "text",
-            "contentMessage": message
+            "messageContent": message
         }
 
         try {
