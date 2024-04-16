@@ -18,8 +18,11 @@ function ChatSingle({ chatBox }) {
                 const tokenAccess = await getTokenAccess()
                 const reqUserInformationNew = await GetUserInformation(tokenAccess)
                 const userInformation = reqUserInformationNew.data.metadata.user
-                var userReciever = (userInformation.id == chatBox.members[0].user_id) ? chatBox.members[1].user_id : chatBox.members[0].user_id
+                // console.log(userInformation)
+                var userReciever = (userInformation._id === chatBox.members[0].user_id) ? chatBox.members[1].user_id : chatBox.members[0].user_id
+                // console.log(userReciever)
                 const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
+                // console.log(reqUserReciever)
                 setUserReciverInformation(reqUserReciever.data.metadata.user)
             } catch (error) {
                 console.log(error)

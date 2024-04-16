@@ -73,7 +73,6 @@ function ChatScreen({ navigation }) {
                                     <ChatSingle chatBox={chatBox.item} />
                                     :
                                     <ChatGroup chatBox={chatBox.item} />
-
                             }
                         </TouchableOpacity>
                     )
