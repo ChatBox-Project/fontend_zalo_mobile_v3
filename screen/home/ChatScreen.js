@@ -4,6 +4,7 @@ import ChatSingle from '../../util/chat_single/ChatSingle';
 import { getTokenAccess } from '../../store/MyStore';
 import { GetAllChatBox } from '../../api/ChatBoxAPI';
 import { showMessage } from 'react-native-flash-message';
+import ChatGroup from '../../util/chat_group/ChatGroup';
 
 function ChatScreen({ navigation }) {
 
@@ -67,7 +68,13 @@ function ChatScreen({ navigation }) {
                         <TouchableOpacity
                             onPress={() => { navigation.push("ChatWindow", { chatBox: chatBox.item }) }}
                         >
-                            <ChatSingle chatBox={chatBox.item} />
+                            {
+                                !chatBox.item.is_group ?
+                                    <ChatSingle chatBox={chatBox.item} />
+                                    :
+                                    <ChatGroup chatBox={chatBox.item} />
+
+                            }
                         </TouchableOpacity>
                     )
                 }}
