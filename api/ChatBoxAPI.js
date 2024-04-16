@@ -2,6 +2,7 @@ import axios from "axios";
 
 const getAllChatBox = "http://10.0.2.2:3333/api/conversations"
 const createChatBox = "http://10.0.2.2:3333/api/conversations"
+const createGroupChat = "http://10.0.2.2:3333/api/conversations/groups"
 
 function GetAllChatBox(token) {
     return axios.get(getAllChatBox, {
@@ -58,11 +59,16 @@ function CreateChatBox(doubleUser) {
     return axios.post(createChatBox, doubleUser)
 }
 
+function CreateGroupChat(groupChatImformation) {
+    return axios.post(createGroupChat, groupChatImformation)
+}
+
 export {
     GetAllChatBox,
     CreateMessage,
     GetAllMessage,
     RemoveMessage,
     UpdateMessage,
-    CreateChatBox
+    CreateChatBox,
+    CreateGroupChat
 }

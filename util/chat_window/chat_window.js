@@ -42,7 +42,7 @@ function ChatWindow({ navigation, route }) {
                 const reqUserInformationNew = await GetUserInformation(tokenAccess)
                 const userInformation = reqUserInformationNew.data.metadata.user
                 setUserSender(userInformation)
-                const userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
+                const userReciever = (userInformation.id == chatBox.members[0].user_id) ? chatBox.members[1].user_id : chatBox.members[0].user_id
                 const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
                 setUserReciverInformation(reqUserReciever.data.metadata.user)
                 // console.log(reqUserReciever.data.metadata.user)
@@ -52,7 +52,7 @@ function ChatWindow({ navigation, route }) {
                 if (tokenAccess) {
                     const id = setInterval(() => {
                         const runGetAllMessage = async () => {
-                            const reqMessages = await GetAllMessage(chatBox.id, tokenAccess)
+                            const reqMessages = await GetAllMessage(chatBox._id, tokenAccess)
                             // console.log(reqMessages.data)
                             setMessages(
                                 convertFormartMessage(reqMessages.data)
