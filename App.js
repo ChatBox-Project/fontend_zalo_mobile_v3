@@ -15,7 +15,6 @@ import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
 import SettingScreen from './screen/home/SettingScreen';
 import PersonalScreen from './screen/Individual/PersonalScreen';
 import SearchScreen from './screen/home/SearchScreen';
-import { Text, TextInput, View } from 'react-native';
 import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
 import ChatWindow from './util/chat_window/chat_window';
@@ -24,6 +23,7 @@ import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
 import ForgotPasswordScreen from './screen/ForgotPassWordScreen';
 import ChangePassWordScreen from './screen/ChangePassWordScreen';
 import ChangePasswordScreenAfterLogin from './screen/home/ChangePasswordScreenAfterLogin';
+import UserProfileScreen from './screen/Individual/UserProfileScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +44,13 @@ export default function App() {
           component={LoginAndSignInScreen}
           options={({ navigation, route }) => ({
             headerShown: false,
+          })}
+        />
+        <Stack.Screen
+          name="UserProfileScreen"
+          component={UserProfileScreen}
+          options={({ navigation, route }) => ({
+            headerTitle: "Trang cá nhân"
           })}
         />
         <Stack.Screen

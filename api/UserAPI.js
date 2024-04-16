@@ -9,6 +9,12 @@ function GetUserByPhone(phone, token) {
     })
 }
 
+function GetUserByID(userID) {
+    const getUserByID = `http://10.0.2.2:3333/api/users/${userID}`
+    return axios.get(getUserByID)
+}
+
 export {
-    GetUserByPhone
+    GetUserByPhone,
+    GetUserByID
 }

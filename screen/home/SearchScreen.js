@@ -11,6 +11,8 @@ function SearchScreen({ navigation }) {
     const [search, updateSearch] = React.useState("")
     const [users, setUsers] = React.useState(null)
 
+    // console.log(users)
+
     React.useEffect(() => {
         if (search) {
             const runSearch = async () => {
@@ -69,7 +71,7 @@ function SearchScreen({ navigation }) {
                     <Text style={{ color: "gray", marginTop: 20 }}>Vui lòng nhập thông tin tìm kiếm...</Text>
                     :
                     <ListItem
-                        onPress={() => { navigation.push("Personal") }}
+                        onPress={() => { navigation.push("UserProfileScreen", { userId: users._id }) }}
                         style={{
                             width: "100%",
                         }}
