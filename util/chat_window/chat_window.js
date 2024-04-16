@@ -92,12 +92,16 @@ function ChatWindow({ navigation, route }) {
 
     const UploadFile = () => {
         const pickDocument = async () => {
-            let result = await DocumentPicker.getDocumentAsync({});
-
-            if (result) {
-                const file = result.assets[0]
-                await sendMessageFile(file)
-                setIsVisible(!isVisible)
+            try {
+                let result = await DocumentPicker.getDocumentAsync({});
+                // console.log(result)
+                if (result.assets) {
+                    const file = result.assets[0]
+                    await sendMessageFile(file)
+                    setIsVisible(!isVisible)
+                }
+            } catch (error) {
+                console.log(error)
             }
         };
 
@@ -142,7 +146,7 @@ function ChatWindow({ navigation, route }) {
         try {
             const data = await upateImageToS3(file)
             const tokenAccess = await getTokenAccess()
-            await CreateMessage(chatBox.id, tokenAccess, { messageType: file.mimeType, messageContent: data.Location })
+            await CreateMessage(chatBox._id, tokenAccess, { contentType: file.mimeType, content: data.Location })
             showMessage({
                 message: "Thông Báo !",
                 description: "Gửi tin nhắn thành công",
