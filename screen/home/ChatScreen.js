@@ -10,20 +10,20 @@ function ChatScreen({ navigation }) {
     const [chats, setChats] = React.useState([])
 
     React.useEffect(() => {
-        // getAllChatBox()
+        getAllChatBox()
     }, [])
 
+    // console.log(chats)
 
     async function getAllChatBox() {
         try {
             const tokenAccess = await getTokenAccess()
-            // console.log(tokenAccess)
             if (tokenAccess) {
                 const id = setInterval(() => {
                     runGetChatBoxs = async () => {
                         try {
                             const reqChatBox = await GetAllChatBox(tokenAccess)
-                            const chatBoxs = reqChatBox.data.metadata.chatBox
+                            const chatBoxs = reqChatBox.data.metadata.conversations
                             setChats(chatBoxs)
                         } catch (error) {
                             console.log(error)

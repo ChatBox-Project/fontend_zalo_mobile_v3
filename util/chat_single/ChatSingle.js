@@ -18,7 +18,7 @@ function ChatSingle({ chatBox }) {
                 const tokenAccess = await getTokenAccess()
                 const reqUserInformationNew = await GetUserInformation(tokenAccess)
                 const userInformation = reqUserInformationNew.data.metadata.user
-                var userReciever = (userInformation.id == chatBox.user1_id) ? chatBox.user2_id : chatBox.user1_id
+                var userReciever = (userInformation.id == chatBox.members[0].user_id) ? chatBox.members[1].user_id : chatBox.members[0].user_id
                 const reqUserReciever = await GetUserInformationById(userReciever, tokenAccess)
                 setUserReciverInformation(reqUserReciever.data.metadata.user)
             } catch (error) {

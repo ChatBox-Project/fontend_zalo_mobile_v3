@@ -8,6 +8,9 @@ import {
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar, Button } from "react-native-elements";
 import { GetUserByID } from "../../api/UserAPI";
+import { getTokenAccess } from "../../store/MyStore";
+import { GetUserInformation } from "../../api/SignInAPI";
+import { CreateChatBox } from "../../api/ChatBoxAPI";
 
 function UserProfileScreen({ navigation, route }) {
 
@@ -37,6 +40,19 @@ function UserProfileScreen({ navigation, route }) {
                 description: error.response.data.message,
                 type: "danger"
             })
+        }
+    }
+
+
+    async function sendMessage() {
+        try {
+            const tokenAccess = await getTokenAccess()
+            const reqMainUser = await GetUserInformation(tokenAccess)
+            const mainUser = reqMainUser.data.metadata.user
+            // console.log(mainUser)
+            await CreateChatBox({ mainUser, userId })
+        } catch (error) {
+            console.log(error)
         }
     }
 
@@ -89,6 +105,9 @@ function UserProfileScreen({ navigation, route }) {
                     type="outline"
                 />
                 <Button
+                    onPress={() => {
+                        sendMessage()
+                    }}
                     title="Nhắn tin"
                     type="outline"
                 />

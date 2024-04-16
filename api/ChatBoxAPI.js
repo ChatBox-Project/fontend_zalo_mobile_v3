@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const getAllChatBox = "http://10.0.2.2:3333/api/chat/"
-const createChatBox = "http://localhost:3333/api/conversations"
+const getAllChatBox = "http://10.0.2.2:3333/api/conversations"
+const createChatBox = "http://10.0.2.2:3333/api/conversations"
 
 function GetAllChatBox(token) {
     return axios.get(getAllChatBox, {
