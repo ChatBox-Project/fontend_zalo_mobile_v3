@@ -28,6 +28,7 @@ function verifyOTP(data) {
 }
 
 function UpdateAllProfile(token, profile) {
+    // console.log(profile)
     return axios.post(updateAllProfile, profile, {
         headers: {
             token
