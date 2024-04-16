@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login, GetAccountInformation } from '../api/SignInAPI';
+import { Login, GetAccountInformation, GetUserInformation } from '../api/SignInAPI';
 import { saveUserInformation, saveTokenAccess, getUserInformation } from '../store/MyStore';
 import { showMessage } from 'react-native-flash-message';
 import { regexPassword, regexPhoneNumber } from '../regex/MyRegex';
@@ -47,21 +47,18 @@ function LoginScreen({ navigation }) {
         try {
             const repLogin = await Login({ phoneNumber, password })
             const tokenAccess = repLogin.data.metadata.token
-            // console.log(tokenAccess)
             const reqAccountInformation = await GetAccountInformation(tokenAccess)
-            // console.log(reqAccountInformation)
+            const reqUserInformation = await GetUserInformation(tokenAccess)
+            // kiểm tra thông tin có bị null không
+            const userInformation = reqUserInformation.data.metadata.user
+            // kiểm tra đã được xác thực chưa
             const verify = reqAccountInformation.data.metadata.account.verified
-            const isUser = reqAccountInformation.data.metadata.account.userId
             const accountInformation = reqAccountInformation.data.metadata.account
-            // console.log(verify)
-            if (verify === false || isUser === null) {
+            if (verify === false || userInformation === null) {
                 checkRegisterOTP({ tokenAccess, accountInformation })
                 setLoading(false)
                 ressetInput()
             } else {
-                const reqUserInformation = await getUserInformation(tokenAccess)
-                // console.log(reqUserInformation)
-                const userInformation = reqUserInformation
                 saveUserInformation(userInformation)
                 saveTokenAccess(tokenAccess)
                 navigation.push("Index")
