@@ -67,11 +67,11 @@ function IndividualScreen({ navigation }) {
         }}
       >
         {
-          user.avatarUrl ?
+          user?.avatarUrl ?
             <Avatar
               size={60}
               rounded
-              source={{ uri: user?.avatarUrl }}
+              source={{ uri: user.avatarUrl }}
             />
             :
             <Avatar
