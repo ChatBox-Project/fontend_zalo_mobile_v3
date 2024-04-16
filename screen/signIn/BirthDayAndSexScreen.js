@@ -44,8 +44,8 @@ function BirthDayAndSexScreen({ navigation, route }) {
     const updateProfile = () => {
         const newProfile = {
             ...profile,
-            gender: (gender === 0) ? "FEMALE" : (gender === 1) ? "MALE" : "OTHER",
-            birth_day: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
+            gender: (gender === 0) ? "female" : (gender === 1) ? "male" : "other",
+            birth: `${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()}`
         }
         return newProfile
     }
