@@ -1,7 +1,7 @@
 import axios from "axios"
 
 function GetUserByPhone(phone, token) {
-    const getUserByPhone = `http://localhost:3333/api/users/search/${phone}`
+    const getUserByPhone = `http://10.0.2.2:3333/api/users/search/${phone}`
     return axios.get(getUserByPhone, {
         headers: {
             token

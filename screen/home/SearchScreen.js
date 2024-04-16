@@ -1,12 +1,30 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Header } from "react-native-elements"
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { Avatar, Header, ListItem } from "react-native-elements"
 import Icon from 'react-native-vector-icons/Feather';
 import { BLUE } from '../colors/Colors';
+import { GetUserByPhone } from '../../api/UserAPI';
+import { getTokenAccess } from '../../store/MyStore';
 
 function SearchScreen({ navigation }) {
 
     const [search, updateSearch] = React.useState("")
+    const [users, setUsers] = React.useState(null)
+
+    React.useEffect(() => {
+        if (search) {
+            const runSearch = async () => {
+                try {
+                    const tokenAccess = await getTokenAccess()
+                    const reqUser = await GetUserByPhone(search, tokenAccess);
+                    setUsers(reqUser.data.metadata.foundUser)
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+            runSearch()
+        }
+    }, [search])
 
     return (
         <View style={styles.container} >
@@ -46,7 +64,45 @@ function SearchScreen({ navigation }) {
                     backgroundColor: BLUE
                 }}
             />
-            <Text style={{ color: "gray", marginTop: 20 }}>Vui lòng nhập thông tin tìm kiếm...</Text>
+            {
+                !users ?
+                    <Text style={{ color: "gray", marginTop: 20 }}>Vui lòng nhập thông tin tìm kiếm...</Text>
+                    :
+                    <ListItem
+                        onPress={() => { navigation.push("Personal") }}
+                        style={{
+                            width: "100%",
+                        }}
+                    >
+                        {
+                            users?.avatarUrl ?
+                                <Avatar
+                                    size={60}
+                                    rounded
+                                    source={{ uri: users?.avatarUrl }}
+                                />
+                                :
+                                <Avatar
+                                    size={60}
+                                    rounded
+                                    icon={{ name: 'user', type: 'font-awesome' }}
+                                    containerStyle={{
+                                        backgroundColor: "#cccccc"
+                                    }}
+                                />
+
+                        }
+                        <ListItem.Content>
+                            <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
+                                {users?.name}
+                            </ListItem.Title>
+                            <ListItem.Subtitle style={{ color: "gray" }}>
+                                Xem trang cá nhân
+                            </ListItem.Subtitle>
+                        </ListItem.Content>
+                        <ListItem.Chevron color="black" />
+                    </ListItem>
+            }
         </View>
     )
 }
