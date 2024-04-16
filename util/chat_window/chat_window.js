@@ -53,9 +53,9 @@ function ChatWindow({ navigation, route }) {
                     const id = setInterval(() => {
                         const runGetAllMessage = async () => {
                             const reqMessages = await GetAllMessage(chatBox._id, tokenAccess)
-                            // console.log(reqMessages.data)
+                            // console.log(reqMessages)
                             setMessages(
-                                convertFormartMessage(reqMessages.data)
+                                convertFormartMessage(reqMessages.data.metadata.messages)
                             )
                         }
                         runGetAllMessage()
@@ -120,13 +120,13 @@ function ChatWindow({ navigation, route }) {
     async function sendMessageText(message) {
 
         const messageSend = {
-            "messageType": "text",
-            "messageContent": message
+            "contentType": "text",
+            "content": message
         }
 
         try {
             const tokenAccess = await getTokenAccess()
-            await CreateMessage(chatBox.id, tokenAccess, messageSend)
+            await CreateMessage(chatBox._id, tokenAccess, messageSend)
             console.log("send text ok !")
         } catch (error) {
             console.log(error)
@@ -249,7 +249,7 @@ function ChatWindow({ navigation, route }) {
                 renderMessageText={(props) => <AnyMessage {...props} />}
                 renderMessageImage={(props) => <ImageMessage {...props} />}
                 user={{
-                    _id: userSender.id,
+                    _id: userSender._id,
                 }}
             />
             <Button

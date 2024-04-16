@@ -38,27 +38,30 @@ const getEndPoint = (uri) => {
 
 
 const getMessageType = (message, userNow) => {
+    // console.log(userNow._id)
+    // console.log(message.authorId)
     let typeMessage = {}
-    if (userNow.id === message.authorId) {
+    if (userNow._id == message.authorId) {
         typeMessage = {
-            _id: message.id,
-            createdAt: message.createDateTime,
+            _id: message._id,
+            createdAt: message.updatedAt,
             user: {
                 _id: message.authorId,
             },
         }
-    }
-    typeMessage = {
-        _id: message.id,
-        createdAt: message.createDateTime,
-        user: {
-            _id: message.authorId,
-            name: 'React Native',
-            avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
-        },
+    } else {
+        typeMessage = {
+            _id: message._id,
+            createdAt: message.updatedAt,
+            user: {
+                _id: message.authorId,
+                name: 'React Native',
+                avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
+            },
+        }
     }
     // console.log(message)
-    const contentMessage = message.messageContent
+    const contentMessage = message.content
     const endPoint = getEndPoint(contentMessage)
 
     switch (endPoint) {

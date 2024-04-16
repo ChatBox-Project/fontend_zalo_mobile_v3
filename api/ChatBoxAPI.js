@@ -13,7 +13,7 @@ function GetAllChatBox(token) {
 }
 
 function CreateMessage(idChatBox, tokenAccess, messages) {
-    const createMessage = `http://10.0.2.2:3333/api/chat/${idChatBox}/messages`
+    const createMessage = `http://10.0.2.2:3333/api/messages/${idChatBox}`
     return axios.post(createMessage, messages, {
         headers: {
             token: tokenAccess
@@ -22,8 +22,8 @@ function CreateMessage(idChatBox, tokenAccess, messages) {
 }
 
 function GetAllMessage(idChatBox, tokenAccess) {
-    const createMessage = `http://10.0.2.2:3333/api/chat/${idChatBox}/messages`
-    return axios.get(createMessage, {
+    const createMessage = `http://10.0.2.2:3333/api/messages/${idChatBox}`
+    return axios.get(createMessage, { "offset": 1, "limit": 10 }, {
         headers: {
             token: tokenAccess
         }
