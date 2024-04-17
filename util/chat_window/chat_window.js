@@ -30,7 +30,7 @@ function ChatWindow({ navigation, route }) {
 
     React.useEffect(() => {
         navigation.setOptions({
-            headerTitle: `${userRecieverIformation?.name ? userRecieverIformation?.name : ""}`
+            headerTitle: chatBox.is_group ? chatBox.groupName : `${userRecieverIformation?.name ? userRecieverIformation?.name : ""}`
         });
 
     }, [userRecieverIformation])

@@ -3,7 +3,11 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import { GRAY } from '../../screen/colors/Colors'
 import { Avatar, ListItem } from 'react-native-elements'
 
-function ChatGroup({ group }) {
+function ChatGroup({ chatBox }) {
+
+
+    // console.log(chatBox)
+
     return (
         <View
             style={{
@@ -35,7 +39,7 @@ function ChatGroup({ group }) {
                         containerStyle={{ backgroundColor: "#c2c2c2" }}
                     />
                     <ListItem.Content>
-                        <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>Cộng Đồng Chung Sức</ListItem.Title>
+                        <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>{chatBox.groupName}</ListItem.Title>
                         <ListItem.Subtitle style={{ marginTop: 5 }}>Vice President</ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>

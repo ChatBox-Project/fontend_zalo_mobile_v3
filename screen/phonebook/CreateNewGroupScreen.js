@@ -19,7 +19,7 @@ function CreateNewGroupScreen({ navigation }) {
     const [adminId, setAdminId] = React.useState("")
     const [friends, setFriends] = React.useState(null)
 
-    console.log(friends)
+    // console.log(friends)
 
     React.useEffect(() => {
         async function getMainUser() {
