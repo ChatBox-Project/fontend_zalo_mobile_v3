@@ -39,7 +39,7 @@ function ChatGroup({ chatBox }) {
                         containerStyle={{ backgroundColor: "#c2c2c2" }}
                     />
                     <ListItem.Content>
-                        <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>{chatBox.groupName}</ListItem.Title>
+                        <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>{chatBox?.groupName}</ListItem.Title>
                         <ListItem.Subtitle style={{ marginTop: 5 }}>Vice President</ListItem.Subtitle>
                     </ListItem.Content>
                 </ListItem>
