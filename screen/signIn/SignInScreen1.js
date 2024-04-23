@@ -5,7 +5,7 @@ import { BLUE, GRAY } from '../colors/Colors';
 import { showMessage } from "react-native-flash-message";
 import { regexEmail, regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
 import { Register, SendSms } from '../../api';
-import { saveTokenRegister } from '../../store/Store';
+import { saveToken } from '../../store/Store';
 
 function SignInScreen1({ navigation }) {
 
@@ -93,7 +93,7 @@ function SignInScreen1({ navigation }) {
             setLoading(true)
             const response = await Register(userName, email, phoneNumber, password)
             const tokenHeader = response.headers["set-cookie"][0]
-            await saveTokenRegister(tokenHeader)
+            await saveToken(tokenHeader)
             const message = await SendSms(email)
             navigation.push("OTPScreen", { email: email, type: 1 })
             setLoading(false)

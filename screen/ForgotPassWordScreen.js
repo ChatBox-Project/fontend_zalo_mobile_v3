@@ -1,27 +1,27 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Input, Button } from 'react-native-elements'
-import { regexPhoneNumber } from '../regex/MyRegex';
 import { BLUE, GRAY } from './colors/Colors';
-import { generateOTP } from '../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
+import { regexEmail } from '../regex/MyRegex';
+import { SendSms } from '../api';
 
 function ForgotPassWordScreen({ navigation }) {
 
-    const [phoneNumber, setPhoneNumber] = React.useState("")
+    const [email, setEmail] = React.useState("")
     const [errorMessage, setErrorMessage] = React.useState("")
     const [loading, setLoading] = React.useState(false)
 
-    function checkValidatePhoneNumber() {
+    function checkValidateEmail() {
 
         let check = true
 
-        if (!phoneNumber) {
+        if (!email) {
             setErrorMessage("VUI LÒNG NHẬP TRƯỜNG NÀY")
             check = false
         } else {
-            if (!phoneNumber.match(regexPhoneNumber)) {
-                setErrorMessage("SỐ ĐIỆN THOẠI KHÔNG HỢP LỆ")
+            if (!email.match(regexEmail)) {
+                setErrorMessage("EMAIL KHÔNG HỢP LỆ")
                 check = false
             }
         }
@@ -31,18 +31,18 @@ function ForgotPassWordScreen({ navigation }) {
 
     async function verifyOTP() {
         setLoading(true)
-        if (checkValidatePhoneNumber()) {
+        if (checkValidateEmail()) {
             try {
-                await generateOTP({ phoneNumber })
-                navigation.push("OTPScreen", { phoneNumber, type: 2 })
+                await SendSms(email)
+                navigation.push("OTPScreen", { email, type: 2 })
                 setLoading(false)
             } catch (error) {
                 console.log(error)
-                showMessage({
-                    message: "Thông Báo !",
-                    description: error.response.data.message,
-                    type: 'danger'
-                })
+                // showMessage({
+                //     message: "Thông Báo !",
+                //     description: error.response.data.message,
+                //     type: 'danger'
+                // })
                 setLoading(false)
             }
         } else {
@@ -63,9 +63,9 @@ function ForgotPassWordScreen({ navigation }) {
                 }}
             >
                 <Input
-                    placeholder='Số điện thoại'
-                    onChangeText={setPhoneNumber}
-                    value={phoneNumber}
+                    placeholder='Email'
+                    onChangeText={setEmail}
+                    value={email}
                     errorMessage={errorMessage}
                     style={{
                         fontSize: 16,

@@ -40,23 +40,9 @@ function IndividualScreen({ navigation }) {
     }
   }
 
-  async function ChangePassword() {
-    try {
-      const tokenAccess = await getTokenAccess()
-      const reqAccountInformation = await GetAccountInformation(tokenAccess)
-      const phoneNumber = reqAccountInformation.data.metadata.account.phoneNumber
-      navigation.push("ChangePasswordScreenAfterLogin", { phoneNumber })
-    } catch (error) {
-      console.log(error)
-      showMessage({
-        message: "Thông Báo !",
-        description: error.response.data.message,
-        type: "danger"
-      })
-    }
-
+  function ChangePassword() {
+    navigation.push("ChangePasswordScreenAfterLogin")
   }
-
 
   return (
     <View style={styles.container}>

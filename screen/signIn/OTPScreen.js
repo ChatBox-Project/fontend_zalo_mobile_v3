@@ -33,7 +33,7 @@ function OTPScreen({ navigation, route }) {
     async function ressetOTP() {
         if (email) {
             try {
-                await ConfirmCode({ otp, email })
+                await ConfirmCode(otp, email)
                 showMessage({
                     message: "Thông Báo !",
                     description: "Đã gửi lại mã OTP",
@@ -61,26 +61,36 @@ function OTPScreen({ navigation, route }) {
         if (email) {
             try {
                 setLoading(true)
-                await ConfirmCode({ otp, email })
-                showMessage({
-                    message: "Thông Báo !",
-                    description: "Xác thực thành công",
-                    type: "success",
-                });
-                if (type === 1) {
-                    navigation.push("Login")
-                } else if (type === 2) {
-                    navigation.push("ChangePassWordScreen", { email })
+                const response = await ConfirmCode(otp, email)
+                if (response.data.verify === true) {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: "Xác thực thành công",
+                        type: "success",
+                    });
+                    if (type === 1) {
+                        navigation.push("Login")
+                    } else if (type === 2) {
+                        navigation.push("ChangePassWordScreen", { email })
+                    }
+                    setOTP("")
+                    setLoading(false)
+                } else {
+                    showMessage({
+                        message: "Thông Báo !",
+                        description: "Xác Thực Thất Bại",
+                        type: "danger",
+                    });
+                    setLoading(false)
+                    setOTP("")
                 }
-                setOTP("")
-                setLoading(false)
             } catch (error) {
                 console.log(error)
-                // showMessage({
-                //     message: "Thông Báo !",
-                //     description: error.response.data.message,
-                //     type: "danger",
-                // });
+                showMessage({
+                    message: "Thông Báo !",
+                    description: "Xác Thực Thất Bại",
+                    type: "danger",
+                });
                 setLoading(false)
                 setOTP("")
             }

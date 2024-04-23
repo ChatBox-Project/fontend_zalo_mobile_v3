@@ -1,10 +1,11 @@
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
 import { regexPassword, regexPhoneNumber } from '../regex/MyRegex';
 import { Login } from '../api/auth/login';
 import { showMessage } from 'react-native-flash-message';
+import { saveEmail, saveToken } from '../store/Store';
 
 function LoginScreen({ navigation }) {
 
@@ -46,7 +47,8 @@ function LoginScreen({ navigation }) {
         setLoading(true)
         try {
             const response = await Login(phoneNumber, password);
-            // console.log(response)
+            await saveToken(response.data?.accessToken)
+            await saveEmail(response.data.user?.email)
             showMessage({
                 message: "Thông Báo !",
                 description: "Đăng nhập thành công",
@@ -57,6 +59,11 @@ function LoginScreen({ navigation }) {
             ressetInput()
         } catch (error) {
             console.error(error)
+            showMessage({
+                message: "Thông Báo !",
+                description: "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin đăng nhập",
+                type: "danger",
+            });
             setLoading(false)
         }
     }

@@ -1,14 +1,14 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Input, Button } from "react-native-elements"
 import { BLUE, GRAY } from './colors/Colors';
 import { regexPassword } from '../regex/MyRegex';
-import { ChangePasswordForgot } from '../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
+import { RefreshPassword } from '../api'
 
 function ChangePassWordScreen({ navigation, route }) {
 
-    const phoneNumber = route.params.phoneNumber
+    const email = route.params.email
     const [password, setPassword] = React.useState("")
     const [againtPassword, setAgaintPassword] = React.useState("")
     const [errorPassword, setErrorPassword] = React.useState("")
@@ -51,7 +51,7 @@ function ChangePassWordScreen({ navigation, route }) {
         setLoading(true)
         if (validatePassword()) {
             try {
-                await ChangePasswordForgot(phoneNumber, password)
+                await RefreshPassword(email, password)
                 showMessage({
                     message: "Thông Báo !",
                     description: "Đổi mật khẩu thành công",
@@ -64,7 +64,7 @@ function ChangePassWordScreen({ navigation, route }) {
                 console.log(error)
                 showMessage({
                     message: "Thông Báo !",
-                    description: error.response.data.message,
+                    description: "Đổi mật khẩu thất bại",
                     type: "danger"
                 })
                 setLoading(false)

@@ -11,7 +11,7 @@ function ChatScreen({ navigation }) {
     const [chats, setChats] = React.useState([])
 
     React.useEffect(() => {
-        getAllChatBox()
+        // getAllChatBox()
     }, [])
 
     // console.log(chats)

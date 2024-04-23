@@ -1,19 +1,16 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Input, Button } from "react-native-elements"
 import { GRAY } from '../colors/Colors';
 import { regexPassword } from '../../regex/MyRegex';
-import { ChangePassword, Login } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
-import { removeKey } from '../../store/MyStore';
+import { getEmail, removeKey } from '../../store/Store';
+import { RefreshPassword } from '../../api'
 
-function ChangePasswordScreenAfterLogin({ navigation, route }) {
+function ChangePasswordScreenAfterLogin({ navigation }) {
 
-    const phoneNumber = route.params.phoneNumber
-    const [passwordNow, setPasswordNow] = React.useState("")
     const [passwordNew, setPasswordNew] = React.useState("")
     const [passwordNewAgaint, setPasswordNewAgaint] = React.useState("")
-    const [errorMessagePasswordNow, setErrorMessagePasswordNow] = React.useState("")
     const [errorMessagePasswordNew, setErrorMessagePasswordNew] = React.useState("")
     const [errorMessagePasswordNewAgaint, setErrorMessagePasswordNewAgaint] = React.useState("")
     const [loading, setLoading] = React.useState(false)
@@ -21,16 +18,6 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
     const validateInput = () => {
 
         let check = true
-
-        if (!passwordNow) {
-            setErrorMessagePasswordNow("VUI LÒNG NHẬP TRƯỜNG NÀY")
-            check = false
-        } else {
-            if (!passwordNow.match(regexPassword)) {
-                setErrorMessagePasswordNow("TỐI THIỂU 8 KÍ TỰ, GỒM CHỮ CÁI VÀ SỐ")
-                check = false
-            }
-        }
 
         if (!passwordNew) {
             setErrorMessagePasswordNew("VUI LÒNG NHẬP TRƯỜNG NÀY")
@@ -61,7 +48,6 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
     }
 
     const ressetInput = () => {
-        setPasswordNow("")
         setPasswordNew("")
         setPasswordNewAgaint("")
     }
@@ -71,10 +57,10 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
         if (validateInput()) {
             try {
                 setLoading(true)
-                const reqLogin = await Login({ phoneNumber, password: passwordNow })
-                const tokenAccess = reqLogin.data.metadata.token
-                await ChangePassword(tokenAccess, passwordNew)
-                removeKey("tokenAccess")
+                const email = await getEmail()
+                await removeKey("token")
+                await removeKey("email")
+                await RefreshPassword(email, passwordNew)
                 showMessage({
                     message: "Thông Báo !",
                     description: "Đổi mật khẩu thành công, vui lòng đăng nhập lại",
@@ -108,24 +94,7 @@ function ChangePasswordScreenAfterLogin({ navigation, route }) {
                 style={{
                     width: "100%",
                     paddingHorizontal: 15,
-                    marginTop: 5
-                }}
-            >
-                <Text style={{ fontSize: 16, fontWeight: '600' }}>Mật khẩu hiện tại:</Text>
-                <Input
-                    placeholder='Nhập mật khẩu hiện tại'
-                    value={passwordNow}
-                    onChangeText={setPasswordNow}
-                    onChange={() => { setErrorMessagePasswordNow("") }}
-                    errorMessage={errorMessagePasswordNow}
-                    secureTextEntry={true}
-                    style={{ fontSize: 16 }}
-                />
-            </View>
-            <View
-                style={{
-                    width: "100%",
-                    paddingHorizontal: 15
+                    marginTop: 15,
                 }}
             >
                 <Text style={{ fontSize: 16, fontWeight: '600' }}>Mật khẩu mới:</Text>
