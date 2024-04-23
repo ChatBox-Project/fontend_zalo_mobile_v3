@@ -4,7 +4,7 @@ import { Button, CheckBox, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
 import { showMessage } from "react-native-flash-message";
 import { regexEmail, regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
-import { Register } from '../../api';
+import { Register, SendSms } from '../../api';
 import { saveTokenRegister } from '../../store/Store';
 
 function SignInScreen1({ navigation }) {
@@ -91,10 +91,15 @@ function SignInScreen1({ navigation }) {
     async function registerAccount() {
         try {
             setLoading(true)
+            console.log(111)
             const response = await Register(userName, email, phoneNumber, password)
+            console.log(222)
+            console.log(response)
             const tokenHeader = response.headers["set-cookie"][0]
             await saveTokenRegister(tokenHeader)
-            navigation.push("OTPScreen", { email: email })
+            const message = await SendSms(email)
+            console.log(message)
+            navigation.push("OTPScreen", { email: email, type: 1 })
             setLoading(false)
             showMessage({
                 message: "Thông Báo !",
@@ -108,7 +113,7 @@ function SignInScreen1({ navigation }) {
                 description: "Đăng ký tài khoản thất bại",
                 type: "danger",
             });
-            ressetTextInput()
+            // ressetTextInput()
             setLoading(false)
         }
     }

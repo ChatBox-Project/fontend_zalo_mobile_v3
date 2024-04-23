@@ -5,12 +5,14 @@ import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
 import { generateOTP, verifyOTP } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
+import { ConfirmCode } from '../../api';
 
 
 function OTPScreen({ navigation, route }) {
 
-    const phoneNumber = route.params?.phoneNumber
+    const email = route.params?.email
     const type = route.params?.type
+
     // console.log(type)
     const [otp, setOTP] = React.useState("")
     const [time, setTime] = React.useState(30)
@@ -30,9 +32,9 @@ function OTPScreen({ navigation, route }) {
 
 
     async function ressetOTP() {
-        if (phoneNumber) {
+        if (email) {
             try {
-                await generateOTP({ phoneNumber })
+                await ConfirmCode({ otp, email })
                 showMessage({
                     message: "Thông Báo !",
                     description: "Đã gửi lại mã OTP",
@@ -41,11 +43,11 @@ function OTPScreen({ navigation, route }) {
                 setTime(30)
             } catch (error) {
                 console.log(error)
-                showMessage({
-                    message: "Thông Báo !",
-                    description: error.response.data.message,
-                    type: "danger",
-                });
+                // showMessage({
+                //     message: "Thông Báo !",
+                //     description: error.response.data.message,
+                //     type: "danger",
+                // });
             }
         } else {
             showMessage({
@@ -57,28 +59,28 @@ function OTPScreen({ navigation, route }) {
     }
 
     const runVerifyOTP = async () => {
-        if (phoneNumber) {
+        if (email) {
             try {
                 setLoading(true)
-                await verifyOTP({ phoneNumber, otp })
+                await ConfirmCode({ otp, email })
                 showMessage({
                     message: "Thông Báo !",
                     description: "Xác thực thành công",
                     type: "success",
                 });
                 if (type === 1) {
-                    navigation.push("SignIn")
+                    navigation.push("Login")
                 } else if (type === 2) {
-                    navigation.push("ChangePassWordScreen", { phoneNumber })
+                    navigation.push("ChangePassWordScreen", { email })
                 }
                 setLoading(false)
             } catch (error) {
                 console.log(error)
-                showMessage({
-                    message: "Thông Báo !",
-                    description: error.response.data.message,
-                    type: "danger",
-                });
+                // showMessage({
+                //     message: "Thông Báo !",
+                //     description: error.response.data.message,
+                //     type: "danger",
+                // });
                 setLoading(false)
                 setOTP("")
             }
@@ -112,7 +114,7 @@ function OTPScreen({ navigation, route }) {
                 }}>
                 <Icon name='phone-volume' size={30} color={BLUE} />
             </View>
-            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến số {phoneNumber}</Text>
+            <Text style={{ fontWeight: '600', marginTop: 10, marginBottom: 5 }}>Đã gửi mã xác nhận đến Email: {email}</Text>
             <Text>Vui lòng nhập mã xác nhận</Text>
             <View style={{ width: "35%", marginTop: 15 }}>
                 <Input
