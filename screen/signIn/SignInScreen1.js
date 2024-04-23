@@ -2,17 +2,22 @@ import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import { BLUE, GRAY } from '../colors/Colors';
-import { Register, generateOTP } from '../../api/SignInAPI';
-import { saveTokenRegister } from '../../store/MyStore';
 import { showMessage } from "react-native-flash-message";
-import { regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
+import { regexEmail, regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
+import { Register } from '../../api';
+import { saveTokenRegister } from '../../store/Store';
 
 function SignInScreen1({ navigation }) {
 
+    const [userName, setUserName] = useState("")
     const [phoneNumber, setPhoneNumber] = useState("")
+    const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [againPassword, setAgainPassword] = useState("")
+
+    const [errorUserName, setErrorUserName] = useState("")
     const [errorPhoneNumber, setErrorPhoneNumber] = useState("")
+    const [errorEmail, setErrorEmail] = useState("")
     const [errorPassword, setErrorPassword] = useState("")
     const [errorPasswordAgain, setErrorPasswordAgain] = useState("")
     const [loading, setLoading] = useState(false)
@@ -24,12 +29,25 @@ function SignInScreen1({ navigation }) {
 
         let checkPass = true
 
+        if (!userName) {
+            checkPass = false
+            setErrorUserName("VUI LÒNG NHẬP TRƯỜNG NÀY")
+        }
+
         if (!phoneNumber) {
             checkPass = false
             setErrorPhoneNumber("VUI LÒNG NHẬP TRƯỜNG NÀY")
         } else if (!regexPhoneNumber.test(phoneNumber)) {
             checkPass = false
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI KHÔNG HỢP LỆ")
+        }
+
+        if (!email) {
+            checkPass = false
+            setErrorEmail("VUI LÒNG NHẬP TRƯỜNG NÀY")
+        } else if (!regexEmail.test(email)) {
+            checkPass = false
+            setErrorEmail("EMAIL KHÔNG HỢP LỆ")
         }
 
         if (!password) {
@@ -73,18 +91,21 @@ function SignInScreen1({ navigation }) {
     async function registerAccount() {
         try {
             setLoading(true)
-            const reqRegister = await Register({ phoneNumber, password })
-            const tokenRegister = reqRegister.data.metadata.token
-            await saveTokenRegister(tokenRegister)
-            await generateOTP({ phoneNumber })
-            navigation.push("OTPScreen", { phoneNumber, type: 1 })
-            ressetTextInput()
+            const response = await Register(userName, email, phoneNumber, password)
+            const tokenHeader = response.headers["set-cookie"][0]
+            await saveTokenRegister(tokenHeader)
+            navigation.push("OTPScreen", { email: email })
             setLoading(false)
+            showMessage({
+                message: "Thông Báo !",
+                description: "Đăng ký tài khoản thành công",
+                type: "success",
+            });
         } catch (error) {
             console.log(error)
             showMessage({
                 message: "Thông Báo !",
-                description: error.response.data.message,
+                description: "Đăng ký tài khoản thất bại",
                 type: "danger",
             });
             ressetTextInput()
@@ -108,6 +129,19 @@ function SignInScreen1({ navigation }) {
             </View>
             <View style={{ width: "95%", marginTop: 15 }}>
                 <Input
+                    placeholder="Tên đăng nhập"
+                    inputStyle={{ fontSize: 16 }}
+                    value={userName}
+                    onChangeText={setUserName}
+                    onChange={() => {
+                        if (errorUserName) {
+                            setErrorUserName("")
+                        }
+                    }}
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={errorUserName}
+                />
+                <Input
                     placeholder='Nhập số điện thoại'
                     inputStyle={{ fontSize: 16 }}
                     value={phoneNumber}
@@ -119,6 +153,19 @@ function SignInScreen1({ navigation }) {
                     }}
                     errorStyle={{ color: 'red' }}
                     errorMessage={errorPhoneNumber}
+                />
+                <Input
+                    placeholder='Email'
+                    inputStyle={{ fontSize: 16 }}
+                    value={email}
+                    onChangeText={setEmail}
+                    onChange={() => {
+                        if (email) {
+                            setErrorEmail("")
+                        }
+                    }}
+                    errorStyle={{ color: 'red' }}
+                    errorMessage={errorEmail}
                 />
                 <Input
                     placeholder='Mật khẩu'
