@@ -7,7 +7,7 @@ import { ScrollView } from "react-native-virtualized-view";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { ListItem } from "react-native-elements";
 import { showMessage } from "react-native-flash-message";
-import { removeKey } from "../../store/MyStore";
+import { Logout } from "../../api/";
 
 function SettingScreen({ navigation }) {
 
@@ -17,22 +17,14 @@ function SettingScreen({ navigation }) {
 
   async function logoutUser() {
     try {
-
-      removeKey("tokenAccess")
-      removeKey("user")
+      await Logout()
       showMessage({
         message: "Đăng xuất thành công !",
         type: "success",
       });
       navigation.push("LoginAndSignIn")
-
     } catch (error) {
       console.log(error)
-      showMessage({
-        message: error.response.data.message,
-        type: "danger",
-      });
-
     }
   }
 
