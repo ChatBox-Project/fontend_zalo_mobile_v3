@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import { BLUE, GRAY } from './colors/Colors';
-import { Login, GetAccountInformation, GetUserInformation } from '../api/SignInAPI';
-import { saveUserInformation, saveTokenAccess, getUserInformation } from '../store/MyStore';
-import { showMessage } from 'react-native-flash-message';
 import { regexPassword, regexPhoneNumber } from '../regex/MyRegex';
+import { Login } from '../api/auth/login';
+import { showMessage } from 'react-native-flash-message';
 
 function LoginScreen({ navigation }) {
 
@@ -38,6 +37,7 @@ function LoginScreen({ navigation }) {
         return checkPass
     }
 
+    // chuyển hướng đến màn hình nhập mã OTP khi đăng ký chưa xác thực
     function checkRegisterOTP(data) {
         navigation.push("NotifyRegisterOTPScreen", { data })
     }
@@ -45,33 +45,18 @@ function LoginScreen({ navigation }) {
     async function checkAccount() {
         setLoading(true)
         try {
-            const repLogin = await Login({ phoneNumber, password })
-            const tokenAccess = repLogin.data.metadata.token
-            const reqAccountInformation = await GetAccountInformation(tokenAccess)
-            const reqUserInformation = await GetUserInformation(tokenAccess)
-            // kiểm tra thông tin có bị null không
-            const userInformation = reqUserInformation.data.metadata.user
-            // kiểm tra đã được xác thực chưa
-            const verify = reqAccountInformation.data.metadata.account.verified
-            const accountInformation = reqAccountInformation.data.metadata.account
-            if (verify === false || userInformation === null) {
-                checkRegisterOTP({ tokenAccess, accountInformation })
-                setLoading(false)
-                ressetInput()
-            } else {
-                saveUserInformation(userInformation)
-                saveTokenAccess(tokenAccess)
-                navigation.push("Index")
-                ressetInput()
-                setLoading(false)
-            }
-        } catch (error) {
-            console.error(error)
+            const response = await Login(phoneNumber, password);
+            // console.log(response)
             showMessage({
                 message: "Thông Báo !",
-                description: error.response.data.message,
-                type: "danger"
-            })
+                description: "Đăng nhập thành công",
+                type: "success",
+            });
+            setLoading(false)
+            navigation.push("Index")
+            ressetInput()
+        } catch (error) {
+            console.error(error)
             setLoading(false)
         }
     }

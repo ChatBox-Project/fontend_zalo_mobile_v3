@@ -91,14 +91,10 @@ function SignInScreen1({ navigation }) {
     async function registerAccount() {
         try {
             setLoading(true)
-            console.log(111)
             const response = await Register(userName, email, phoneNumber, password)
-            console.log(222)
-            console.log(response)
             const tokenHeader = response.headers["set-cookie"][0]
             await saveTokenRegister(tokenHeader)
             const message = await SendSms(email)
-            console.log(message)
             navigation.push("OTPScreen", { email: email, type: 1 })
             setLoading(false)
             showMessage({
@@ -106,6 +102,7 @@ function SignInScreen1({ navigation }) {
                 description: "Đăng ký tài khoản thành công",
                 type: "success",
             });
+            ressetTextInput()
         } catch (error) {
             console.log(error)
             showMessage({
@@ -113,7 +110,7 @@ function SignInScreen1({ navigation }) {
                 description: "Đăng ký tài khoản thất bại",
                 type: "danger",
             });
-            // ressetTextInput()
+            ressetTextInput()
             setLoading(false)
         }
     }

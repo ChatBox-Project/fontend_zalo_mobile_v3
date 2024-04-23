@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Button, CheckBox, Input } from 'react-native-elements';
+import React, { useEffect } from 'react'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import { BLUE, GRAY } from '../colors/Colors';
-import { generateOTP, verifyOTP } from '../../api/SignInAPI';
 import { showMessage } from 'react-native-flash-message';
 import { ConfirmCode } from '../../api';
 
@@ -73,6 +72,7 @@ function OTPScreen({ navigation, route }) {
                 } else if (type === 2) {
                     navigation.push("ChangePassWordScreen", { email })
                 }
+                setOTP("")
                 setLoading(false)
             } catch (error) {
                 console.log(error)
