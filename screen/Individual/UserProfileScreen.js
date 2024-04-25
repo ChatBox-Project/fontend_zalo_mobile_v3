@@ -14,7 +14,7 @@ import {showMessage} from "react-native-flash-message";
 
 function UserProfileScreen({navigation, route}) {
 
-    const userId = route.params?.userId
+    const userIdRecieve = route.params?.userId
 
     const [user, setUser] = React.useState(null)
     const [isRequestAddFriend, setIsRequestAddFriend] = React.useState(false)
@@ -34,10 +34,12 @@ function UserProfileScreen({navigation, route}) {
         }
     }
 
-    const requestAddFriend = async (userId) => {
+    const requestAddFriend = async (userIdRecieve) => {
         try {
             const tokenAccess = await getToken()
-            const response = await RequestAddFriend(userId, tokenAccess)
+            const user = await  getUser()
+            const userIdSend = user._id
+            const response = await RequestAddFriend(userIdRecieve, userIdSend, tokenAccess)
             showMessage({
                 message: "Thông báo",
                 description: "Đã gửi yêu cầu kết bạn",
@@ -93,10 +95,10 @@ function UserProfileScreen({navigation, route}) {
             </View>
             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15}}>
                 {
-                    isRequestAddFriend ?
+                    isRequestAddFriend === false ?
                         <Button
                             onPress={() => {
-                                requestAddFriend(userId)
+                                requestAddFriend(userIdRecieve)
                             }}
                             title={"Kết bạn"}
                             type="outline"
