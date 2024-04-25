@@ -5,13 +5,14 @@ import {
     Text,
     View,
 } from "react-native";
-import { BLUE, GRAY, WHITE } from "../colors/Colors";
-import { Avatar, Button } from "react-native-elements";
-import { getTokenAccess } from "../../store/MyStore";
-import {getUser} from "../../store/Store";
+import {BLUE, GRAY, WHITE} from "../colors/Colors";
+import {Avatar, Button} from "react-native-elements";
+import {getToken, getUser} from "../../store/Store";
 import {useFocusEffect} from "@react-navigation/native";
+import {RequestAddFriend} from "../../api";
+import {showMessage} from "react-native-flash-message";
 
-function UserProfileScreen({ navigation, route }) {
+function UserProfileScreen({navigation, route}) {
 
     const userId = route.params?.userId
 
@@ -35,9 +36,13 @@ function UserProfileScreen({ navigation, route }) {
 
     const requestAddFriend = async (userId) => {
         try {
-            const tokenAccess = await getTokenAccess()
+            const tokenAccess = await getToken()
             const response = await RequestAddFriend(userId, tokenAccess)
-            console.log(response)
+            showMessage({
+                message: "Thông báo",
+                description: "Đã gửi yêu cầu kết bạn",
+                type: "success",
+            })
             setIsRequestAddFriend(true)
         } catch (error) {
             console.log(error)
@@ -47,11 +52,11 @@ function UserProfileScreen({ navigation, route }) {
     return (
         <View style={styles.container}>
             <View
-                style={{ paddingBottom: 100 }}
+                style={{paddingBottom: 100}}
             >
                 <Image
                     source={require("../../images/hoboi.jpg")}
-                    style={{ width: "100%", height: 200 }}
+                    style={{width: "100%", height: 200}}
                 />
                 <View
                     style={{
@@ -70,30 +75,41 @@ function UserProfileScreen({ navigation, route }) {
                             <Avatar
                                 size={130}
                                 rounded
-                                source={{ uri: user.profilePicture }}
-                                containerStyle={{ borderWidth: 4, borderColor: GRAY }}
+                                source={{uri: user.profilePicture}}
+                                containerStyle={{borderWidth: 4, borderColor: GRAY}}
                             />
                             :
                             <Avatar
                                 size={130}
                                 rounded
-                                icon={{ name: 'user', type: 'font-awesome' }}
+                                icon={{name: 'user', type: 'font-awesome'}}
                                 containerStyle={{
                                     backgroundColor: "#cccccc"
                                 }}
                             />
                     }
-                    <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.username}</Text>
+                    <Text style={{fontSize: 22, fontWeight: "bold", marginTop: 5}}>{user?.username}</Text>
                 </View>
             </View>
-            <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15 }}>
-                <Button
-                    onPress={() => {
-                        requestAddFriend(userId)
-                    }}
-                    title= {isRequestAddFriend ? "Đã gửi yêu cầu" : "Kết bạn"}
-                    type="outline"
-                />
+            <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15}}>
+                {
+                    isRequestAddFriend ?
+                        <Button
+                            onPress={() => {
+                                requestAddFriend(userId)
+                            }}
+                            title={"Kết bạn"}
+                            type="outline"
+                        />
+                        :
+                        <Button
+                            onPress={() => {
+
+                            }}
+                            title="Hủy yêu cầu kết bạn"
+                            type="outline"
+                        />
+                }
                 <Button
                     onPress={() => {
 
