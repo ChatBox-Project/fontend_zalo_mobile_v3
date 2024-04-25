@@ -7,55 +7,42 @@ import {
 } from "react-native";
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar, Button } from "react-native-elements";
-import { GetUserByID } from "../../api/UserAPI";
 import { getTokenAccess } from "../../store/MyStore";
-import { GetUserInformation } from "../../api/SignInAPI";
-import { CreateChatBox } from "../../api/ChatBoxAPI";
+import {getUser} from "../../store/Store";
+import {useFocusEffect} from "@react-navigation/native";
 
 function UserProfileScreen({ navigation, route }) {
 
     const userId = route.params?.userId
 
     const [user, setUser] = React.useState(null)
+    const [isRequestAddFriend, setIsRequestAddFriend] = React.useState(false)
 
-    // useFocusEffect(
-    //     React.useCallback(() => {
-    //         getUserInformation()
-    //     }, [])
-    // );
-
-    React.useEffect(() => {
-        getUserInformation()
-    }, [])
+    useFocusEffect(
+        React.useCallback(() => {
+            getUserInformation()
+        }, [])
+    );
 
     async function getUserInformation() {
         try {
-            const reqUserInformation = await GetUserByID(userId)
-            const userInformation = reqUserInformation.data.metadata.user
-            setUser(userInformation)
+            const user = await getUser()
+            setUser(user)
         } catch (error) {
             console.log(error)
-            showMessage({
-                message: "Thông Báo !",
-                description: error.response.data.message,
-                type: "danger"
-            })
         }
     }
 
-
-    async function sendMessage() {
+    const requestAddFriend = async (userId) => {
         try {
             const tokenAccess = await getTokenAccess()
-            const reqMainUser = await GetUserInformation(tokenAccess)
-            const mainUser = reqMainUser.data.metadata.user
-            // console.log(mainUser)
-            await CreateChatBox({ mainUser, userId })
+            const response = await RequestAddFriend(userId, tokenAccess)
+            console.log(response)
+            setIsRequestAddFriend(true)
         } catch (error) {
             console.log(error)
         }
     }
-
 
     return (
         <View style={styles.container}>
@@ -78,12 +65,12 @@ function UserProfileScreen({ navigation, route }) {
                     }}
                 >
                     {
-                        user?.avatarUrl
+                        user?.profilePicture
                             ?
                             <Avatar
                                 size={130}
                                 rounded
-                                source={{ uri: user.avatarUrl }}
+                                source={{ uri: user.profilePicture }}
                                 containerStyle={{ borderWidth: 4, borderColor: GRAY }}
                             />
                             :
@@ -96,17 +83,20 @@ function UserProfileScreen({ navigation, route }) {
                                 }}
                             />
                     }
-                    <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.name}</Text>
+                    <Text style={{ fontSize: 22, fontWeight: "bold", marginTop: 5 }}>{user?.username}</Text>
                 </View>
             </View>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15 }}>
                 <Button
-                    title="Kết bạn"
+                    onPress={() => {
+                        requestAddFriend(userId)
+                    }}
+                    title= {isRequestAddFriend ? "Đã gửi yêu cầu" : "Kết bạn"}
                     type="outline"
                 />
                 <Button
                     onPress={() => {
-                        sendMessage()
+
                     }}
                     title="Nhắn tin"
                     type="outline"

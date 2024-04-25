@@ -1,10 +1,10 @@
 import React from 'react'
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Avatar, Header, ListItem } from "react-native-elements"
 import Icon from 'react-native-vector-icons/Feather';
 import { BLUE } from '../colors/Colors';
-import { GetUserByPhone } from '../../api/UserAPI';
-import { getTokenAccess } from '../../store/MyStore';
+import { FindUser } from '../../api/';
+import {getToken} from "../../store/Store";
 
 function SearchScreen({ navigation }) {
 
@@ -17,9 +17,14 @@ function SearchScreen({ navigation }) {
         if (search) {
             const runSearch = async () => {
                 try {
-                    const tokenAccess = await getTokenAccess()
-                    const reqUser = await GetUserByPhone(search, tokenAccess);
-                    setUsers(reqUser.data.metadata.foundUser)
+                    const tokenAccess = await  getToken();
+                    const user = await FindUser(search, tokenAccess);
+                    // console.log(user.data)
+                    if(user.data.exist){
+                        setUsers(user.data)
+                    }else{
+                        setUsers(null)
+                    }
                 } catch (error) {
                     console.log(error)
                 }
@@ -81,7 +86,7 @@ function SearchScreen({ navigation }) {
                                 <Avatar
                                     size={60}
                                     rounded
-                                    source={{ uri: users?.avatarUrl }}
+                                    source={{ uri: users?.profilePicture }}
                                 />
                                 :
                                 <Avatar
@@ -96,7 +101,7 @@ function SearchScreen({ navigation }) {
                         }
                         <ListItem.Content>
                             <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-                                {users?.name}
+                                {users?.username}
                             </ListItem.Title>
                             <ListItem.Subtitle style={{ color: "gray" }}>
                                 Xem trang cá nhân

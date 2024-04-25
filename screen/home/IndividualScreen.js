@@ -1,12 +1,12 @@
 import React from "react";
-import { Image, StyleSheet, TouchableOpacity, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { BLUE, GRAY, WHITE } from "../colors/Colors";
 import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
 import { useFocusEffect } from "@react-navigation/native";
-import { getTokenAccess } from "../../store/MyStore";
-import { GetAccountInformation, GetUserInformation } from "../../api/SignInAPI";
+import {getToken, getUser} from "../../store/Store";
+import {FindUser} from "../../api";
 
 function IndividualScreen({ navigation }) {
 
@@ -26,17 +26,14 @@ function IndividualScreen({ navigation }) {
 
   async function getUserInformation() {
     try {
-      const tokenAccess = await getTokenAccess()
-      const reqUserInformation = await GetUserInformation(tokenAccess)
-      const userInformation = reqUserInformation.data.metadata.user
-      setUser(userInformation)
+      const tokenAccess = await getToken()
+      const user = await getUser()
+      const phoneNumber = user.phoneNumber
+      const userInfo = await FindUser(phoneNumber, tokenAccess);
+      // console.log(userInfo)
+      setUser(userInfo.data)
     } catch (error) {
       console.log(error)
-      showMessage({
-        message: "Thông Báo !",
-        description: error.response.data.message,
-        type: "danger"
-      })
     }
   }
 
@@ -53,11 +50,11 @@ function IndividualScreen({ navigation }) {
         }}
       >
         {
-          user?.avatarUrl ?
+          user?.profilePicture ?
             <Avatar
               size={60}
               rounded
-              source={{ uri: user.avatarUrl }}
+              source={{ uri: user.profilePicture }}
             />
             :
             <Avatar
@@ -72,7 +69,7 @@ function IndividualScreen({ navigation }) {
         }
         <ListItem.Content>
           <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
-            {user?.name}
+            {user.username}
           </ListItem.Title>
           <ListItem.Subtitle style={{ color: "gray" }}>
             Xem trang cá nhân

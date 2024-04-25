@@ -4,6 +4,11 @@ const saveToken = async (value) => {
     await AsyncStorage.setItem('token', value);
 };
 
+const getToken = async () => {
+    const value = await AsyncStorage.getItem('token');
+    return value
+};
+
 const saveEmail = async (value) => {
     await AsyncStorage.setItem('email', value);
 };
@@ -11,6 +16,17 @@ const saveEmail = async (value) => {
 const getEmail = async () => {
     const value = await AsyncStorage.getItem('email');
     return value
+};
+
+const saveUser = async (value) => {
+    const jsonValue = JSON.stringify(value);
+    const data = await AsyncStorage.setItem('user', jsonValue);
+    return data
+};
+
+const getUser = async () => {
+    const jsonValue = await AsyncStorage.getItem('user');
+    return jsonValue != null ? JSON.parse(jsonValue) : null;
 };
 
 const removeKey = async (key) => {
@@ -22,5 +38,8 @@ export {
     saveToken,
     saveEmail,
     getEmail,
-    removeKey
+    removeKey,
+    getToken,
+    saveUser,
+    getUser
 }
