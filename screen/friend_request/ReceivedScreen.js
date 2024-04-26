@@ -2,7 +2,11 @@ import React from 'react'
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import {getToken, getUser} from "../../store/Store";
-import {getListUserRequestAddFriendToMe, cancelAddFriendByUserRecieved} from "../../api";
+import {
+    getListUserRequestAddFriendToMe,
+    cancelAddFriendByUserRecieved,
+    acceptAddFriendFromUserRecieved
+} from "../../api";
 import {Avatar, ListItem} from "react-native-elements";
 
 function ReceivedScreen({navigation}) {
@@ -40,7 +44,19 @@ function ReceivedScreen({navigation}) {
         }
     }
 
+    const AcceptAddFriendFromUserRecieved = async (userRecieve) => {
+        try {
+            const tokenAccess = await getToken()
+            const user = await getUser()
+            const userId = user._id
+            const response = await acceptAddFriendFromUserRecieved(userId, userRecieve, tokenAccess);
+            deleteRequestAddFriend(userRecieve)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
+    // Xóa user ra khỏi danh sách
     const deleteRequestAddFriend = (userId) => {
         const newListUserRequestAddFriend = listUserRequestAddFriend.filter(user => user._id !== userId)
         setListUserRequestAddFriend(newListUserRequestAddFriend)
@@ -82,6 +98,9 @@ function ReceivedScreen({navigation}) {
                                         }}
                                     >
                                         <TouchableOpacity
+                                            onPress={() => {
+                                                AcceptAddFriendFromUserRecieved(item._id)
+                                            }}
                                             style={{
                                                 backgroundColor: "#0be881",
                                                 padding: 10,
