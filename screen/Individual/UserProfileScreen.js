@@ -9,7 +9,7 @@ import {BLUE, GRAY, WHITE} from "../colors/Colors";
 import {Avatar} from "react-native-elements";
 import {getToken, getUser} from "../../store/Store";
 import {useFocusEffect} from "@react-navigation/native";
-import {RequestAddFriend, RequestAddFriendStatus} from "../../api";
+import {getUserProfileById, RequestAddFriend, RequestAddFriendStatus} from "../../api";
 import {showMessage} from "react-native-flash-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CancelAddFriendByUserSend} from "../../api";
@@ -52,7 +52,10 @@ function UserProfileScreen({navigation, route}) {
     // Lấy thông tin người dùng
     async function getUserInformation() {
         try {
-            const user = await getUser()
+            const tokenAccess = await getToken()
+            const request = await getUserProfileById(userIdRecieve, tokenAccess)
+            const user = request.data
+            // console.log(user)
             setUser(user)
         } catch (error) {
             console.log(error)

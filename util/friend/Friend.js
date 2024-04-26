@@ -19,11 +19,23 @@ function Friend({ friend, navigation }) {
             }}
         >
             <View style={{ flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-                <Avatar
-                    size={60}
-                    rounded
-                    source={{ uri: "https://randomuser.me/api/portraits/men/36.jpg" }}
-                />
+                {
+                    friend?.profilePicture ?
+                        <Avatar
+                            size={50}
+                            rounded
+                            source={{ uri: friend.profilePicture }}
+                        />
+                        :
+                        <Avatar
+                            size={60}
+                            rounded
+                            icon={{ name: 'user', type: 'font-awesome', color: 'white' }}
+                            containerStyle={{
+                                backgroundColor: "lightgray"
+                            }}
+                        />
+                }
                 <Text style={{ fontSize: 16, fontWeight: '500', marginLeft: 15 }}>{friend?.username}</Text>
             </View>
             <View style={{ width: 70, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginRight: 20 }}>

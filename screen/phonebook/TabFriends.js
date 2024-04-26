@@ -1,6 +1,9 @@
 import React from 'react'
 import { FlatList, View } from 'react-native';
 import Friend from '../../util/friend/Friend';
+import {useFocusEffect} from "@react-navigation/native";
+import {getToken, getUser} from "../../store/Store";
+import {getListFriendOfMe} from "../../api";
 
 function TabFriend({ navigation }) {
 
@@ -14,6 +17,26 @@ function TabFriend({ navigation }) {
             gender: true
         },
     ]);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getFriends();
+        }, [])
+    );
+
+    // Lấy danh sách bạn bè
+    const getFriends = async  () => {
+        try {
+            const tokenAccess = await getToken();
+            const user = await  getUser();
+            const userId = user._id
+            const response = await getListFriendOfMe(userId, tokenAccess);
+            const friends = response.data.data.friends
+            setFriends(friends)
+        }catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
         <View style={{ alignItems: 'center', flex: 1 }}>
