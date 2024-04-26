@@ -9,6 +9,7 @@ import {HOST} from "../../config/Config";
 //     return request
 // })
 
+// Yêu cầu kết bạn
 export const RequestAddFriend = async (userIdRecieve, userIdSend, tokenAccess) => {
     const api = `${HOST}/users/request-add-friend/${userIdRecieve}`;
     const code = await axios.post(api, {userId: userIdSend}, {

@@ -190,7 +190,7 @@ export default function App() {
           })}
         />
       </Stack.Navigator>
-      <FlashMessage location="top" />
+      <FlashMessage location="bottom" />
     </NavigationContainer>
   );
 }
