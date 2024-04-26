@@ -12,7 +12,7 @@ import {useFocusEffect} from "@react-navigation/native";
 import {RequestAddFriend, RequestAddFriendStatus} from "../../api";
 import {showMessage} from "react-native-flash-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import {CancelAddFriendByUserSend} from "../../api/user/cancel-add-friend-by-user-send";
+import {CancelAddFriendByUserSend} from "../../api";
 
 function UserProfileScreen({navigation, route}) {
 
@@ -33,12 +33,13 @@ function UserProfileScreen({navigation, route}) {
     const checkIsRequestAddFriend = async () => {
         try {
             const tokenAccess = await getToken()
-            const user = await  getUser()
+            const user = await getUser()
             const userIdSend = user._id
-            const response = await RequestAddFriendStatus(userIdSend, userIdRecieve, tokenAccess)
+            const response = await RequestAddFriendStatus(userIdRecieve, userIdSend, tokenAccess)
             console.log(response.data)
             const checkIsRequest = response.data.request
-            if(checkIsRequest){
+            console.log(checkIsRequest)
+            if (checkIsRequest) {
                 setIsRequestAddFriend(true)
                 return;
             }
@@ -62,7 +63,7 @@ function UserProfileScreen({navigation, route}) {
     const requestAddFriend = async () => {
         try {
             const tokenAccess = await getToken()
-            const user = await  getUser()
+            const user = await getUser()
             const userIdSend = user._id
             const response = await RequestAddFriend(userIdSend, userIdRecieve, tokenAccess)
             showMessage({
@@ -81,7 +82,7 @@ function UserProfileScreen({navigation, route}) {
     const cancelAddFriend = async () => {
         try {
             const tokenAccess = await getToken()
-            const user = await  getUser()
+            const user = await getUser()
             const userIdSend = user._id
             const response = await CancelAddFriendByUserSend(userIdSend, userIdRecieve, tokenAccess)
             showMessage({
@@ -91,7 +92,7 @@ function UserProfileScreen({navigation, route}) {
                 position: "bottom",
             })
             setIsRequestAddFriend(false)
-        }catch (error) {
+        } catch (error) {
             console.log(error)
         }
     }
@@ -156,7 +157,7 @@ function UserProfileScreen({navigation, route}) {
                         width: "45%"
                     }}
                 >
-                    <Ionicons name={"chatbubble-ellipses-outline"} size={25} color={"white"} />
+                    <Ionicons name={"chatbubble-ellipses-outline"} size={25} color={"white"}/>
                     <Text style={{fontSize: 16, color: "white", marginLeft: 15}}>Nhắn Tin</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -175,9 +176,9 @@ function UserProfileScreen({navigation, route}) {
                 >
                     {
                         isRequestAddFriend ?
-                            <Ionicons name={"person-remove-sharp"} size={25} color={"white"} />
+                            <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
                             :
-                            <Ionicons name={"person-add-sharp"} size={25} color={"white"} />
+                            <Ionicons name={"person-add-sharp"} size={25} color={"white"}/>
                     }
                 </TouchableOpacity>
             </View>

@@ -44,6 +44,7 @@ function ReceivedScreen({navigation}) {
         }
     }
 
+    // Chấp nhận lời mời kết bạn
     const AcceptAddFriendFromUserRecieved = async (userRecieve) => {
         try {
             const tokenAccess = await getToken()
