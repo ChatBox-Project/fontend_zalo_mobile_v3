@@ -7,7 +7,6 @@ import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'
 import TabItem from '../../util/tab/TabItem';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 function FriendScreen({ navigation }) {
 

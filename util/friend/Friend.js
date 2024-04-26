@@ -9,7 +9,7 @@ function Friend({ friend, navigation }) {
 
     return (
         <TouchableOpacity
-            onPress={() => { navigation.push("Personal") }}
+            onPress={() => { navigation.push("UserProfileScreen", { userId: friend._id }) }}
             style={{
                 flexDirection: 'row',
                 justifyContent: 'space-between',
