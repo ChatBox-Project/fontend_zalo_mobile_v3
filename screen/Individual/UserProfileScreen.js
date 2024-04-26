@@ -64,7 +64,7 @@ function UserProfileScreen({navigation, route}) {
             const tokenAccess = await getToken()
             const user = await  getUser()
             const userIdSend = user._id
-            const response = await RequestAddFriend(userIdRecieve, userIdSend, tokenAccess)
+            const response = await RequestAddFriend(userIdSend, userIdRecieve, tokenAccess)
             showMessage({
                 message: "Thông báo",
                 description: "Đã gửi yêu cầu kết bạn",

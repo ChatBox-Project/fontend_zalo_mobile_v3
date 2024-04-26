@@ -1,9 +1,8 @@
 import React from 'react'
 import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import {RequestAddFriendStatus} from "../../api";
 import {getToken, getUser} from "../../store/Store";
-import {getListUserRequestAddFriendToMe} from "../../api/user/get-list-user-request-add-friend-to-me";
+import {getListUserRequestAddFriendToMe, cancelAddFriendByUserRecieved} from "../../api";
 import {Avatar, ListItem} from "react-native-elements";
 
 function ReceivedScreen({navigation}) {
@@ -14,7 +13,7 @@ function ReceivedScreen({navigation}) {
         getRequestAddFriend()
     }, [])
 
-
+    // Lấy danh sách user gửi lời mời kết bạn đến mình
     const getRequestAddFriend = async () => {
         try {
             const tokenAccess = await getToken()
@@ -27,6 +26,26 @@ function ReceivedScreen({navigation}) {
             console.log(error)
         }
     }
+
+    // Hủy bỏ lời mời kết bạn
+    const CancelAddFriendByUserRecieved = async (userRecieve) => {
+        try {
+            const tokenAccess = await getToken()
+            const user = await getUser()
+            const userId = user._id
+            const response = await cancelAddFriendByUserRecieved(userRecieve, userId, tokenAccess);
+            deleteRequestAddFriend(userRecieve)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
+    const deleteRequestAddFriend = (userId) => {
+        const newListUserRequestAddFriend = listUserRequestAddFriend.filter(user => user._id !== userId)
+        setListUserRequestAddFriend(newListUserRequestAddFriend)
+    }
+
 
     return (
         <View style={styles.container}>
@@ -72,6 +91,9 @@ function ReceivedScreen({navigation}) {
                                             <Text style={{color: "white"}}>Chấp nhận</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
+                                            onPress={() => {
+                                                CancelAddFriendByUserRecieved(item._id)
+                                            }}
                                             style={{
                                                 backgroundColor: "#f53b57",
                                                 padding: 10,
