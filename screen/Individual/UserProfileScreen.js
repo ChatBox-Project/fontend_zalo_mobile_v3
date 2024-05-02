@@ -9,7 +9,7 @@ import {BLUE, GRAY, WHITE} from "../colors/Colors";
 import {Avatar} from "react-native-elements";
 import {getToken, getUser} from "../../store/Store";
 import {useFocusEffect} from "@react-navigation/native";
-import {getUserProfileById, RequestAddFriend, RequestAddFriendStatus} from "../../api";
+import {getListFriendOfMe, getUserProfileById, RequestAddFriend, RequestAddFriendStatus} from "../../api";
 import {showMessage} from "react-native-flash-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CancelAddFriendByUserSend} from "../../api";
@@ -20,11 +20,13 @@ function UserProfileScreen({navigation, route}) {
 
     const [user, setUser] = React.useState(null)
     const [isRequestAddFriend, setIsRequestAddFriend] = React.useState(false)
+    const [isFriend, setIsFriend] = React.useState(false)
 
     useFocusEffect(
         React.useCallback(() => {
             getUserInformation()
             checkIsRequestAddFriend()
+            checkIsFriend()
         }, [])
     );
 
@@ -36,15 +38,34 @@ function UserProfileScreen({navigation, route}) {
             const user = await getUser()
             const userIdSend = user._id
             const response = await RequestAddFriendStatus(userIdRecieve, userIdSend, tokenAccess)
-            console.log(response.data)
+            // console.log(response.data)
             const checkIsRequest = response.data.request
-            console.log(checkIsRequest)
             if (checkIsRequest) {
                 setIsRequestAddFriend(true)
                 return;
             }
             setIsRequestAddFriend(false)
         } catch (error) {
+            console.log(error)
+        }
+    }
+
+    // Kiem tra co phai la ban be hay khong
+    const checkIsFriend = async  () => {
+        try {
+            const tokenAccess = await getToken();
+            const user = await  getUser();
+            const userId = user._id
+            const response = await getListFriendOfMe(userId, tokenAccess);
+            const friends = response.data.data.friends
+            // console.log(friends)
+            friends.forEach(friends => {
+                if (friends._id === userIdRecieve) {
+                    setIsFriend(true)
+                    return;
+                }
+            })
+        }catch (error) {
             console.log(error)
         }
     }
@@ -163,27 +184,32 @@ function UserProfileScreen({navigation, route}) {
                     <Ionicons name={"chatbubble-ellipses-outline"} size={25} color={"white"}/>
                     <Text style={{fontSize: 16, color: "white", marginLeft: 15}}>Nhắn Tin</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => {
-                        isRequestAddFriend ? cancelAddFriend() : requestAddFriend()
-                    }}
-                    style={{
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        backgroundColor: BLUE,
-                        padding: 10,
-                        borderRadius: 10,
-                        width: 50
-                    }}
-                >
-                    {
-                        isRequestAddFriend ?
-                            <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
-                            :
-                            <Ionicons name={"person-add-sharp"} size={25} color={"white"}/>
-                    }
-                </TouchableOpacity>
+                {
+                    isFriend === true ?
+                        <></>
+                        :
+                        <TouchableOpacity
+                            onPress={() => {
+                                isRequestAddFriend ? cancelAddFriend() : requestAddFriend()
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: BLUE,
+                                padding: 10,
+                                borderRadius: 10,
+                                width: 50
+                            }}
+                        >
+                            {
+                                isRequestAddFriend ?
+                                    <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
+                                    :
+                                    <Ionicons name={"person-add-sharp"} size={25} color={"white"}/>
+                            }
+                        </TouchableOpacity>
+                }
             </View>
         </View>
     );

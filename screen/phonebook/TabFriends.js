@@ -7,16 +7,7 @@ import {getListFriendOfMe} from "../../api";
 
 function TabFriend({ navigation }) {
 
-    const [friends, setFriends] = React.useState([
-        {
-            id: 1,
-            username: "Trần Khởi My",
-            email: "phutot1111@gmail.com",
-            phone: "0348191482",
-            dateOfBirth: new Date(),
-            gender: true
-        },
-    ]);
+    const [friends, setFriends] = React.useState([]);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -32,6 +23,7 @@ function TabFriend({ navigation }) {
             const userId = user._id
             const response = await getListFriendOfMe(userId, tokenAccess);
             const friends = response.data.data.friends
+            // console.log(friends)
             setFriends(friends)
         }catch (error) {
             console.log(error)
