@@ -9,7 +9,7 @@ import {BLUE, GRAY, WHITE} from "../colors/Colors";
 import {Avatar} from "react-native-elements";
 import {getToken, getUser} from "../../store/Store";
 import {useFocusEffect} from "@react-navigation/native";
-import {getListFriendOfMe, getUserProfileById, RequestAddFriend, RequestAddFriendStatus} from "../../api";
+import {getListFriendOfMe, getUserProfileById, RequestAddFriend, RequestAddFriendStatus, Unfriend} from "../../api";
 import {showMessage} from "react-native-flash-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CancelAddFriendByUserSend} from "../../api";
@@ -51,10 +51,10 @@ function UserProfileScreen({navigation, route}) {
     }
 
     // Kiem tra co phai la ban be hay khong
-    const checkIsFriend = async  () => {
+    const checkIsFriend = async () => {
         try {
             const tokenAccess = await getToken();
-            const user = await  getUser();
+            const user = await getUser();
             const userId = user._id
             const response = await getListFriendOfMe(userId, tokenAccess);
             const friends = response.data.data.friends
@@ -65,7 +65,7 @@ function UserProfileScreen({navigation, route}) {
                     return;
                 }
             })
-        }catch (error) {
+        } catch (error) {
             console.log(error)
         }
     }
@@ -108,7 +108,7 @@ function UserProfileScreen({navigation, route}) {
             const tokenAccess = await getToken()
             const user = await getUser()
             const userIdSend = user._id
-            const response = await CancelAddFriendByUserSend(userIdSend, userIdRecieve, tokenAccess)
+            const response = await CancelAddFriendByUserSend(userIdRecieve, userIdSend, tokenAccess)
             showMessage({
                 message: "Thông báo",
                 description: "Đã hủy yêu cầu kết bạn",
@@ -118,6 +118,24 @@ function UserProfileScreen({navigation, route}) {
             setIsRequestAddFriend(false)
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const unfriend = async () => {
+        try {
+            const tokenAccess = await getToken()
+            const user = await getUser()
+            const userIdSend = user._id
+            const response = await Unfriend(userIdSend, userIdRecieve, tokenAccess)
+            showMessage({
+                message: "Thông báo",
+                description: "Đã hủy kết bạn",
+                type: "info",
+                position: "bottom",
+            })
+            setIsFriend(false)
+        } catch (e) {
+            console.log(e)
         }
     }
 
@@ -186,7 +204,23 @@ function UserProfileScreen({navigation, route}) {
                 </TouchableOpacity>
                 {
                     isFriend === true ?
-                        <></>
+                        <TouchableOpacity
+                            onPress={() => {
+                                unfriend()
+                            }}
+                            style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                backgroundColor: BLUE,
+                                padding: 12,
+                                borderRadius: 10,
+                                minWidth: 50,
+                                maxWidth: 180
+                            }}
+                        >
+                            <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
+                        </TouchableOpacity>
                         :
                         <TouchableOpacity
                             onPress={() => {
@@ -197,14 +231,16 @@ function UserProfileScreen({navigation, route}) {
                                 alignItems: "center",
                                 justifyContent: "center",
                                 backgroundColor: BLUE,
-                                padding: 10,
+                                padding: 12,
                                 borderRadius: 10,
-                                width: 50
+                                minWidth: 50,
+                                maxWidth: 180
                             }}
                         >
                             {
                                 isRequestAddFriend ?
-                                    <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
+                                    // <Ionicons name={"person-remove-sharp"} size={25} color={"white"}/>
+                                    <Text style={{fontSize: 16, color: "white"}}>Hủy yêu cầu kết bạn</Text>
                                     :
                                     <Ionicons name={"person-add-sharp"} size={25} color={"white"}/>
                             }
