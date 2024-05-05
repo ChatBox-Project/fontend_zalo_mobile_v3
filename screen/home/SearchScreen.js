@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Avatar, Header, ListItem } from "react-native-elements"
 import Icon from 'react-native-vector-icons/Feather';
-import { BLUE } from '../colors/Colors';
+import { BLUE } from '../../config/Colors';
 import { FindUser } from '../../api/';
 import {getToken} from "../../store/Store";
 

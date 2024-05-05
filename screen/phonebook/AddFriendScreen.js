@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import { BLUE, GRAY } from '../colors/Colors';
+import { BLUE, GRAY } from '../../config/Colors';
 
 function AddFriend({ navigation }) {
 

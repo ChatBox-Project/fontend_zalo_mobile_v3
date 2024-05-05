@@ -1,25 +1,21 @@
 // import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { BLUE, WHITE } from './screen/colors/Colors';
+import { BLUE, WHITE } from './config/Colors';
 import LoginAndSignInScreen from './screen/LoginAndSignInScreen';
 import LoginScreen from './screen/LoginScreen';
 import SignInScreen from './screen/signIn/SignInScreen';
 import SignInScreen1 from './screen/signIn/SignInScreen1';
 import OTPScreen from './screen/signIn/OTPScreen';
 import BirthDayAndSexScreen from './screen/signIn/BirthDayAndSexScreen';
-import AvatarScreen from './screen/signIn/AvatarScreen';
 import IndexScreen from './screen/home/IndexScreen';
 import FriendRequestScreen from './screen/phonebook/FriendRequestScreen';
 import FriendPhoneBookScreen from './screen/phonebook/FriendPhoneBookScreen';
 import SettingScreen from './screen/home/SettingScreen';
 import PersonalScreen from './screen/Individual/PersonalScreen';
 import SearchScreen from './screen/home/SearchScreen';
-import CreateNewGroupScreen from './screen/phonebook/CreateNewGroupScreen';
 import AddFriend from './screen/phonebook/AddFriendScreen';
-import ChatWindow from './util/chat_window/chat_window';
 import FlashMessage from 'react-native-flash-message';
-import NotifyRegisterOTPScreen from './screen/signIn/NotifyRegisterOTPScreen';
 import ForgotPasswordScreen from './screen/ForgotPassWordScreen';
 import ChangePassWordScreen from './screen/ChangePassWordScreen';
 import ChangePasswordScreenAfterLogin from './screen/home/ChangePasswordScreenAfterLogin';
@@ -110,13 +106,6 @@ export default function App() {
           })}
         />
         <Stack.Screen
-          name="AvatarScreen"
-          component={AvatarScreen}
-          options={({ navigation, route }) => ({
-            headerTitle: "Ảnh đại diện"
-          })}
-        />
-        <Stack.Screen
           name="Index"
           component={IndexScreen}
           options={({ navigation, route }) => ({
@@ -162,31 +151,10 @@ export default function App() {
           })}
         />
         <Stack.Screen
-          name="CreateNewGroup"
-          component={CreateNewGroupScreen}
-          options={({ navigation, route }) => ({
-            headerTitle: "Nhóm mới",
-          })}
-        />
-        <Stack.Screen
           name="AddFriend"
           component={AddFriend}
           options={({ navigation, route }) => ({
             headerTitle: "Thêm bạn",
-          })}
-        />
-        <Stack.Screen
-          name="ChatWindow"
-          component={ChatWindow}
-          options={({ navigation, route }) => ({
-            headerTitle: "",
-          })}
-        />
-        <Stack.Screen
-          name="NotifyRegisterOTPScreen"
-          component={NotifyRegisterOTPScreen}
-          options={({ navigation, route }) => ({
-            headerTitle: "Xác Thực Tài Khoản",
           })}
         />
       </Stack.Navigator>

@@ -1,9 +1,9 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Avatar, Input, Button } from 'react-native-elements'
-import { BLUE, GRAY } from './colors/Colors';
+import { BLUE, GRAY } from '../config/Colors';
 import { showMessage } from 'react-native-flash-message';
-import { regexEmail } from '../regex/MyRegex';
+import { regexEmail } from '../config/Regex';
 import { SendSms } from '../api';
 
 function ForgotPassWordScreen({ navigation }) {

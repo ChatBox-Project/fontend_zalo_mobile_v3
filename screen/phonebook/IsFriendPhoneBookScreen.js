@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, Text, TouchableOpacity, View } from 'react-native';
-import { BLUE } from '../colors/Colors';
+import { BLUE } from '../../config/Colors';
 import { Avatar } from 'react-native-elements';
 
 function IsFriendPhoneBookScreen({ navigation }) {

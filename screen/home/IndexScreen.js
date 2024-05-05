@@ -7,7 +7,7 @@ import Icon2 from 'react-native-vector-icons/Ionicons';
 import Icon3 from 'react-native-vector-icons/FontAwesome';
 import Icon4 from 'react-native-vector-icons/AntDesign';
 import { Text, TouchableOpacity, View } from 'react-native';
-import { BLUE } from '../colors/Colors';
+import { BLUE } from '../../config/Colors';
 import PhoneBookScreen from './PhoneBookScreen';
 import IndividualScreen from './IndividualScreen';
 import * as Contacts from 'expo-contacts';

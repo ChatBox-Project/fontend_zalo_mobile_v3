@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
-import { BLUE, GRAY } from '../colors/Colors';
+import { BLUE, GRAY } from '../../config/Colors';
 import { showMessage } from "react-native-flash-message";
-import { regexEmail, regexPassword, regexPhoneNumber } from '../../regex/MyRegex';
+import { regexEmail, regexPassword, regexPhoneNumber } from '../../config/Regex';
 import { Register, SendSms } from '../../api';
 import { saveToken } from '../../store/Store';
 
@@ -29,48 +29,59 @@ function SignInScreen1({ navigation }) {
 
         let checkPass = true
 
+        // neu user name rong
         if (!userName) {
             checkPass = false
             setErrorUserName("VUI LÒNG NHẬP TRƯỜNG NÀY")
         }
 
+        // neu phone number rong
         if (!phoneNumber) {
             checkPass = false
             setErrorPhoneNumber("VUI LÒNG NHẬP TRƯỜNG NÀY")
+            // neu phone number khong hop le
         } else if (!regexPhoneNumber.test(phoneNumber)) {
             checkPass = false
             setErrorPhoneNumber("SỐ ĐIỆN THOẠI KHÔNG HỢP LỆ")
         }
 
+        // neu email rong
         if (!email) {
             checkPass = false
             setErrorEmail("VUI LÒNG NHẬP TRƯỜNG NÀY")
+            // neu email khong hop le
         } else if (!regexEmail.test(email)) {
             checkPass = false
             setErrorEmail("EMAIL KHÔNG HỢP LỆ")
         }
 
+        // neu password rong
         if (!password) {
             checkPass = false;
             setErrorPassword("VUI LÒNG NHẬP TRƯỜNG NÀY")
+            // neu password khong hop le
         } else if (!regexPassword.test(password)) {
             checkPass = false;
             setErrorPassword("TỐI THIỂU 8 KÍ TỰ, GỒM CHỮ CÁI VÀ SỐ")
         }
 
+        // neu again password rong
         if (!againPassword) {
             checkPass = false;
             setErrorPasswordAgain("VUI LÒNG NHẬP TRƯỜNG NÀY")
+            // neu again password khong hop le
         } else if (!regexPassword.test(againPassword)) {
             checkPass = false;
             setErrorPasswordAgain("TỐI THIỂU 8 KÍ TỰ, GỒM CHỮ CÁI VÀ SỐ")
         }
 
-        if (checkPass) {
 
+        if (checkPass) {
+            // neu password khong trung nhau
             if (password !== againPassword) {
                 checkPass = false
                 setErrorPasswordAgain("MẬT KHẨU KHÔNG TRÙNG")
+                // neu chua dong y voi dieu khoan
             } else if (!checkBox1 || !checkBox2) {
                 checkPass = false
                 showMessage({
@@ -81,13 +92,14 @@ function SignInScreen1({ navigation }) {
             }
 
             if (checkPass) {
+                // dang ky tai khoan
                 registerAccount()
             }
 
         }
     }
 
-
+    // dang ky tai khoan
     async function registerAccount() {
         try {
             setLoading(true)
@@ -115,6 +127,7 @@ function SignInScreen1({ navigation }) {
         }
     }
 
+    // reset lai input
     const ressetTextInput = () => {
         setPhoneNumber("")
         setPassword("")

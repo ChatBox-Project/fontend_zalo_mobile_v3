@@ -2,51 +2,10 @@ import React from 'react'
 import ZaloImage from "../images/zalo_icon.png"
 import { Image, StyleSheet, View } from 'react-native'
 import { Button } from 'react-native-elements'
-import { BLUE, GRAY } from './colors/Colors'
-import { useFocusEffect } from '@react-navigation/native'
-import { GetUserInformation } from '../api/SignInAPI'
-import { getTokenAccess, saveUserInformation } from '../store/MyStore'
-import { showMessage } from 'react-native-flash-message'
+import { BLUE, GRAY } from '../config/Colors'
 
 function LoginAndSignInScreen({ navigation }) {
 
-    const [isUser, setIsUser] = React.useState(false)
-
-    useFocusEffect(
-        React.useCallback(() => {
-            checkLogin()
-        }, [])
-    );
-
-    async function checkLogin() {
-        try {
-            const tokenAccess = await getTokenAccess()
-            if (tokenAccess !== undefined) {
-                const userInformation = await GetUserInformation(tokenAccess)
-                const user = userInformation?.data?.metadata?.user
-                saveUserInformation(user)
-                setIsUser(true)
-            } else {
-                setIsUser(false)
-            }
-        } catch (error) {
-            console.log(error)
-            showMessage({
-                message: "Thông Báo !",
-                description: error.response.data.message,
-                type: "danger"
-            })
-            setIsUser(false)
-        }
-    }
-
-    React.useEffect(() => {
-        if (isUser === true) {
-            navigation.push("Index");
-        }
-    }, [isUser]);
-
-    if (isUser === false) {
         return (
             <View style={styles.container}>
                 <Image
@@ -91,7 +50,6 @@ function LoginAndSignInScreen({ navigation }) {
                 </View>
             </View>
         )
-    }
 
 }
 

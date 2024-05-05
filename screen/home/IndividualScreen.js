@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { BLUE, GRAY, WHITE } from "../colors/Colors";
+import { BLUE, GRAY, WHITE } from "../../config/Colors";
 import { Avatar, ListItem } from "react-native-elements";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import Icon1 from "react-native-vector-icons/MaterialIcons";
@@ -24,6 +24,7 @@ function IndividualScreen({ navigation }) {
   );
 
 
+  // lay thong tin user tu store
   async function getUserInformation() {
     try {
       const tokenAccess = await getToken()
@@ -37,6 +38,7 @@ function IndividualScreen({ navigation }) {
     }
   }
 
+  // chuyen den man hinh doi mat khau
   function ChangePassword() {
     navigation.push("ChangePasswordScreenAfterLogin")
   }

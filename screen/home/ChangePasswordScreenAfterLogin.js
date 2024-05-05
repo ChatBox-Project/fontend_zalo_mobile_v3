@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Input, Button } from "react-native-elements"
-import { GRAY } from '../colors/Colors';
-import { regexPassword } from '../../regex/MyRegex';
+import { GRAY } from '../../config/Colors';
+import { regexPassword } from '../../config/Regex';
 import { showMessage } from 'react-native-flash-message';
 import { getEmail, removeKey } from '../../store/Store';
 import { RefreshPassword } from '../../api'

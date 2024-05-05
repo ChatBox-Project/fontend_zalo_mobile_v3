@@ -1,24 +1,13 @@
 import React from 'react'
 import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/AntDesign';
-import { BLUE, GRAY } from '../colors/Colors';
-import ChatGroup from '../../util/chat_group/ChatGroup';
+import { BLUE, GRAY } from '../../config/Colors';
 import { ScrollView } from 'react-native-virtualized-view';
 import { ListItem } from 'react-native-elements';
 
 function GroupScreen({ navigation }) {
 
-    const [groups, setGroup] = React.useState([
-        {
-            groupId: 1,
-            chatBoxId: 1,
-            groupName: "Cộng Đồng IT Việt",
-            groupMembers: null,
-            groupLeaderId: null,
-            userId: null,
-            messageId: null
-        },
-    ])
+    const [groups, setGroup] = React.useState([])
 
     return (
         <ScrollView
@@ -59,7 +48,7 @@ function GroupScreen({ navigation }) {
                         return (
                             <TouchableOpacity
                                 onPress={() => { navigation.push("ChatWindow") }}>
-                                <ChatGroup group={data.item} />
+                                <Text>This is group</Text>
                             </TouchableOpacity>
                         )
                     }}

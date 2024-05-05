@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { Button, CheckBox, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { BLUE, GRAY } from '../colors/Colors';
+import { BLUE, GRAY } from '../../config/Colors';
 
 function BirthDayAndSexScreen({ navigation, route }) {
 

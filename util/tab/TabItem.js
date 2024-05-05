@@ -14,7 +14,7 @@ function TabItem({ title, tab, setTab, count, id }) {
                 borderColor: "#dfe6e9",
                 backgroundColor: tab === id ? "#dfe6e9" : "white",
             }}>
-            <View style={{ justifyContent: 'space-around', justifyContent: 'center', flexDirection: 'row' }}>
+            <View style={{ justifyContent: 'center', flexDirection: 'row' }}>
                 <Text style={{ color: tab === id ? "black" : "gray", fontWeight: tab === id ? "500" : "normal" }}>{title}</Text>
                 {
                     count ?

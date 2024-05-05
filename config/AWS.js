@@ -1,5 +1,5 @@
 import AWS from "aws-sdk"
-import { ACCESSKEY, REGION, SECRETKEY } from "../config/Config";
+import { ACCESSKEY, REGION, SECRETKEY } from "./Config";
 import { createParams } from "../util/function/MyFunction";
 
 AWS.config.update({

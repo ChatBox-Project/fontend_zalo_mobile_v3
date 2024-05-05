@@ -2,7 +2,7 @@ import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Icon1 from 'react-native-vector-icons/FontAwesome';
-import { BLUE, GRAY } from '../colors/Colors';
+import { BLUE, GRAY } from '../../config/Colors';
 import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'

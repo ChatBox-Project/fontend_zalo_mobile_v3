@@ -3,7 +3,7 @@ import { Text, TouchableOpacity, View } from 'react-native'
 import Icon from 'react-native-vector-icons/SimpleLineIcons';
 import Icon1 from 'react-native-vector-icons/Ionicons';
 import { Avatar } from 'react-native-elements';
-import { BLUE } from '../../screen/colors/Colors';
+import { BLUE } from '../../config/Colors';
 
 function Friend({ friend, navigation }) {
 

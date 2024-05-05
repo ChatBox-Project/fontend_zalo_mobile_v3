@@ -1,9 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { BLUE, GRAY } from './colors/Colors';
-import { regexPassword, regexPhoneNumber } from '../regex/MyRegex';
-import { Login } from '../api/auth';
+import { BLUE, GRAY } from '../config/Colors';
+import {Login} from "../api";
 import { showMessage } from 'react-native-flash-message';
 import {saveEmail, saveToken, saveUser} from '../store/Store';
 
@@ -60,7 +59,7 @@ function LoginScreen({ navigation }) {
             navigation.push("Index")
             ressetInput()
         } catch (error) {
-            console.error(error)
+            console.log(error)
             showMessage({
                 message: "Thông Báo !",
                 description: "Đăng nhập thất bại, vui lòng kiểm tra lại thông tin đăng nhập",
@@ -128,7 +127,6 @@ function LoginScreen({ navigation }) {
                     if (validateInput()) {
                         checkAccount()
                     }
-                    // navigation.push("Index")
                 }}
             />
         </View>

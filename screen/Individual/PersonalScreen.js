@@ -7,7 +7,7 @@ import {
     View,
     ScrollView,
 } from "react-native";
-import {BLUE, GRAY, WHITE} from "../colors/Colors";
+import {BLUE, GRAY, WHITE} from "../../config/Colors";
 import {Avatar} from "react-native-elements";
 import {useFocusEffect} from "@react-navigation/native";
 import {getToken, getUser} from "../../store/Store";

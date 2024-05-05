@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { BLUE, GRAY } from '../colors/Colors';
+import { BLUE, GRAY } from '../../config/Colors';
 import { showMessage } from 'react-native-flash-message';
 import { ConfirmCode } from '../../api';
 

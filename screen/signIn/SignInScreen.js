@@ -1,8 +1,8 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
-import { BLUE } from '../colors/Colors';
-import { regexName } from '../../regex/MyRegex';
+import { BLUE } from '../../config/Colors';
+import { regexName } from '../../config/Regex';
 
 function SignInScreen({ navigation }) {
 
