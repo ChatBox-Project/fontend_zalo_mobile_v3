@@ -7,6 +7,7 @@ import {getToken, getUser} from "../store/Store";
 import * as ImagePicker from 'expo-image-picker';
 import {FindUser, UpdateProfile} from "../api";
 import {showMessage} from "react-native-flash-message";
+import {upateImageToS3} from "../config/AWS";
 
 function UpdateProfileScreen({navigation}) {
 
@@ -15,8 +16,12 @@ function UpdateProfileScreen({navigation}) {
     const [address, setAddress] = React.useState("")
     const [coverPicture, setCoverPicture] = React.useState("")
     const [profilePicture, setProfilePicture] = React.useState("")
+    const [coverPictureAfter, setCoverPictureAfter] = React.useState("")
+    const [profilePictureAfter, setProfilePictureAfter] = React.useState("")
 
     const [loading, setLoading] = React.useState(false);
+    const [profilePictureChange, setProfilePictureChange] = React.useState(false);
+    const [coverPictureChange, setCoverPictureChange] = React.useState(false);
 
     useEffect(() => {
         async function loadData() {
@@ -31,10 +36,30 @@ function UpdateProfileScreen({navigation}) {
             setAddress(userInfo.data.address);
             setCoverPicture(userInfo.data.coverPicture);
             setProfilePicture(userInfo.data.profilePicture)
+            setCoverPictureAfter(userInfo.data.coverPicture);
+            setProfilePictureAfter(userInfo.data.profilePicture)
         }
 
         loadData()
     }, [])
+
+    // kiem tra xem co thay doi anh profile hay khong
+    useEffect(() => {
+        if(profilePicture !== profilePictureAfter){
+            setProfilePictureChange(true)
+        }else{
+            setProfilePictureChange(false)
+        }
+    }, [profilePicture, profilePictureAfter])
+
+    // kiem tra xem co thay doi anh cover hay khong
+    useEffect(() => {
+        if(coverPicture !== coverPictureAfter){
+            setCoverPictureChange(true)
+        }else{
+            setCoverPictureChange(false)
+        }
+    }, [coverPicture, coverPictureAfter])
 
     const pickImageProfile = async () => {
         // No permissions request is necessary for launching the image library
@@ -46,7 +71,7 @@ function UpdateProfileScreen({navigation}) {
         });
 
         if (!result.canceled) {
-            setProfilePicture(result.assets[0].uri);
+            setProfilePictureAfter(result.assets[0].uri);
         }
     };
 
@@ -60,22 +85,36 @@ function UpdateProfileScreen({navigation}) {
         });
 
         if (!result.canceled) {
-            setCoverPicture(result.assets[0].uri);
+            setCoverPictureAfter(result.assets[0].uri);
         }
     };
 
     const updateProfile = async () => {
         try {
             setLoading(true)
+
+            let newProfilePicture = profilePictureAfter;
+            let newCoverPicture = coverPictureAfter;
+
+            if (profilePictureChange) {
+                const location = await upateImageToS3(profilePictureAfter)
+                newProfilePicture = location.Location;
+            }
+            if (coverPictureChange) {
+                const location = await upateImageToS3(coverPictureAfter)
+                newCoverPicture = location.Location;
+            }
+
             const token = await getToken();
             const user = await getUser();
             const data = {
                 newUsername: name,
-                newProfilePicture: profilePicture,
+                newProfilePicture: newProfilePicture,
                 newGender: gender,
                 newAddress: address,
-                newCoverPhoto: coverPicture
+                newCoverPhoto: newCoverPicture
             }
+
             const response = await UpdateProfile(user._id, data, token);
             setLoading(false)
             navigation.push("Index")
@@ -84,7 +123,7 @@ function UpdateProfileScreen({navigation}) {
                 description: "Cập nhật thành công",
                 type: "success",
             })
-        }catch (error){
+        } catch (error) {
             setLoading(false)
             showMessage({
                 message: "Thông báo",
@@ -93,7 +132,6 @@ function UpdateProfileScreen({navigation}) {
             })
             console.log(error)
         }
-
     }
 
     return (
@@ -111,7 +149,7 @@ function UpdateProfileScreen({navigation}) {
                 alignItems: "center"
             }}>
                 {
-                    profilePicture === "" ?
+                    profilePictureAfter === "" ?
                         <Avatar
                             rounded
                             icon={{name: 'user', type: 'font-awesome'}}
@@ -126,7 +164,7 @@ function UpdateProfileScreen({navigation}) {
                         </Avatar>
                         :
                         <Avatar
-                            source={{uri: profilePicture}}
+                            source={{uri: profilePictureAfter}}
                             rounded={true}
                             size={"medium"}
                         >
@@ -241,11 +279,11 @@ function UpdateProfileScreen({navigation}) {
                     marginTop: 15
                 }}>
                     {
-                        coverPicture === "" ?
+                        coverPictureAfter === "" ?
                             <Text style={{color: "gray"}}>Chưa có ảnh bìa</Text>
                             :
                             <Image
-                                source={{uri: coverPicture}}
+                                source={{uri: coverPictureAfter}}
                                 style={{width: 250, height: 250}}
                             />
                     }

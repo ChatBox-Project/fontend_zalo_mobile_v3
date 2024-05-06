@@ -31,6 +31,7 @@ function PersonalScreen({navigation}) {
         }, [])
     );
 
+    // lay thong tin user
     async function getUserInformation() {
         try {
             const tokenAccess = await getToken()
@@ -51,10 +52,18 @@ function PersonalScreen({navigation}) {
             <View
                 style={{paddingBottom: 100}}
             >
-                <Image
-                    source={require("../../images/hoboi.jpg")}
-                    style={{width: "100%", height: 250}}
-                />
+                {
+                    user?.coverPicture ?
+                        <Image
+                            source={{uri: user?.coverPicture}}
+                            style={{width: "100%", height: 250}}
+                        />
+                        :
+                        <Image
+                            source={require("../../images/hoboi.jpg")}
+                            style={{width: "100%", height: 250}}
+                        />
+                }
                 <View
                     style={{
                         position: 'absolute',
@@ -70,7 +79,7 @@ function PersonalScreen({navigation}) {
                         user?.profilePicture
                             ?
                             <Avatar
-                                size={100}
+                                size={130}
                                 rounded
                                 source={{uri: user?.profilePicture}}
                                 containerStyle={{borderWidth: 4, borderColor: "white"}}

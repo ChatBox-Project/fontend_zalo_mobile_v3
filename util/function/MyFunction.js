@@ -1,7 +1,8 @@
 import * as FileSystem from 'expo-file-system';
 import { BUCKET } from '../../config/Config';
-var Buffer = require('buffer/').Buffer
+const Buffer = require('buffer/').Buffer
 
+// chuyen uri -> base64 -> buffer
 async function convertBase64ToBuffer(uri) {
     const imageData = await FileSystem.readAsStringAsync(uri, {
         encoding: FileSystem.EncodingType.Base64,
@@ -12,10 +13,11 @@ async function convertBase64ToBuffer(uri) {
     return buffer
 }
 
+// tao params cho upload file len s3
 const createParams = async (file) => {
 
-    const buffer = await convertBase64ToBuffer(file.uri)
-    const endPoint = getEndPoint(file.uri)
+    const buffer = await convertBase64ToBuffer(file)
+    const endPoint = getEndPoint(file)
 
     const params = {
         Bucket: BUCKET,
@@ -27,6 +29,7 @@ const createParams = async (file) => {
     return params
 }
 
+// lay duoi file
 const getEndPoint = (uri) => {
     var viTriCuoi = uri.lastIndexOf(".")
     if (viTriCuoi !== -1) {
@@ -88,10 +91,18 @@ const getMessageType = (message, userNow) => {
     return typeMessage
 }
 
+// lay ten file tu uri
+const getFileNameFromUri = (uri) => {
+    const parts = uri.split('/');
+    const fileName = parts[parts.length - 1];
+    return fileName;
+};
+
 
 export {
     convertBase64ToBuffer,
     createParams,
     getEndPoint,
-    getMessageType
+    getMessageType,
+    getFileNameFromUri
 }
