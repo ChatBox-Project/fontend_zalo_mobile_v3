@@ -5,6 +5,7 @@ import { BLUE, GRAY } from '../config/Colors';
 import {Login} from "../api";
 import { showMessage } from 'react-native-flash-message';
 import {saveEmail, saveToken, saveUser} from '../store/Store';
+import {regexPassword, regexPhoneNumber} from "../config/Regex";
 
 function LoginScreen({ navigation }) {
 

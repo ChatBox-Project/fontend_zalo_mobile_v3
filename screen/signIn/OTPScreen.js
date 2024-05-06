@@ -42,11 +42,6 @@ function OTPScreen({ navigation, route }) {
                 setTime(30)
             } catch (error) {
                 console.log(error)
-                // showMessage({
-                //     message: "Thông Báo !",
-                //     description: error.response.data.message,
-                //     type: "danger",
-                // });
             }
         } else {
             showMessage({

@@ -11,7 +11,7 @@ import {FindUser} from "../../api";
 function IndividualScreen({ navigation }) {
 
   const [options, setOptions] = React.useState([
-    { title: "Cập nhật thông tin", icon: <Icon name="update" size={25} color={BLUE} /> },
+    { title: "Cập nhật thông tin", icon: <Icon name="update" size={25} color={BLUE} />, click: UpdateProfile},
     { title: "Đổi mật khẩu", icon: <Icon1 name="password" size={25} color={BLUE} />, click: ChangePassword },
   ])
 
@@ -41,6 +41,10 @@ function IndividualScreen({ navigation }) {
   // chuyen den man hinh doi mat khau
   function ChangePassword() {
     navigation.push("ChangePasswordScreenAfterLogin")
+  }
+
+  function UpdateProfile() {
+    navigation.push("UpdateProfileScreen")
   }
 
   return (
