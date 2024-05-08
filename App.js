@@ -20,6 +20,9 @@ import ChangePassWordScreen from './screen/ChangePassWordScreen';
 import ChangePasswordScreenAfterLogin from './screen/home/ChangePasswordScreenAfterLogin';
 import UserProfileScreen from './screen/Individual/UserProfileScreen';
 import UpdateProfileScreen from "./screen/UpdateProfileScreen";
+import ChatScreen from "./screen/ChatScreen";
+import Group from "./util/item/Group";
+import CreateGroupScreen from "./screen/CreateGroupScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +31,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="LoginAndSignIn"
+                initialRouteName="CreateGroupScreen"
                 screenOptions={{
                     headerStyle: {backgroundColor: BLUE},
                     headerTitleStyle: {color: WHITE},
@@ -40,6 +43,28 @@ export default function App() {
                     component={LoginAndSignInScreen}
                     options={({navigation, route}) => ({
                         headerShown: false,
+                    })}
+                />
+                <Stack.Screen
+                    name="CreateGroupScreen"
+                    component={CreateGroupScreen}
+                    options={({navigation, route}) => ({
+                        headerShown: true,
+                        title: "Tạo nhóm"
+                    })}
+                />
+                <Stack.Screen
+                    name="Group"
+                    component={Group}
+                    options={({navigation, route}) => ({
+                        headerShown: true,
+                    })}
+                />
+                <Stack.Screen
+                    name="ChatScreen"
+                    component={ChatScreen}
+                    options={({navigation, route}) => ({
+                        headerShown: true,
                     })}
                 />
                 <Stack.Screen

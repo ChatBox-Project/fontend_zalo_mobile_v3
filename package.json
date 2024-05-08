@@ -35,7 +35,8 @@
     "react-native-screens": "~3.29.0",
     "react-native-tab-view": "^3.5.2",
     "react-native-vector-icons": "^10.0.3",
-    "react-native-virtualized-view": "^1.0.0"
+    "react-native-virtualized-view": "^1.0.0",
+    "socket.io-client": "^4.7.5"
   },
   "devDependencies": {
     "@babel/core": "^7.24.4"

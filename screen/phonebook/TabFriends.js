@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, View } from 'react-native';
-import Friend from '../../util/friend/Friend';
+import Friend from '../../util/item/Friend';
 import {useFocusEffect} from "@react-navigation/native";
 import {getToken, getUser} from "../../store/Store";
 import {getListFriendOfMe} from "../../api";

@@ -11,10 +11,17 @@ import { BLUE } from '../../config/Colors';
 import PhoneBookScreen from './PhoneBookScreen';
 import IndividualScreen from './IndividualScreen';
 import * as Contacts from 'expo-contacts';
+import {socket} from "../../config/SocketClient";
 
 const Tab = createBottomTabNavigator();
 
 function IndexScreen({ navigation }) {
+
+    React.useEffect(() => {
+        socket.on('connect', () => {
+            console.log('start connect to socket server');
+        });
+    }, [])
 
     // Lấy danh bạ điện thoại
     React.useEffect(() => {
