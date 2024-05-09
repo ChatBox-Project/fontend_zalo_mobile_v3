@@ -17,6 +17,7 @@ const Tab = createBottomTabNavigator();
 
 function IndexScreen({ navigation }) {
 
+    // Kết nối tới server socket
     React.useEffect(() => {
         socket.on('connect', () => {
             console.log('start connect to socket server');

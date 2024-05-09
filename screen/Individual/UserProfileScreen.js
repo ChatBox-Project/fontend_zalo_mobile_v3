@@ -148,10 +148,18 @@ function UserProfileScreen({navigation, route}) {
             <View
                 style={{paddingBottom: 100}}
             >
-                <Image
-                    source={require("../../images/hoboi.jpg")}
-                    style={{width: "100%", height: 250}}
-                />
+                {// neu co anh bia thi hien thi anh bia, con khong thi hien thi anh mac dinh
+                    user?.coverPicture ?
+                        <Image
+                            source={{uri: user?.coverPicture}}
+                            style={{width: "100%", height: 250}}
+                        />
+                        :
+                        <Image
+                            source={require("../../images/hoboi.jpg")}
+                            style={{width: "100%", height: 250}}
+                        />
+                }
                 <View
                     style={{
                         position: 'absolute',
@@ -163,18 +171,18 @@ function UserProfileScreen({navigation, route}) {
                         alignItems: "center",
                     }}
                 >
-                    {
+                    {// neu co anh dai dien thi hien thi anh dai dien, con khong thi hien thi anh mac dinh
                         user?.profilePicture
                             ?
                             <Avatar
-                                size={130}
+                                size={"xlarge"}
                                 rounded
                                 source={{uri: user.profilePicture}}
                                 containerStyle={{borderWidth: 4, borderColor: GRAY}}
                             />
                             :
                             <Avatar
-                                size={130}
+                                size={"xlarge"}
                                 rounded
                                 icon={{name: 'user', type: 'font-awesome'}}
                                 containerStyle={{

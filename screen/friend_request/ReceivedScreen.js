@@ -76,7 +76,7 @@ function ReceivedScreen({navigation}) {
                                 <ListItem key={item._id} bottomDivider>
                                     {
                                         item.profilePicture ?
-                                            <Avatar source={{uri: item.profilePicture}}/>
+                                            <Avatar rounded size={50} source={{uri: item.profilePicture}}/>
                                             :
                                             <Avatar
                                                 rounded

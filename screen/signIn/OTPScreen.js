@@ -64,7 +64,7 @@ function OTPScreen({ navigation, route }) {
                         type: "success",
                     });
                     if (type === 1) {
-                        navigation.push("Login")
+                        navigation.push("LoginAndSignIn")
                     } else if (type === 2) {
                         navigation.push("ChangePassWordScreen", { email })
                     }

@@ -79,14 +79,14 @@ function PersonalScreen({navigation}) {
                         user?.profilePicture
                             ?
                             <Avatar
-                                size={130}
+                                size={"xlarge"}
                                 rounded
                                 source={{uri: user?.profilePicture}}
                                 containerStyle={{borderWidth: 4, borderColor: "white"}}
                             />
                             :
                             <Avatar
-                                size={130}
+                                size={"xlarge"}
                                 rounded
                                 icon={{name: 'user', type: 'font-awesome'}}
                                 containerStyle={{

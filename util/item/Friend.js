@@ -22,7 +22,7 @@ function Friend({ friend, navigation }) {
                 {
                     friend?.profilePicture ?
                         <Avatar
-                            size={50}
+                            size={60}
                             rounded
                             source={{ uri: friend.profilePicture }}
                         />

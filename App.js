@@ -20,9 +20,9 @@ import ChangePassWordScreen from './screen/ChangePassWordScreen';
 import ChangePasswordScreenAfterLogin from './screen/home/ChangePasswordScreenAfterLogin';
 import UserProfileScreen from './screen/Individual/UserProfileScreen';
 import UpdateProfileScreen from "./screen/UpdateProfileScreen";
-import ChatScreen from "./screen/ChatScreen";
 import Group from "./util/item/Group";
 import CreateGroupScreen from "./screen/CreateGroupScreen";
+import ChatMessageScreen from "./screen/ChatMessageScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +31,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <Stack.Navigator
-                initialRouteName="CreateGroupScreen"
+                initialRouteName="LoginAndSignIn"
                 screenOptions={{
                     headerStyle: {backgroundColor: BLUE},
                     headerTitleStyle: {color: WHITE},
@@ -61,8 +61,8 @@ export default function App() {
                     })}
                 />
                 <Stack.Screen
-                    name="ChatScreen"
-                    component={ChatScreen}
+                    name="ChatMessageScreen"
+                    component={ChatMessageScreen}
                     options={({navigation, route}) => ({
                         headerShown: true,
                     })}

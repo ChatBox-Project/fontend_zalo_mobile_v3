@@ -1,45 +1,62 @@
 import React from 'react'
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
-import { Avatar, Header, ListItem } from "react-native-elements"
+import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import {Avatar, Header, ListItem} from "react-native-elements"
 import Icon from 'react-native-vector-icons/Feather';
-import { BLUE } from '../../config/Colors';
-import { FindUser } from '../../api/';
-import {getToken} from "../../store/Store";
+import {BLUE} from '../../config/Colors';
+import {FindUser} from '../../api/';
+import {getToken, getUser} from "../../store/Store";
 
-function SearchScreen({ navigation }) {
+function SearchScreen({navigation}) {
 
     const [search, updateSearch] = React.useState("")
     const [users, setUsers] = React.useState(null)
+    const [mainUser, setMainUser] = React.useState(null)
 
-    // console.log(users)
+    React.useEffect(() => {
+        const getMainUser = async () => {
+            try {
+                const user = await getUser();
+                setMainUser(user)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        // lay thong tin user tu store
+        getMainUser();
+    }, [])
+
 
     React.useEffect(() => {
         if (search) {
             const runSearch = async () => {
                 try {
-                    const tokenAccess = await  getToken();
+                    const tokenAccess = await getToken();
                     const user = await FindUser(search, tokenAccess);
                     // console.log(user.data)
-                    if(user.data.exist){
+                    if (user.data.exist) {
                         setUsers(user.data)
-                    }else{
+                    } else {
                         setUsers(null)
                     }
                 } catch (error) {
                     console.log(error)
                 }
             }
+
+            // tim kiem user
             runSearch()
         }
     }, [search])
 
     return (
-        <View style={styles.container} >
+        <View style={styles.container}>
             <Header
                 leftComponent={() => {
                     return (
                         <TouchableOpacity
-                            onPress={() => { navigation.goBack() }}
+                            onPress={() => {
+                                navigation.goBack()
+                            }}
                             style={{
                                 justifyContent: 'center',
                                 alignItems: 'center',
@@ -47,7 +64,7 @@ function SearchScreen({ navigation }) {
                                 marginTop: 4
                             }}
                         >
-                            <Icon name='arrow-left' color={"white"} size={25} />
+                            <Icon name='arrow-left' color={"white"} size={25}/>
                         </TouchableOpacity>
                     )
                 }}
@@ -73,10 +90,15 @@ function SearchScreen({ navigation }) {
             />
             {
                 !users ?
-                    <Text style={{ color: "gray", marginTop: 20 }}>Vui lòng nhập thông tin tìm kiếm...</Text>
+                    <Text style={{color: "gray", marginTop: 20}}>Vui lòng nhập thông tin tìm kiếm...</Text>
                     :
                     <ListItem
-                        onPress={() => { navigation.push("UserProfileScreen", { userId: users._id }) }}
+                        onPress={() => {
+                            mainUser._id === users._id ?
+                                navigation.push("Personal")
+                                :
+                                navigation.push("UserProfileScreen", {userId: users._id})
+                        }}
                         style={{
                             width: "100%",
                         }}
@@ -86,13 +108,13 @@ function SearchScreen({ navigation }) {
                                 <Avatar
                                     size={60}
                                     rounded
-                                    source={{ uri: users?.profilePicture }}
+                                    source={{uri: users?.profilePicture}}
                                 />
                                 :
                                 <Avatar
                                     size={60}
                                     rounded
-                                    icon={{ name: 'user', type: 'font-awesome' }}
+                                    icon={{name: 'user', type: 'font-awesome'}}
                                     containerStyle={{
                                         backgroundColor: "#cccccc"
                                     }}
@@ -100,14 +122,14 @@ function SearchScreen({ navigation }) {
 
                         }
                         <ListItem.Content>
-                            <ListItem.Title style={{ color: "black", fontWeight: "bold" }}>
+                            <ListItem.Title style={{color: "black", fontWeight: "bold"}}>
                                 {users?.username}
                             </ListItem.Title>
-                            <ListItem.Subtitle style={{ color: "gray" }}>
+                            <ListItem.Subtitle style={{color: "gray"}}>
                                 Xem trang cá nhân
                             </ListItem.Subtitle>
                         </ListItem.Content>
-                        <ListItem.Chevron color="black" />
+                        <ListItem.Chevron color="black"/>
                     </ListItem>
             }
         </View>
