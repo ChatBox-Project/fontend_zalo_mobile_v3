@@ -1,5 +1,6 @@
 import * as FileSystem from 'expo-file-system';
 import { BUCKET } from '../../config/Config';
+import * as ImagePicker from "expo-image-picker";
 const Buffer = require('buffer/').Buffer
 
 // chuyen uri -> base64 -> buffer
@@ -39,52 +40,52 @@ const getEndPoint = (uri) => {
     return ""
 }
 
-
-const getMessageType = (message, userNow) => {
+// lay loai tin nhan
+const getMessageType = (myUserId, data) => {
     // console.log(userNow._id)
     // console.log(message.authorId)
     let typeMessage = {}
-    if (userNow._id == message.authorId) {
+    if (myUserId._id == data.sender._id) {
         typeMessage = {
-            _id: message._id,
-            createdAt: message.updatedAt,
+            _id: data.key,
+            createdAt: data.createAt,
             user: {
-                _id: message.authorId,
+                _id: data.sender._id,
+                name: data.sender.username,
             },
         }
     } else {
         typeMessage = {
-            _id: message._id,
-            createdAt: message.updatedAt,
+            _id: data.key,
+            createdAt: data.createAt,
             user: {
-                _id: message.authorId,
-                name: 'React Native',
-                avatar: 'https://hoanghamobile.com/tin-tuc/wp-content/uploads/2023/07/hinh-dep-5.jpg',
+                _id: data.sender._id,
+                name: data.sender.username,
+                avatar: data.sender.profilePicture
             },
         }
     }
     // console.log(message)
-    const contentMessage = message.content
-    const endPoint = getEndPoint(contentMessage)
+    const endPoint = getEndPoint(data.message)
 
     switch (endPoint) {
         case "jpg":
         case "jpeg":
             typeMessage = {
                 ...typeMessage,
-                image: contentMessage
+                image: data.message
             }
             break;
         case "mp3":
             typeMessage = {
                 ...typeMessage,
-                audio: contentMessage
+                audio: data.message
             }
             break;
         default:
             typeMessage = {
                 ...typeMessage,
-                text: contentMessage
+                text: data.message
             }
     }
 
@@ -99,10 +100,28 @@ const getFileNameFromUri = (uri) => {
 };
 
 
+// chon anh tu thu vien
+const pickImageFromLibrary = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
+    });
+
+    if (!result.canceled) {
+        return result.assets[0].uri
+    }
+    return ""
+};
+
+
 export {
     convertBase64ToBuffer,
     createParams,
     getEndPoint,
     getMessageType,
-    getFileNameFromUri
+    getFileNameFromUri,
+    pickImageFromLibrary
 }
