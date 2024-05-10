@@ -25,7 +25,6 @@ function ChatMessageScreen({navigation, route}) {
     const [user, setUser] = React.useState({})
     const [isVisible, setIsVisible] = React.useState(false);
     const [isTyping, setIsTyping] = React.useState(false);
-    const [messageInput, setMessageInput] = React.useState("")
 
     // danh sach menu
     const list = [
@@ -149,13 +148,29 @@ function ChatMessageScreen({navigation, route}) {
     // gui file qua socket
     async function sendMessageFileOnSocket() {
         try {
+
             const token = await getToken()
             const userInformation = await getUser()
             const user = await getUserProfileById(userInformation._id, token)
             const fileUri = await pickDocFromLibrary()
 
+            const messageFilePending = {
+                _id: uuid.v4(),
+                createdAt: new Date(),
+                user: {
+                    _id: user.data._id,
+                    name: user.data.username,
+                },
+                pending: true,
+            }
+
+            setMessages(previousMessages =>
+                GiftedChat.append(previousMessages, messageFilePending),
+            )
+
             if(fileUri !== ""){
                 const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
+                removePendingMessage(messageFilePending)
                 socket.emit("message_from_client", {
                     roomId: route.params.conservationId,
                     message: locationFile,
@@ -172,6 +187,12 @@ function ChatMessageScreen({navigation, route}) {
         }
     }
 
+    // xoa tin nhan dang cho
+    function removePendingMessage(messagePending) {
+        const newMessages = messages.filter((message) => message._id !== messagePending._id)
+        setMessages(newMessages)
+    }
+
     const onSend = React.useCallback((messages = []) => {
         sendMessageOnSocket(messages[0])
     }, [])
@@ -186,7 +207,6 @@ function ChatMessageScreen({navigation, route}) {
                 }}
                 onInputTextChanged={(text) => {
                     if(text !== ""){
-                        console.log(1)
                         sendTypingOnSocket(true)
                     }else{
                         sendTypingOnSocket(false)
