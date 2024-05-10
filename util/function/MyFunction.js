@@ -2,6 +2,7 @@ import * as FileSystem from 'expo-file-system';
 import { BUCKET } from '../../config/Config';
 import * as ImagePicker from "expo-image-picker";
 const Buffer = require('buffer/').Buffer
+import * as DocumentPicker from "expo-document-picker";
 
 // chuyen uri -> base64 -> buffer
 async function convertBase64ToBuffer(uri) {
@@ -15,7 +16,7 @@ async function convertBase64ToBuffer(uri) {
 }
 
 // tao params cho upload file len s3
-const createParams = async (file) => {
+const createParams = async (file, mineType) => {
 
     const buffer = await convertBase64ToBuffer(file)
     const endPoint = getEndPoint(file)
@@ -24,7 +25,7 @@ const createParams = async (file) => {
         Bucket: BUCKET,
         Key: `file${Date.now().toString()}.${endPoint}`,
         Body: buffer,
-        ContentType: file.mimeType
+        ContentType: mineType,
     }
 
     return params
@@ -116,6 +117,16 @@ const pickImageFromLibrary = async () => {
     return ""
 };
 
+const pickDocFromLibrary = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await DocumentPicker.getDocumentAsync({});
+
+    if (!result.canceled) {
+        return result.assets[0]
+    }
+    return ""
+};
+
 
 export {
     convertBase64ToBuffer,
@@ -123,5 +134,6 @@ export {
     getEndPoint,
     getMessageType,
     getFileNameFromUri,
-    pickImageFromLibrary
+    pickImageFromLibrary,
+    pickDocFromLibrary
 }

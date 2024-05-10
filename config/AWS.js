@@ -10,8 +10,8 @@ AWS.config.update({
 
 const ETBA = new AWS.S3();
 
-const upateImageToS3 = async (file) => {
-    const params = await createParams(file);
+const upateImageToS3 = async (file, mineType) => {
+    const params = await createParams(file, mineType);
     return await ETBA.upload(params).promise()
 }
 

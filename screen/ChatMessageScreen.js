@@ -8,8 +8,15 @@ import uuid from 'react-native-uuid';
 import {Text, TouchableOpacity} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import {BottomSheet, ListItem} from "react-native-elements";
-import {getFileNameFromUri, getMessageType, pickImageFromLibrary} from "../util/function/MyFunction";
+import {
+    getFileNameFromUri,
+    getMessageType,
+    pickDocFromLibrary,
+} from "../util/function/MyFunction";
 import {upateImageToS3} from "../config/AWS";
+import AudioMessage from "../util/message_type/AudioMessage";
+import ImageMessage from "../util/message_type/ImageMessage";
+// import AnyMessage from "../util/message_type/AnyMessage";
 
 function ChatMessageScreen({navigation, route}) {
 
@@ -17,6 +24,8 @@ function ChatMessageScreen({navigation, route}) {
     const [detailConversation, setDetailConversation] = React.useState({})
     const [user, setUser] = React.useState({})
     const [isVisible, setIsVisible] = React.useState(false);
+    const [isTyping, setIsTyping] = React.useState(false);
+    const [messageInput, setMessageInput] = React.useState("")
 
     // danh sach menu
     const list = [
@@ -71,7 +80,15 @@ function ChatMessageScreen({navigation, route}) {
             )
         };
 
+        const listener1 = async (data) => {
+            setIsTyping(data.data.typing)
+        };
+
+        // lang nghe su kien nhan tin nhan
         socket.on("broadcast_to_all_user_in_room", listener);
+
+        // lang nghe su kien nhap tin nhan
+        socket.on("broadcast_to_all_user_in_room_typing", listener1);
 
         // Hàm cleanup
         return () => {
@@ -103,16 +120,42 @@ function ChatMessageScreen({navigation, route}) {
         }
     }
 
+    // gui su kien đang nhap văn bản qua socket
+    async function sendTypingOnSocket(typing) {
+        try {
+            const token = await getToken()
+            const userInformation = await getUser()
+            const user = await getUserProfileById(userInformation._id, token)
+
+            if(typing === true){
+                socket.emit("typing_from_client_on", {
+                    roomId: route.params.conservationId,
+                    typing: typing,
+                    data: user.data
+                });
+            }else{
+                socket.emit("typing_from_client_off", {
+                    roomId: route.params.conservationId,
+                    typing: typing,
+                    data: user.data
+                });
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     // gui file qua socket
     async function sendMessageFileOnSocket() {
         try {
             const token = await getToken()
             const userInformation = await getUser()
             const user = await getUserProfileById(userInformation._id, token)
-            const fileUri = await pickImageFromLibrary()
+            const fileUri = await pickDocFromLibrary()
 
             if(fileUri !== ""){
-                const locationFile = (await upateImageToS3(fileUri)).Location
+                const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
                 socket.emit("message_from_client", {
                     roomId: route.params.conservationId,
                     message: locationFile,
@@ -141,6 +184,18 @@ function ChatMessageScreen({navigation, route}) {
                 user={{
                     _id: user._id,
                 }}
+                onInputTextChanged={(text) => {
+                    if(text !== ""){
+                        console.log(1)
+                        sendTypingOnSocket(true)
+                    }else{
+                        sendTypingOnSocket(false)
+                    }
+                }}
+                isTyping={isTyping}
+                renderMessageAudio={AudioMessage}
+                renderMessageImage={ImageMessage}
+                // renderMessage={AnyMessage}
             />
             <TouchableOpacity
                 onPress={() => setIsVisible(true)}

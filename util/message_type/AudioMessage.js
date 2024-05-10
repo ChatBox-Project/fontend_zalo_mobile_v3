@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { getFileNameFromUri } from '../function/DowloadFile';
 import Icon from 'react-native-vector-icons/FontAwesome6';
 import openUrlInBrowser from '../function/OpenFileInBrowser';
+import {getFileNameFromUri} from "../function/MyFunction";
 
 const AudioMessage = ({ currentMessage }) => {
     const { audio } = currentMessage;

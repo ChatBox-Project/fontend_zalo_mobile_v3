@@ -1,8 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome6';
-import { getEndPoint } from '../function/MyFunction';
-import { getFileNameFromUri } from '../function/DowloadFile';
+import {getEndPoint, getFileNameFromUri} from '../function/MyFunction';
 import openUrlInBrowser from '../function/OpenFileInBrowser';
 
 function AnyMessage({ currentMessage }) {
