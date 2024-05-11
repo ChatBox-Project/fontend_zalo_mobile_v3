@@ -5,9 +5,9 @@ import {getToken, getUser} from "../store/Store";
 import {socket} from "../config/SocketClient";
 import {getUserProfileById} from "../api";
 import uuid from 'react-native-uuid';
-import {Text, TouchableOpacity} from "react-native";
+import {Animated, Text, TouchableOpacity, View} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
-import {BottomSheet, ListItem} from "react-native-elements";
+import {Avatar, BottomSheet, ListItem, Icon} from "react-native-elements";
 import {
     getFileNameFromUri,
     getMessageType,
@@ -16,22 +16,87 @@ import {
 import {upateImageToS3} from "../config/AWS";
 import AudioMessage from "../util/message_type/AudioMessage";
 import ImageMessage from "../util/message_type/ImageMessage";
+import { Dimensions } from 'react-native';
+
 // import AnyMessage from "../util/message_type/AnyMessage";
 
 function ChatMessageScreen({navigation, route}) {
 
+    const { width, height } = Dimensions.get('window');
     const [messages, setMessages] = React.useState([])
     const [detailConversation, setDetailConversation] = React.useState({})
     const [user, setUser] = React.useState({})
     const [isVisible, setIsVisible] = React.useState(false);
     const [isTyping, setIsTyping] = React.useState(false);
+    const translateX = React.useRef(new Animated.Value(width)).current;
+    const [isMenuVisible, setIsMenuVisible] = React.useState(true);
+    const listMenu = [
+        {
+            title: 'Thêm thành viên',
+            icon: 'person-add',
+            onPress: () => {
+                navigation.push("AddMember", {conservationId: route.params.conservationId})
+            }
+        },
+        {
+            title: 'Danh sách thành viên',
+            icon: 'list',
+            onPress: () => {
+
+            }
+        },
+        {
+            title: 'Rời nhóm',
+            icon: 'exit-to-app',
+            onPress: () => {
+
+            }
+        },
+    ]
+
+    // hien thi menu
+    const translateMenu = () => {
+        Animated.timing(translateX, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    // an menu
+    const translateMenu1 = () => {
+        Animated.timing(translateX, {
+            toValue: width,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    }
+
+    React.useLayoutEffect(() => {
+        // neu la nhom thi hien thi nut menu
+        if (route.params.isGroup === true) {
+            navigation.setOptions({
+                headerRight: () => (
+                    <TouchableOpacity
+                        onPress={() => {
+                            isMenuVisible ? translateMenu() : translateMenu1()
+                            setIsMenuVisible(!isMenuVisible)
+                        }}
+                        style={{marginRight: 10}}
+                    >
+                        <Entypo name={"menu"} size={30} color={"white"}/>
+                    </TouchableOpacity>
+                ),
+            });
+        }
+    }, [isMenuVisible])
 
     // danh sach menu
     const list = [
         {
             title: 'Gửi tài liệu',
-            containerStyle: { backgroundColor: 'white' },
-            titleStyle: { color: 'black' },
+            containerStyle: {backgroundColor: 'white'},
+            titleStyle: {color: 'black'},
             onPress: () => {
                 setIsVisible(false)
                 sendMessageFileOnSocket()
@@ -39,8 +104,8 @@ function ChatMessageScreen({navigation, route}) {
         },
         {
             title: 'Thoát',
-            containerStyle: { backgroundColor: 'red' },
-            titleStyle: { color: 'white' },
+            containerStyle: {backgroundColor: 'red'},
+            titleStyle: {color: 'white'},
             onPress: () => setIsVisible(false),
         },
     ];
@@ -126,13 +191,13 @@ function ChatMessageScreen({navigation, route}) {
             const userInformation = await getUser()
             const user = await getUserProfileById(userInformation._id, token)
 
-            if(typing === true){
+            if (typing === true) {
                 socket.emit("typing_from_client_on", {
                     roomId: route.params.conservationId,
                     typing: typing,
                     data: user.data
                 });
-            }else{
+            } else {
                 socket.emit("typing_from_client_off", {
                     roomId: route.params.conservationId,
                     typing: typing,
@@ -168,7 +233,7 @@ function ChatMessageScreen({navigation, route}) {
                 GiftedChat.append(previousMessages, messageFilePending),
             )
 
-            if(fileUri !== ""){
+            if (fileUri !== "") {
                 const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
                 removePendingMessage(messageFilePending)
                 socket.emit("message_from_client", {
@@ -206,9 +271,9 @@ function ChatMessageScreen({navigation, route}) {
                     _id: user._id,
                 }}
                 onInputTextChanged={(text) => {
-                    if(text !== ""){
+                    if (text !== "") {
                         sendTypingOnSocket(true)
-                    }else{
+                    } else {
                         sendTypingOnSocket(false)
                     }
                 }}
@@ -225,7 +290,7 @@ function ChatMessageScreen({navigation, route}) {
             </TouchableOpacity>
             <BottomSheet
                 isVisible={isVisible}
-                containerStyle={{ backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)' }}
+                containerStyle={{backgroundColor: 'rgba(0.5, 0.25, 0, 0.2)'}}
             >
                 {list.map((l, i) => (
                     <ListItem key={i} containerStyle={l.containerStyle} onPress={l.onPress}>
@@ -235,6 +300,57 @@ function ChatMessageScreen({navigation, route}) {
                     </ListItem>
                 ))}
             </BottomSheet>
+            <Animated.View
+                style={{
+                    position: "absolute",
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    top: 0,
+                    justifyContent: "flex-start",
+                    flexDirection: "column",
+                    backgroundColor: "white",
+                    transform: [{translateX: translateX}],
+                }}
+            >
+                <View
+                    style={{
+                        alignItems: "center",
+                        paddingVertical: 15,
+                    }}
+                >
+                    {
+                        detailConversation.imageGroup ?
+                            <Avatar
+                                size={"large"}
+                                rounded
+                                source={{uri: detailConversation.imageGroup}}
+                                containerStyle={{backgroundColor: "#cccccc"}}
+                            />
+                            :
+                            <Avatar
+                                size={"large"}
+                                rounded
+                                icon={{name: 'group', type: 'font-awesome'}}
+                                containerStyle={{backgroundColor: "#cccccc"}}
+                            />
+                    }
+                    <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 10}}>{detailConversation.label}</Text>
+                </View>
+                <View>
+                    {
+                        listMenu.map((item, i) => (
+                            <ListItem onPress={() => {item.onPress()}} key={i} bottomDivider>
+                                <Icon name={item.icon} />
+                                <ListItem.Content>
+                                    <ListItem.Title>{item.title}</ListItem.Title>
+                                </ListItem.Content>
+                                <ListItem.Chevron />
+                            </ListItem>
+                        ))
+                    }
+                </View>
+            </Animated.View>
         </>
     );
 }

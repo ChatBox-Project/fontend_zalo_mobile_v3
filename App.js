@@ -23,6 +23,7 @@ import UpdateProfileScreen from "./screen/UpdateProfileScreen";
 import Group from "./util/item/Group";
 import CreateGroupScreen from "./screen/CreateGroupScreen";
 import ChatMessageScreen from "./screen/ChatMessageScreen";
+import AddMember from "./screen/AddMemberScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -43,6 +44,13 @@ export default function App() {
                     component={LoginAndSignInScreen}
                     options={({navigation, route}) => ({
                         headerShown: false,
+                    })}
+                />
+                <Stack.Screen
+                    name="AddMember"
+                    component={AddMember}
+                    options={({navigation, route}) => ({
+                        headerTitle: "Thêm thành viên",
                     })}
                 />
                 <Stack.Screen

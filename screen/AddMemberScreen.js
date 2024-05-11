@@ -1,17 +1,19 @@
 import React from 'react'
 import {StyleSheet, Text, TextInput, TouchableOpacity, View} from 'react-native';
-import {Avatar, Header, ListItem} from "react-native-elements"
-import Icon from 'react-native-vector-icons/Feather';
-import {BLUE} from '../../config/Colors';
-import {FindUser} from '../../api/';
-import {getToken, getUser} from "../../store/Store";
+import {Avatar, Button, ListItem} from "react-native-elements"
+import {getToken, getUser} from "../store/Store";
+import {FindUser} from "../api";
+import getDetailConservation from "../api/conversation/get-detail-conservation";
+import addMemberConversation from "../api/conversation/add-member-conversation";
 
-function SearchScreen({navigation}) {
+function AddMember({navigation, route}) {
 
     const [search, updateSearch] = React.useState("")
     const [users, setUsers] = React.useState(null)
     const [mainUser, setMainUser] = React.useState(null)
+    const [detailConversation, setDetailConversation] = React.useState({})
     const [listMember, setListMember] = React.useState([])
+    const [loading, setLoading] = React.useState(false)
 
     React.useEffect(() => {
         const getMainUser = async () => {
@@ -24,6 +26,28 @@ function SearchScreen({navigation}) {
         }
         // lay thong tin user tu store
         getMainUser();
+    }, [])
+
+    React.useLayoutEffect(() => {
+        async function loadDetailConversation() {
+            try {
+                const token = await getToken()
+                const detailConservation1 = await getDetailConservation(route.params.conservationId, token)
+                setDetailConversation(detailConservation1.data)
+                setListMember(detailConservation1.data.member.map(member => member._id))
+                // console.log(detailConservation1.data)
+                navigation.setOptions({
+                    title: detailConservation1.data.label
+                })
+
+            } catch (e) {
+                console.log(e)
+            }
+
+        }
+
+        // lay thong tin cuoc tro chuyen
+        loadDetailConversation()
     }, [])
 
 
@@ -49,44 +73,40 @@ function SearchScreen({navigation}) {
         }
     }, [search])
 
+    // kiem tra xem user co phai la thanh vien khong
+    function isMember(userId) {
+        return listMember.find(member => member === userId)
+    }
+
+    // them thanh vien vao cuoc tro chuyen
+    async  function addMember(userId) {
+        try {
+            setLoading(true)
+            const token = await getToken()
+            await addMemberConversation(route.params.conservationId, userId, token)
+            setListMember([...listMember, userId])
+            setLoading(false)
+        } catch (e) {
+            setLoading(false)
+            console.log(e)
+        }
+    }
+
     return (
         <View style={styles.container}>
-            <Header
-                leftComponent={() => {
-                    return (
-                        <TouchableOpacity
-                            onPress={() => {
-                                navigation.goBack()
-                            }}
-                            style={{
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                                // borderWidth: 1,
-                                marginTop: 4
-                            }}
-                        >
-                            <Icon name='arrow-left' color={"white"} size={25}/>
-                        </TouchableOpacity>
-                    )
-                }}
-                centerComponent={() => {
-                    return (
-                        <TextInput
-                            value={search}
-                            onChangeText={updateSearch}
-                            placeholder='tên, số điện thoại,...'
-                            style={{
-                                backgroundColor: "white",
-                                width: 300,
-                                borderRadius: 5,
-                                paddingHorizontal: 8,
-                                paddingVertical: 4
-                            }}
-                        />
-                    )
-                }}
-                containerStyle={{
-                    backgroundColor: BLUE
+            <TextInput
+                value={search}
+                onChangeText={updateSearch}
+                placeholder='Số điện thoại,...'
+                style={{
+                    backgroundColor: "white",
+                    width: "95%",
+                    borderRadius: 5,
+                    paddingHorizontal: 8,
+                    paddingVertical: 4,
+                    borderWidth: 1,
+                    borderColor: "#cccccc",
+                    marginVertical: 10
                 }}
             />
             {
@@ -130,7 +150,22 @@ function SearchScreen({navigation}) {
                                 Xem trang cá nhân
                             </ListItem.Subtitle>
                         </ListItem.Content>
-                        <ListItem.Chevron color="black"/>
+                        {
+                            !isMember(users._id) ?
+                                <Button
+                                    onPress={() => {
+                                        addMember(users._id)
+                                    }}
+                                    loading={loading}
+                                    title={"Thêm thành viên"}
+                                    buttonStyle={{
+                                        backgroundColor: "#2ecc71",
+                                        borderRadius: 5
+                                    }}/>
+                                :
+                                <Text style={{color: "gray", fontSize: 16, fontWeight: "bold", fontStyle: "italic"}}>Là
+                                    thành viên</Text>
+                        }
                     </ListItem>
             }
         </View>
@@ -147,4 +182,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SearchScreen
+export default AddMember
