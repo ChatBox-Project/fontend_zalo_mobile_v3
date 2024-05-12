@@ -17,6 +17,8 @@ import {upateImageToS3} from "../config/AWS";
 import AudioMessage from "../util/message_type/AudioMessage";
 import ImageMessage from "../util/message_type/ImageMessage";
 import { Dimensions } from 'react-native';
+import outGroup from "../api/conversation/out-group";
+import {showMessage} from "react-native-flash-message";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
@@ -48,8 +50,20 @@ function ChatMessageScreen({navigation, route}) {
         {
             title: 'Rời nhóm',
             icon: 'exit-to-app',
-            onPress: () => {
-
+            onPress: async  () => {
+                try {
+                    const myUser = await getUser()
+                    const token = await getToken()
+                    outGroup(route.params.conservationId, myUser._id, token)
+                    navigation.push("Index")
+                    showMessage({
+                        message: "Thông báo",
+                        description: `Bạn đã rời nhóm ${detailConversation.label}`,
+                        type: "success",
+                    })
+                }catch (e) {
+                    console.log(e)
+                }
             }
         },
     ]
