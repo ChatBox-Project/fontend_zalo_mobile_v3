@@ -25,6 +25,7 @@ import CreateGroupScreen from "./screen/CreateGroupScreen";
 import ChatMessageScreen from "./screen/ChatMessageScreen";
 import AddMember from "./screen/AddMemberScreen";
 import ListMember from "./screen/ListMemberScreen";
+import RenameGroup from "./screen/RenameGroupScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,6 +46,13 @@ export default function App() {
                     component={LoginAndSignInScreen}
                     options={({navigation, route}) => ({
                         headerShown: false,
+                    })}
+                />
+                <Stack.Screen
+                    name="RenameGroup"
+                    component={RenameGroup}
+                    options={({navigation, route}) => ({
+                        headerTitle: "Đổi tên nhóm",
                     })}
                 />
                 <Stack.Screen

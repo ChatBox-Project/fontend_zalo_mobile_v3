@@ -16,7 +16,7 @@ import {
 import {upateImageToS3} from "../config/AWS";
 import AudioMessage from "../util/message_type/AudioMessage";
 import ImageMessage from "../util/message_type/ImageMessage";
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 import outGroup from "../api/conversation/out-group";
 import {showMessage} from "react-native-flash-message";
 
@@ -24,7 +24,7 @@ import {showMessage} from "react-native-flash-message";
 
 function ChatMessageScreen({navigation, route}) {
 
-    const { width, height } = Dimensions.get('window');
+    const {width, height} = Dimensions.get('window');
     const [messages, setMessages] = React.useState([])
     const [detailConversation, setDetailConversation] = React.useState({})
     const [user, setUser] = React.useState({})
@@ -50,7 +50,7 @@ function ChatMessageScreen({navigation, route}) {
         {
             title: 'Rời nhóm',
             icon: 'exit-to-app',
-            onPress: async  () => {
+            onPress: async () => {
                 try {
                     const myUser = await getUser()
                     const token = await getToken()
@@ -61,9 +61,25 @@ function ChatMessageScreen({navigation, route}) {
                         description: `Bạn đã rời nhóm ${detailConversation.label}`,
                         type: "success",
                     })
-                }catch (e) {
+                } catch (e) {
                     console.log(e)
                 }
+            }
+        },
+    ]
+    const listMenuAdminGroup = [
+        {
+            title: 'Đổi tên nhóm',
+            icon: 'edit',
+            onPress: () => {
+                navigation.push("RenameGroup", {conservationId: route.params.conservationId})
+            }
+        },
+        {
+            title: 'Giải tán nhóm',
+            icon: 'delete',
+            onPress: () => {
+
             }
         },
     ]
@@ -353,15 +369,31 @@ function ChatMessageScreen({navigation, route}) {
                 </View>
                 <View>
                     {
-                        listMenu.map((item, i) => (
-                            <ListItem onPress={() => {item.onPress()}} key={i} bottomDivider>
-                                <Icon name={item.icon} />
-                                <ListItem.Content>
-                                    <ListItem.Title>{item.title}</ListItem.Title>
-                                </ListItem.Content>
-                                <ListItem.Chevron />
-                            </ListItem>
-                        ))
+                        // neu la admin nhom thi hien thi them menu admin
+                        detailConversation.createdBy === user._id ?
+                            listMenu.concat(listMenuAdminGroup).map((item, i) => (
+                                <ListItem onPress={() => {
+                                    item.onPress()
+                                }} key={i} bottomDivider>
+                                    <Icon name={item.icon}/>
+                                    <ListItem.Content>
+                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron/>
+                                </ListItem>
+                            ))
+                            :
+                            listMenu.map((item, i) => (
+                                <ListItem onPress={() => {
+                                    item.onPress()
+                                }} key={i} bottomDivider>
+                                    <Icon name={item.icon}/>
+                                    <ListItem.Content>
+                                        <ListItem.Title>{item.title}</ListItem.Title>
+                                    </ListItem.Content>
+                                    <ListItem.Chevron/>
+                                </ListItem>
+                            ))
                     }
                 </View>
             </Animated.View>
