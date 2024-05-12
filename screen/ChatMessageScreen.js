@@ -33,6 +33,7 @@ function ChatMessageScreen({navigation, route}) {
     const [isTyping, setIsTyping] = React.useState(false);
     const translateX = React.useRef(new Animated.Value(width)).current;
     const [isMenuVisible, setIsMenuVisible] = React.useState(true);
+    const [reload, setReload] = React.useState(false);
     const listMenu = [
         {
             title: 'Thêm thành viên',
@@ -73,7 +74,7 @@ function ChatMessageScreen({navigation, route}) {
             title: 'Đổi tên nhóm',
             icon: 'edit',
             onPress: () => {
-                navigation.push("RenameGroup", {conservationId: route.params.conservationId})
+                navigation.push("RenameGroup", {conservationId: route.params.conservationId, setReload})
             }
         },
         {
@@ -173,7 +174,7 @@ function ChatMessageScreen({navigation, route}) {
 
         // lay thong tin cuoc tro chuyen
         loadDetailConversation()
-    }, [])
+    }, [reload])
 
     // gui su kien join room va nhan tin nhan qua socket
     React.useLayoutEffect(() => {
@@ -202,7 +203,7 @@ function ChatMessageScreen({navigation, route}) {
                 console.log("socket off");
             });
         };
-    }, []);
+    }, [reload]);
 
 
     // gui tin nhan qua socket
@@ -362,7 +363,7 @@ function ChatMessageScreen({navigation, route}) {
                     }}
                 >
                     {
-                        detailConversation.imageGroup ?
+                        detailConversation?.imageGroup ?
                             <Avatar
                                 size={"large"}
                                 rounded
