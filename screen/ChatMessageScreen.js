@@ -19,6 +19,7 @@ import ImageMessage from "../util/message_type/ImageMessage";
 import {Dimensions} from 'react-native';
 import outGroup from "../api/conversation/out-group";
 import {showMessage} from "react-native-flash-message";
+import RemoveGroup from "../api/conversation/remove-group";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
@@ -78,8 +79,19 @@ function ChatMessageScreen({navigation, route}) {
         {
             title: 'Giải tán nhóm',
             icon: 'delete',
-            onPress: () => {
-
+            onPress: async () => {
+                try {
+                    const token = await getToken()
+                    await RemoveGroup(route.params.conservationId, user._id, token)
+                    navigation.push("Index")
+                    showMessage({
+                        message: "Thông báo",
+                        description: `Bạn đã giải tán nhóm ${detailConversation.label}`,
+                        type: "success",
+                    })
+                } catch (e) {
+                    console.log(e)
+                }
             }
         },
     ]
