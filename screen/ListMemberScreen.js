@@ -3,12 +3,15 @@ import {FlatList, StyleSheet, Text, View} from 'react-native';
 import {getToken, getUser} from "../store/Store";
 import getDetailConservation from "../api/conversation/get-detail-conservation";
 import {Avatar, Button, ListItem} from "react-native-elements";
+import {showMessage} from "react-native-flash-message";
+import RemoveMember from "../api/conversation/remove-member-conversation";
 
 function ListMember({navigation, route}) {
 
     const [detailConservation, setDetailConservation] = React.useState({})
     const [members, setMembers] = React.useState([])
     const [mainUser, setMainUser] = React.useState(null)
+    const [loading, setLoading] = React.useState(true)
 
     // console.log(members)
 
@@ -42,6 +45,29 @@ function ListMember({navigation, route}) {
         getMainUser();
 
     }, [])
+
+    async function RemoveMemberGroup(memberId) {
+        try {
+            setLoading(true)
+            const data = {
+                conversationId: detailConservation._id,
+                userId: mainUser._id,
+            }
+            const token= await getToken()
+            await RemoveMember(memberId, data, token)
+            const newMembers = members.filter(item => item._id !== memberId)
+            setMembers(newMembers)
+            showMessage({
+                message: "Thông báo",
+                description: `Đã xóa thành viên khỏi nhóm`,
+                type: "success",
+            })
+            setLoading(false)
+        }catch (e) {
+            setLoading(false)
+            console.log(e)
+        }
+    }
 
 
     return (
@@ -87,9 +113,26 @@ function ListMember({navigation, route}) {
                                     {item?.username}
                                 </ListItem.Title>
                                 <ListItem.Subtitle style={{color: "gray"}}>
-                                    Xem trang cá nhân
+                                    {
+                                        item._id === detailConservation?.createdBy ?
+                                            "Trưởng nhóm"
+                                            :
+                                            "Thành viên"
+                                    }
                                 </ListItem.Subtitle>
                             </ListItem.Content>
+                            {
+                                mainUser._id === detailConservation?.createdBy && item._id !== mainUser._id ?
+                                    <Button
+                                        title="Xóa"
+                                        type="clear"
+                                        onPress={() => {
+                                            RemoveMemberGroup(item._id)
+                                        }}
+                                    />
+                                    :
+                                    <></>
+                            }
                             <ListItem.Chevron />
                         </ListItem>
                     )
