@@ -44,7 +44,7 @@ function ChatMessageScreen({navigation, route}) {
             title: 'Danh sách thành viên',
             icon: 'list',
             onPress: () => {
-
+                navigation.push("ListMember", {conservationId: route.params.conservationId})
             }
         },
         {

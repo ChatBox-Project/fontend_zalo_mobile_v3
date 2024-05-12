@@ -24,6 +24,7 @@ import Group from "./util/item/Group";
 import CreateGroupScreen from "./screen/CreateGroupScreen";
 import ChatMessageScreen from "./screen/ChatMessageScreen";
 import AddMember from "./screen/AddMemberScreen";
+import ListMember from "./screen/ListMemberScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -44,6 +45,13 @@ export default function App() {
                     component={LoginAndSignInScreen}
                     options={({navigation, route}) => ({
                         headerShown: false,
+                    })}
+                />
+                <Stack.Screen
+                    name="ListMember"
+                    component={ListMember}
+                    options={({navigation, route}) => ({
+                        headerTitle: "Danh sách thành viên",
                     })}
                 />
                 <Stack.Screen
