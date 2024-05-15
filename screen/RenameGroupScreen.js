@@ -11,8 +11,6 @@ function RenameGroup({navigation, route}) {
     const [mainUser, setMainUser] = React.useState(null)
     const [detailConversation, setDetailConversation] = React.useState({})
 
-    console.log(route.params)
-
     React.useEffect(() => {
         const getMainUser = async () => {
             try {
@@ -56,8 +54,6 @@ function RenameGroup({navigation, route}) {
                 type: "success",
             })
 
-            // resset lai man hinh cuoc tro chuyen
-            route.params.setReload(preVal => {return !preVal})
             navigation.goBack()
         }catch (e) {
             console.log(e)

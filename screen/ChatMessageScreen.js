@@ -11,7 +11,7 @@ import {Avatar, BottomSheet, ListItem, Icon} from "react-native-elements";
 import {
     getFileNameFromUri,
     getMessageType,
-    pickDocFromLibrary,
+    pickDocFromLibrary, pickImageFromLibrary,
 } from "../util/function/MyFunction";
 import {upateImageToS3} from "../config/AWS";
 import AudioMessage from "../util/message_type/AudioMessage";
@@ -20,20 +20,29 @@ import {Dimensions} from 'react-native';
 import outGroup from "../api/conversation/out-group";
 import {showMessage} from "react-native-flash-message";
 import RemoveGroup from "../api/conversation/remove-group";
+import SaveMessage from "../api/message/save-message";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
 function ChatMessageScreen({navigation, route}) {
 
+    // chieu rong cua man hinh
     const {width, height} = Dimensions.get('window');
+    // danh sach tin nhan
     const [messages, setMessages] = React.useState([])
+    // thong tin cuoc tro chuyen
     const [detailConversation, setDetailConversation] = React.useState({})
+    // thong tin nguoi dung đang đăng nhập
     const [user, setUser] = React.useState({})
+    // hien thi gui file va anh
     const [isVisible, setIsVisible] = React.useState(false);
+    // hien thi dang nhap van ban
     const [isTyping, setIsTyping] = React.useState(false);
     const translateX = React.useRef(new Animated.Value(width)).current;
+    // hien thi menu tuy chon nhom
     const [isMenuVisible, setIsMenuVisible] = React.useState(true);
-    const [reload, setReload] = React.useState(false);
+    // thong tin nguoi dung trong cuoc tro chuyen
+    const [userChat, setUserChat] = React.useState({})
     const listMenu = [
         {
             title: 'Thêm thành viên',
@@ -60,7 +69,7 @@ function ChatMessageScreen({navigation, route}) {
                     navigation.push("Index")
                     showMessage({
                         message: "Thông báo",
-                        description: `Bạn đã rời nhóm ${detailConversation.label}`,
+                        description: `Bạn đã rời nhóm ${detailConversation?.label}`,
                         type: "success",
                     })
                 } catch (e) {
@@ -74,7 +83,7 @@ function ChatMessageScreen({navigation, route}) {
             title: 'Đổi tên nhóm',
             icon: 'edit',
             onPress: () => {
-                navigation.push("RenameGroup", {conservationId: route.params.conservationId, setReload})
+                navigation.push("RenameGroup", {conservationId: route.params.conservationId})
             }
         },
         {
@@ -87,7 +96,7 @@ function ChatMessageScreen({navigation, route}) {
                     navigation.push("Index")
                     showMessage({
                         message: "Thông báo",
-                        description: `Bạn đã giải tán nhóm ${detailConversation.label}`,
+                        description: `Bạn đã giải tán nhóm ${detailConversation?.label}`,
                         type: "success",
                     })
                 } catch (e) {
@@ -137,6 +146,15 @@ function ChatMessageScreen({navigation, route}) {
     // danh sach menu
     const list = [
         {
+            title: 'Gửi ảnh',
+            containerStyle: {backgroundColor: 'white'},
+            titleStyle: {color: 'black'},
+            onPress: () => {
+                setIsVisible(false)
+                sendMessageFileOnSocket()
+            }
+        },
+        {
             title: 'Gửi tài liệu',
             containerStyle: {backgroundColor: 'white'},
             titleStyle: {color: 'black'},
@@ -159,12 +177,22 @@ function ChatMessageScreen({navigation, route}) {
                 const token = await getToken()
                 const user1 = await getUser()
                 const detailConservation1 = await getDetailConservation(route.params.conservationId, token)
+                if(!route.params.isGroup){
+                    const request = await getUserProfileById(route.params.userId, token)
+                    const userChatInf = request.data
+                    setUserChat(userChatInf)
+                    navigation.setOptions({
+                        title: userChatInf.username
+                    })
+                }
                 setUser(user1)
                 setDetailConversation(detailConservation1.data)
 
-                navigation.setOptions({
-                    title: detailConservation1.data.label
-                })
+                if(route.params.isGroup){
+                    navigation.setOptions({
+                        title: detailConservation1.data?.label,
+                    })
+                }
 
             } catch (e) {
                 console.log(e)
@@ -174,7 +202,7 @@ function ChatMessageScreen({navigation, route}) {
 
         // lay thong tin cuoc tro chuyen
         loadDetailConversation()
-    }, [reload])
+    }, [navigation])
 
     // gui su kien join room va nhan tin nhan qua socket
     React.useLayoutEffect(() => {
@@ -203,7 +231,7 @@ function ChatMessageScreen({navigation, route}) {
                 console.log("socket off");
             });
         };
-    }, [reload]);
+    }, [navigation]);
 
 
     // gui tin nhan qua socket
@@ -278,11 +306,63 @@ function ChatMessageScreen({navigation, route}) {
 
             if (fileUri !== "") {
                 const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
+                // const data = {
+                //     roomId: route.params.conservationId,
+                //     message: locationFile,
+                //     type_message: "file",
+                //     createAt: new Date(),
+                //     key: uuid.v4(),
+                //     sender: user.data,
+                //     name_file: getFileNameFromUri(locationFile)
+                // }
+                // await SaveMessage(data, token)
                 removePendingMessage(messageFilePending)
                 socket.emit("message_from_client", {
                     roomId: route.params.conservationId,
                     message: locationFile,
                     type_message: "file",
+                    createAt: new Date(),
+                    key: uuid.v4(),
+                    sender: user.data,
+                    name_file: getFileNameFromUri(locationFile)
+                });
+            }
+
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    // gui file anh qua socket
+    async function sendMessageImageOnSocket() {
+        try {
+
+            const token = await getToken()
+            const userInformation = await getUser()
+            const user = await getUserProfileById(userInformation._id, token)
+            const fileUri = await pickImageFromLibrary()
+
+            const messageFilePending = {
+                _id: uuid.v4(),
+                createdAt: new Date(),
+                user: {
+                    _id: user.data._id,
+                    name: user.data.username,
+                },
+                pending: true,
+            }
+
+            setMessages(previousMessages =>
+                GiftedChat.append(previousMessages, messageFilePending),
+            )
+
+            if (fileUri !== "") {
+                const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
+                removePendingMessage(messageFilePending)
+                socket.emit("message_from_client", {
+                    roomId: route.params.conservationId,
+                    message: locationFile,
+                    type_message: "image",
                     createAt: new Date(),
                     key: uuid.v4(),
                     sender: user.data,
@@ -378,12 +458,12 @@ function ChatMessageScreen({navigation, route}) {
                                 containerStyle={{backgroundColor: "#cccccc"}}
                             />
                     }
-                    <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 10}}>{detailConversation.label}</Text>
+                    <Text style={{fontSize: 20, fontWeight: "bold", marginTop: 10}}>{detailConversation?.label}</Text>
                 </View>
                 <View>
                     {
                         // neu la admin nhom thi hien thi them menu admin
-                        detailConversation.createdBy === user._id ?
+                        detailConversation?.createdBy === user._id ?
                             listMenu.concat(listMenuAdminGroup).map((item, i) => (
                                 <ListItem onPress={() => {
                                     item.onPress()

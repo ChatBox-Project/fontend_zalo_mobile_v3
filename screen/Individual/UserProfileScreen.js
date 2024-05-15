@@ -9,7 +9,14 @@ import {BLUE, GRAY, WHITE} from "../../config/Colors";
 import {Avatar} from "react-native-elements";
 import {getToken, getUser} from "../../store/Store";
 import {useFocusEffect} from "@react-navigation/native";
-import {getListFriendOfMe, getUserProfileById, RequestAddFriend, RequestAddFriendStatus, Unfriend} from "../../api";
+import {
+    createGroup,
+    getListFriendOfMe,
+    getUserProfileById,
+    RequestAddFriend,
+    RequestAddFriendStatus,
+    Unfriend
+} from "../../api";
 import {showMessage} from "react-native-flash-message";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {CancelAddFriendByUserSend} from "../../api";
@@ -197,6 +204,16 @@ function UserProfileScreen({navigation, route}) {
             </View>
             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15}}>
                 <TouchableOpacity
+                    onPress={ async () => {
+                        const token = await getToken()
+                        const myUser = await getUser()
+                        const data = {
+                            member: [myUser._id, user._id],
+                            createdBy: user._id,
+                        }
+                        const myGroupSingle = await createGroup(data, token)
+                        navigation.push("ChatMessageScreen", {conservationId: myGroupSingle.data._id, isGroup: false})
+                    }}
                     style={{
                         flexDirection: "row",
                         alignItems: "center",

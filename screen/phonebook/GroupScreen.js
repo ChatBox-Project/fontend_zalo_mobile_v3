@@ -19,7 +19,8 @@ function GroupScreen({navigation}) {
                     const token = await getToken()
                     const user = await getUser()
                     const listChat = await getAllConverstaion(user._id, token)
-                    setGroup(listChat.data)
+                    // chi lay nhom
+                    setGroup(listChat.data.filter(item => item.hasOwnProperty("label")))
                 } catch (e) {
                     console.log(e)
                 }
