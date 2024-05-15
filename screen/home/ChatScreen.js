@@ -51,6 +51,7 @@ function ChatScreen({navigation}) {
 
     const renderChat = ({item}) => {
         const userChatInfo = userChat[item._id]
+
         if (item.hasOwnProperty("label") === false){
             return (
                 <ListItem onPress={() => {
@@ -58,8 +59,8 @@ function ChatScreen({navigation}) {
                     navigation.push("ChatMessageScreen", {conservationId: item._id, isGroup: false, userId: userChatInfo._id})
                 }} bottomDivider>
                     {
-                        userChat[item._id]?.imageGroup ?
-                            <Avatar rounded size={"medium"} source={{uri: userChatInfo.profilePicture}}/>
+                        userChatInfo?.profilePicture ?
+                            <Avatar rounded size={"medium"} source={{uri: userChatInfo?.profilePicture}}/>
                             :
                             <Avatar
                                 rounded

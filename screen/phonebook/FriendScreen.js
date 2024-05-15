@@ -7,10 +7,35 @@ import TabFriend from './TabFriends';
 import TabStatusFriends from './TabStatusFriends';
 import { ScrollView } from 'react-native-virtualized-view'
 import TabItem from '../../util/tab/TabItem';
+import {getToken, getUser} from "../../store/Store";
+import {getListUserRequestAddFriendToMe} from "../../api";
+import {Badge} from "react-native-elements";
+import {useFocusEffect} from "@react-navigation/native";
 
 function FriendScreen({ navigation }) {
 
     const [tab, setTab] = React.useState(0);
+    const [listUserRequestAddFriend, setListUserRequestAddFriend] = React.useState([])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            getRequestAddFriend()
+        }, [])
+    )
+
+    // Lấy danh sách user gửi lời mời kết bạn đến mình
+    const getRequestAddFriend = async () => {
+        try {
+            const tokenAccess = await getToken()
+            const user = await getUser()
+            const userId = user._id
+            const response = await getListUserRequestAddFriendToMe(userId, tokenAccess)
+            // console.log(response.data.data)
+            setListUserRequestAddFriend(response.data.data)
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     const tabs = [
         {
@@ -51,6 +76,12 @@ function FriendScreen({ navigation }) {
                                 <Icon name='user-friends' size={14} color={'white'} />
                             </View>
                             <Text style={{ fontSize: 15, marginLeft: 15 }}>Lời mời kết bạn</Text>
+                            {
+                                listUserRequestAddFriend.length > 0 ?
+                                    <Badge value={listUserRequestAddFriend.length} status="error" containerStyle={{marginLeft: 15}}/>
+                                    :
+                                    null
+                            }
                         </TouchableOpacity>
                         <TouchableOpacity
                             onPress={() => { navigation.push("FriendPhoneBookScreen") }}
