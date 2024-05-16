@@ -37,7 +37,6 @@ function UserProfileScreen({navigation, route}) {
         }, [])
     );
 
-
     // Kiểm tra xem đã gửi yêu cầu kết bạn chưa
     const checkIsRequestAddFriend = async () => {
         try {
@@ -210,7 +209,10 @@ function UserProfileScreen({navigation, route}) {
                         const data = {
                             member: [myUser._id, user._id],
                             createdBy: user._id,
+                            label: undefined,
+                            imageGroup: undefined,
                         }
+                        // console.log(data) con loi cho nay
                         const myGroupSingle = await createGroup(data, token)
                         navigation.push("ChatMessageScreen", {conservationId: myGroupSingle.data._id, isGroup: false})
                     }}

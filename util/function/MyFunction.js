@@ -43,8 +43,8 @@ const getEndPoint = (uri) => {
 
 // lay loai tin nhan tư socket
 const getMessageType = (myUserId, data) => {
-    console.log(myUserId)
-    console.log(data)
+    // console.log(myUserId)
+    // console.log(data)
 
     let typeMessage = {}
     if (myUserId._id == data.sender._id) {

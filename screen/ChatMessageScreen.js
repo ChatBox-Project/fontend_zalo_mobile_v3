@@ -177,7 +177,7 @@ function ChatMessageScreen({navigation, route}) {
         try {
             const token = await getToken()
             const detailConservation1 = await getDetailConservation(route.params.conservationId, token)
-            if(!route.params.isGroup){
+            if (!route.params.isGroup) {
                 const request = await getUserProfileById(route.params.userId, token)
                 const userChatInf = request.data
                 setUserChat(userChatInf)
@@ -187,7 +187,7 @@ function ChatMessageScreen({navigation, route}) {
             }
             setDetailConversation(detailConservation1.data)
 
-            if(route.params.isGroup){
+            if (route.params.isGroup) {
                 navigation.setOptions({
                     title: detailConservation1.data?.label,
                 })
@@ -198,7 +198,7 @@ function ChatMessageScreen({navigation, route}) {
         }
     }
 
-    async function loadMessageConversation(){
+    async function loadMessageConversation() {
         try {
             const token = await getToken()
             const myUser = await getUser()
@@ -209,7 +209,7 @@ function ChatMessageScreen({navigation, route}) {
                 return getMessageType(myUser, item)
             })
             setMessages(prevState => GiftedChat.append(prevState, formartMessage))
-        } catch (e){
+        } catch (e) {
             console.log(e)
         }
     }
@@ -242,13 +242,30 @@ function ChatMessageScreen({navigation, route}) {
         // lang nghe su kien nhap tin nhan
         socket.on("broadcast_to_all_user_in_room_typing", listener1);
 
-        // Hàm cleanup
-        return () => {
-            socket.off("broadcast_to_all_user_in_room", () => {
-                console.log("socket off");
-            });
-        };
+
     }, []);
+
+    // lang nghe su kien thu hoi tin nhan
+    React.useLayoutEffect(() => {
+        socket.on("recall_message_server", (data) => {
+            const newMessages = messages.map((message) => {
+                if (message._id === data.idMessage) {
+                    return {
+                        _id: message._id,
+                        createdAt: message.createdAt,
+                        user: {
+                            _id: message.user._id,
+                            name: message.user.name,
+                        },
+                        text: "Tin nhắn đã bị thu hồi",
+                    }
+                }
+                return message
+            })
+
+            setMessages(newMessages);
+        })
+    }, [messages])
 
 
     // gui tin nhan qua socket
@@ -429,6 +446,38 @@ function ChatMessageScreen({navigation, route}) {
         sendMessageOnSocket(messages[0])
     }, [])
 
+    // xoa tin nhan
+    const removeMessage = (idMessage) => {
+        socket.emit("recall_message", {
+            idConversation: route.params.conservationId,
+            idMessage: idMessage,
+            kindof: 'recall'
+        })
+    }
+
+    // xu ly su kien long press tin nhan
+    const onLongPressText = (context, message) => {
+        if (message.text) {
+            const options = [
+                'Thu hồi',
+                'Cancel',
+            ];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex,
+            }, (buttonIndex) => {
+                switch (buttonIndex) {
+                    case 0:
+                        removeMessage(message._id)
+                        break;
+                    default:
+                        break;
+                }
+            })
+        }
+    }
+
     return (
         <>
             <GiftedChat
@@ -447,7 +496,7 @@ function ChatMessageScreen({navigation, route}) {
                 isTyping={isTyping}
                 renderMessageAudio={AudioMessage}
                 renderMessageImage={ImageMessage}
-                // renderMessage={AnyMessage}
+                onLongPress={onLongPressText}
             />
             <TouchableOpacity
                 onPress={() => setIsVisible(true)}
