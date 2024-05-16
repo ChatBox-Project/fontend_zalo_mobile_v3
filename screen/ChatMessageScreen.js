@@ -23,6 +23,7 @@ import {showMessage} from "react-native-flash-message";
 import RemoveGroup from "../api/conversation/remove-group";
 import SaveMessage from "../api/message/save-message";
 import GetMessageConversation from "../api/message/get-message-conversation";
+import RecallMessage from "../api/message/recall-message";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
@@ -279,7 +280,7 @@ function ChatMessageScreen({navigation, route}) {
                 roomId: route.params.conservationId,
                 message: message.text,
                 type_message: "text",
-                createAt: new Date(),
+                createdAt: new Date(),
                 key: uuid.v4(),
                 sender: user.data._id,
                 name_file: "",
@@ -292,7 +293,7 @@ function ChatMessageScreen({navigation, route}) {
                 roomId: route.params.conservationId,
                 message: message.text,
                 type_message: "text",
-                createAt: message.createAt,
+                createdAt: message.createdAt,
                 key: uuid.v4(),
                 sender: user.data
             });
@@ -357,7 +358,7 @@ function ChatMessageScreen({navigation, route}) {
                     roomId: route.params.conservationId,
                     message: locationFile,
                     type_message: "file",
-                    createAt: new Date(),
+                    createdAt: new Date(),
                     key: uuid.v4(),
                     sender: user.data._id,
                     name_file: getFileNameFromUri(locationFile),
@@ -370,7 +371,7 @@ function ChatMessageScreen({navigation, route}) {
                     roomId: route.params.conservationId,
                     message: locationFile,
                     type_message: "file",
-                    createAt: new Date(),
+                    createdAt: new Date(),
                     key: uuid.v4(),
                     sender: user.data,
                     name_file: getFileNameFromUri(locationFile)
@@ -446,18 +447,32 @@ function ChatMessageScreen({navigation, route}) {
         sendMessageOnSocket(messages[0])
     }, [])
 
-    // xoa tin nhan
-    const removeMessage = (idMessage) => {
-        socket.emit("recall_message", {
-            idConversation: route.params.conservationId,
-            idMessage: idMessage,
-            kindof: 'recall'
-        })
+    // thu hoi tin nhan
+    const removeMessage = async (message) => {
+        try{
+            const token = await getToken()
+            const listMessageReq = await GetMessageConversation(route.params.conservationId, token)
+            const listMessage = listMessageReq.data.data
+            const message1 = listMessage.find((item) => item.key === message._id)
+            await RecallMessage(message._id, "Tin nhắn đã bị thu hồi", token)
+            socket.emit("recall_message", {
+                idConversation: route.params.conservationId,
+                idMessage: message._id,
+                kindof: 'recall'
+            })
+            showMessage({
+                message: "Thông báo",
+                description: "Đã thu hồi tin nhắn",
+                type: "success",
+            })
+        }catch (e) {
+            console.log(e)
+        }
     }
 
     // xu ly su kien long press tin nhan
     const onLongPressText = (context, message) => {
-        if (message.text) {
+        if (message.text && message.text !== "Tin nhắn đã bị thu hồi" && message.user._id === user._id) {
             const options = [
                 'Thu hồi',
                 'Cancel',
@@ -469,7 +484,7 @@ function ChatMessageScreen({navigation, route}) {
             }, (buttonIndex) => {
                 switch (buttonIndex) {
                     case 0:
-                        removeMessage(message._id)
+                        removeMessage(message)
                         break;
                     default:
                         break;

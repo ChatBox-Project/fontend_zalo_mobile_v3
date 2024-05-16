@@ -44,13 +44,13 @@ const getEndPoint = (uri) => {
 // lay loai tin nhan tư socket
 const getMessageType = (myUserId, data) => {
     // console.log(myUserId)
-    // console.log(data)
+    // console.log(data.createdAt)
 
     let typeMessage = {}
     if (myUserId._id == data.sender._id) {
         typeMessage = {
             _id: data.key,
-            createdAt: data.createAt,
+            createdAt: data.createdAt,
             user: {
                 _id: data.sender._id,
                 name: data.sender.username,
@@ -59,7 +59,7 @@ const getMessageType = (myUserId, data) => {
     } else {
         typeMessage = {
             _id: data.key,
-            createdAt: data.createAt,
+            createdAt: data.createdAt,
             user: {
                 _id: data.sender._id,
                 name: data.sender.username,
@@ -90,7 +90,7 @@ const getMessageType = (myUserId, data) => {
                 text: data.message
             }
     }
-
+    // console.log(typeMessage)
     return typeMessage
 }
 
