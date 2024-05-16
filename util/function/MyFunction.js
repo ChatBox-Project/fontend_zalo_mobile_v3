@@ -117,6 +117,7 @@ const pickImageFromLibrary = async () => {
     return ""
 };
 
+// chon file tai lieu tu thu vien
 const pickDocFromLibrary = async () => {
     // No permissions request is necessary for launching the image library
     let result = await DocumentPicker.getDocumentAsync({});

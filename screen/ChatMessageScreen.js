@@ -9,6 +9,7 @@ import {Animated, Text, TouchableOpacity, View} from "react-native";
 import Entypo from "react-native-vector-icons/Entypo";
 import {Avatar, BottomSheet, ListItem, Icon} from "react-native-elements";
 import {
+    getEndPoint,
     getFileNameFromUri,
     getMessageType,
     pickDocFromLibrary, pickImageFromLibrary,
@@ -151,7 +152,7 @@ function ChatMessageScreen({navigation, route}) {
             titleStyle: {color: 'black'},
             onPress: () => {
                 setIsVisible(false)
-                sendMessageFileOnSocket()
+                sendMessageImageOnSocket()
             }
         },
         {
@@ -241,6 +242,19 @@ function ChatMessageScreen({navigation, route}) {
             const userInformation = await getUser()
             const user = await getUserProfileById(userInformation._id, token)
 
+            const data = {
+                roomId: route.params.conservationId,
+                message: message.text,
+                type_message: "text",
+                createAt: new Date(),
+                key: uuid.v4(),
+                sender: user.data._id,
+                name_file: "",
+                conversation: route.params.conservationId,
+                extend_text: "",
+            }
+            await SaveMessage(data, token)
+
             socket.emit("message_from_client", {
                 roomId: route.params.conservationId,
                 message: message.text,
@@ -290,32 +304,34 @@ function ChatMessageScreen({navigation, route}) {
             const user = await getUserProfileById(userInformation._id, token)
             const fileUri = await pickDocFromLibrary()
 
-            const messageFilePending = {
-                _id: uuid.v4(),
-                createdAt: new Date(),
-                user: {
-                    _id: user.data._id,
-                    name: user.data.username,
-                },
-                pending: true,
-            }
-
-            setMessages(previousMessages =>
-                GiftedChat.append(previousMessages, messageFilePending),
-            )
-
             if (fileUri !== "") {
+                const messageFilePending = {
+                    _id: uuid.v4(),
+                    createdAt: new Date(),
+                    user: {
+                        _id: user.data._id,
+                        name: user.data.username,
+                    },
+                    pending: true,
+                }
+
+                setMessages(previousMessages =>
+                    GiftedChat.append(previousMessages, messageFilePending),
+                )
+
                 const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
-                // const data = {
-                //     roomId: route.params.conservationId,
-                //     message: locationFile,
-                //     type_message: "file",
-                //     createAt: new Date(),
-                //     key: uuid.v4(),
-                //     sender: user.data,
-                //     name_file: getFileNameFromUri(locationFile)
-                // }
-                // await SaveMessage(data, token)
+                const data = {
+                    roomId: route.params.conservationId,
+                    message: locationFile,
+                    type_message: "file",
+                    createAt: new Date(),
+                    key: uuid.v4(),
+                    sender: user.data._id,
+                    name_file: getFileNameFromUri(locationFile),
+                    conversation: route.params.conservationId,
+                    extend_text: getEndPoint(locationFile)
+                }
+                await SaveMessage(data, token)
                 removePendingMessage(messageFilePending)
                 socket.emit("message_from_client", {
                     roomId: route.params.conservationId,
@@ -342,22 +358,34 @@ function ChatMessageScreen({navigation, route}) {
             const user = await getUserProfileById(userInformation._id, token)
             const fileUri = await pickImageFromLibrary()
 
-            const messageFilePending = {
-                _id: uuid.v4(),
-                createdAt: new Date(),
-                user: {
-                    _id: user.data._id,
-                    name: user.data.username,
-                },
-                pending: true,
-            }
-
-            setMessages(previousMessages =>
-                GiftedChat.append(previousMessages, messageFilePending),
-            )
-
             if (fileUri !== "") {
+                const messageFilePending = {
+                    _id: uuid.v4(),
+                    createdAt: new Date(),
+                    user: {
+                        _id: user.data._id,
+                        name: user.data.username,
+                    },
+                    pending: true,
+                }
+
+                setMessages(previousMessages =>
+                    GiftedChat.append(previousMessages, messageFilePending),
+                )
+
                 const locationFile = (await upateImageToS3(fileUri.uri, fileUri.mimeType)).Location
+                const data = {
+                    roomId: route.params.conservationId,
+                    message: locationFile,
+                    type_message: "image",
+                    createAt: new Date(),
+                    key: uuid.v4(),
+                    sender: user.data._id,
+                    name_file: getFileNameFromUri(locationFile),
+                    conversation: route.params.conservationId,
+                    extend_text: getEndPoint(locationFile)
+                }
+                await SaveMessage(data, token)
                 removePendingMessage(messageFilePending)
                 socket.emit("message_from_client", {
                     roomId: route.params.conservationId,
