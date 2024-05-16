@@ -22,6 +22,7 @@ import outGroup from "../api/conversation/out-group";
 import {showMessage} from "react-native-flash-message";
 import RemoveGroup from "../api/conversation/remove-group";
 import SaveMessage from "../api/message/save-message";
+import GetMessageConversation from "../api/message/get-message-conversation";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
@@ -125,7 +126,7 @@ function ChatMessageScreen({navigation, route}) {
         }).start();
     }
 
-    React.useLayoutEffect(() => {
+    React.useEffect(() => {
         // neu la nhom thi hien thi nut menu
         if (route.params.isGroup === true) {
             navigation.setOptions({
@@ -172,38 +173,53 @@ function ChatMessageScreen({navigation, route}) {
         },
     ];
 
-    React.useLayoutEffect(() => {
-        async function loadDetailConversation() {
-            try {
-                const token = await getToken()
-                const user1 = await getUser()
-                const detailConservation1 = await getDetailConservation(route.params.conservationId, token)
-                if(!route.params.isGroup){
-                    const request = await getUserProfileById(route.params.userId, token)
-                    const userChatInf = request.data
-                    setUserChat(userChatInf)
-                    navigation.setOptions({
-                        title: userChatInf.username
-                    })
-                }
-                setUser(user1)
-                setDetailConversation(detailConservation1.data)
+    async function loadDetailConversation() {
+        try {
+            const token = await getToken()
+            const detailConservation1 = await getDetailConservation(route.params.conservationId, token)
+            if(!route.params.isGroup){
+                const request = await getUserProfileById(route.params.userId, token)
+                const userChatInf = request.data
+                setUserChat(userChatInf)
+                navigation.setOptions({
+                    title: userChatInf.username
+                })
+            }
+            setDetailConversation(detailConservation1.data)
 
-                if(route.params.isGroup){
-                    navigation.setOptions({
-                        title: detailConservation1.data?.label,
-                    })
-                }
-
-            } catch (e) {
-                console.log(e)
+            if(route.params.isGroup){
+                navigation.setOptions({
+                    title: detailConservation1.data?.label,
+                })
             }
 
+        } catch (e) {
+            console.log(e)
         }
+    }
 
+    async function loadMessageConversation(){
+        try {
+            const token = await getToken()
+            const myUser = await getUser()
+            setUser(myUser)
+            const listMessageReq = await GetMessageConversation(route.params.conservationId, token)
+            const listMessage = listMessageReq.data.data
+            const formartMessage = listMessage.map((item) => {
+                return getMessageType(myUser, item)
+            })
+            setMessages(prevState => GiftedChat.append(prevState, formartMessage))
+        } catch (e){
+            console.log(e)
+        }
+    }
+
+    React.useLayoutEffect(() => {
         // lay thong tin cuoc tro chuyen
         loadDetailConversation()
-    }, [navigation])
+        // lay thong tin tin nhan cuoc tro chuyen
+        loadMessageConversation()
+    }, [])
 
     // gui su kien join room va nhan tin nhan qua socket
     React.useLayoutEffect(() => {
@@ -212,7 +228,7 @@ function ChatMessageScreen({navigation, route}) {
         const listener = async (data) => {
             const user1 = await getUser()
             setMessages(previousMessages =>
-                GiftedChat.append(previousMessages, getMessageType(user1._id, data)),
+                GiftedChat.append(previousMessages, getMessageType(user1, data)),
             )
         };
 
@@ -232,7 +248,7 @@ function ChatMessageScreen({navigation, route}) {
                 console.log("socket off");
             });
         };
-    }, [navigation]);
+    }, []);
 
 
     // gui tin nhan qua socket

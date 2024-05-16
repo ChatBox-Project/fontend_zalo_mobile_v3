@@ -41,10 +41,11 @@ const getEndPoint = (uri) => {
     return ""
 }
 
-// lay loai tin nhan
+// lay loai tin nhan tư socket
 const getMessageType = (myUserId, data) => {
-    // console.log(userNow._id)
-    // console.log(message.authorId)
+    console.log(myUserId)
+    console.log(data)
+
     let typeMessage = {}
     if (myUserId._id == data.sender._id) {
         typeMessage = {
@@ -66,7 +67,7 @@ const getMessageType = (myUserId, data) => {
             },
         }
     }
-    // console.log(message)
+
     const endPoint = getEndPoint(data.message)
 
     switch (endPoint) {
