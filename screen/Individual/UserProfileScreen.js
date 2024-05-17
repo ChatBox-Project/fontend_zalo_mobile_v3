@@ -204,17 +204,21 @@ function UserProfileScreen({navigation, route}) {
             <View style={{flexDirection: "row", alignItems: "center", justifyContent: "space-around", marginTop: 15}}>
                 <TouchableOpacity
                     onPress={ async () => {
-                        const token = await getToken()
-                        const myUser = await getUser()
-                        const data = {
-                            member: [myUser._id, user._id],
-                            createdBy: user._id,
-                            label: undefined,
-                            imageGroup: undefined,
+                        try {
+                            const token = await getToken()
+                            const myUser = await getUser()
+                            const data = {
+                                member: [myUser._id, user._id],
+                                createdBy: user._id,
+                                label: undefined,
+                                imageGroup: undefined,
+                            }
+                            // console.log(data) con loi cho nay
+                            const myGroupSingle = await createGroup(data, token)
+                            navigation.push("ChatMessageScreen", {conservationId: myGroupSingle.data._id, isGroup: false, userId: userIdRecieve})
+                        }catch (e) {
+                            console.log(e)
                         }
-                        // console.log(data) con loi cho nay
-                        const myGroupSingle = await createGroup(data, token)
-                        navigation.push("ChatMessageScreen", {conservationId: myGroupSingle.data._id, isGroup: false})
                     }}
                     style={{
                         flexDirection: "row",
