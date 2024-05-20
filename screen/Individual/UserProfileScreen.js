@@ -46,6 +46,7 @@ function UserProfileScreen({navigation, route}) {
             const response = await RequestAddFriendStatus(userIdRecieve, userIdSend, tokenAccess)
             // console.log(response.data)
             const checkIsRequest = response.data.request
+            // console.log(response.data)
             if (checkIsRequest) {
                 setIsRequestAddFriend(true)
                 return;
@@ -95,7 +96,7 @@ function UserProfileScreen({navigation, route}) {
             const tokenAccess = await getToken()
             const user = await getUser()
             const userIdSend = user._id
-            const response = await RequestAddFriend(userIdSend, userIdRecieve, tokenAccess)
+            const response = await RequestAddFriend(userIdRecieve, userIdSend, tokenAccess)
             showMessage({
                 message: "Thông báo",
                 description: "Đã gửi yêu cầu kết bạn",
@@ -127,6 +128,7 @@ function UserProfileScreen({navigation, route}) {
         }
     }
 
+    // Hủy kết bạn
     const unfriend = async () => {
         try {
             const tokenAccess = await getToken()
@@ -213,7 +215,6 @@ function UserProfileScreen({navigation, route}) {
                                 label: undefined,
                                 imageGroup: undefined,
                             }
-                            // console.log(data) con loi cho nay
                             const myGroupSingle = await createGroup(data, token)
                             navigation.push("ChatMessageScreen", {conservationId: myGroupSingle.data._id, isGroup: false, userId: userIdRecieve})
                         }catch (e) {
