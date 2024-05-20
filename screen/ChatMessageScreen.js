@@ -223,26 +223,20 @@ function ChatMessageScreen({navigation, route}) {
     }, [])
 
     // gui su kien join room va nhan tin nhan qua socket
-    React.useLayoutEffect(() => {
-        socket.emit("join_room_conversation", {roomId: route.params.conservationId});
+    React.useEffect(() => {
+        const joinRoom = () => {
+            socket.emit("join_room_conversation", {roomId: route.params.conservationId});
+        };
 
-        const listener = async (data) => {
-            const user1 = await getUser()
+        const onNewMessage = async (data) => {
+            const user1 = await getUser();
             setMessages(previousMessages =>
                 GiftedChat.append(previousMessages, getMessageType(user1, data)),
-            )
+            );
         };
 
-        const listener1 = async (data) => {
-            setIsTyping(data.data.typing)
-        };
-
-        // lang nghe su kien nhan tin nhan
-        socket.on("broadcast_to_all_user_in_room", listener);
-
-        // lang nghe su kien nhap tin nhan
-        socket.on("broadcast_to_all_user_in_room_typing", listener1);
-
+        joinRoom();
+        socket.on("broadcast_to_all_user_in_room", onNewMessage);
 
     }, []);
 
