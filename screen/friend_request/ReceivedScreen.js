@@ -25,7 +25,7 @@ function ReceivedScreen({navigation}) {
             const userId = user._id
             const response = await getListUserRequestAddFriendToMe(userId, tokenAccess)
             // console.log(response.data.data)
-            setListUserRequestAddFriend(response.data.data)
+            setListUserRequestAddFriend(response.data.data.friendsQueue)
         } catch (error) {
             console.log(error)
         }
