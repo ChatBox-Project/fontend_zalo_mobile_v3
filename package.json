@@ -27,7 +27,6 @@
     "react": "18.2.0",
     "react-native": "0.74.1",
     "react-native-axios": "^0.17.1",
-    "react-native-dotenv": "^3.4.11",
     "react-native-elements": "^3.4.3",
     "react-native-flash-message": "^0.4.2",
     "react-native-gifted-chat": "^2.4.0",
@@ -38,11 +37,11 @@
     "react-native-uuid": "^2.0.2",
     "react-native-vector-icons": "^10.0.3",
     "react-native-virtualized-view": "^1.0.0",
-    "socket.io-client": "^4.7.5"
+    "socket.io-client": "^4.7.5",
+    "expo-updates": "~0.25.14"
   },
   "devDependencies": {
-    "@babel/core": "^7.24.4",
-    "metro-react-native-babel-preset": "^0.77.0"
+    "@babel/core": "^7.24.4"
   },
   "private": true
 }

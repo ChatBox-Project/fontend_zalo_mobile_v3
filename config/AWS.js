@@ -2,9 +2,9 @@ import AWS from "aws-sdk"
 import { createParams } from "../util/function/MyFunction";
 
 AWS.config.update({
-    region: process.env.REGION,
-    accessKeyId: process.env.ACCESSKEY,
-    secretAccessKey: process.env.SECRETKEY,
+    region: process.env.EXPO_PUBLIC_REGION,
+    accessKeyId: process.env.EXPO_PUBLIC_ACCESSKEY,
+    secretAccessKey: process.env.EXPO_PUBLIC_SECRETKEY,
 })
 
 const ETBA = new AWS.S3();

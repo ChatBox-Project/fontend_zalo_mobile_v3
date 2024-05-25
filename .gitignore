@@ -2,7 +2,7 @@
 
 # dependencies
 node_modules/
-./config/Config.js
+
 # Expo
 .expo/
 dist/
@@ -36,3 +36,4 @@ yarn-error.*
 
 # file env
 .env
+
