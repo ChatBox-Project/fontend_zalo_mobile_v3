@@ -37,6 +37,18 @@
     },
     "updates": {
       "url": "https://u.expo.dev/1f47eef6-0cec-476c-ba35-11a632d60535"
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "properties": {
+            "android": {
+              "usesCleartextTraffic": true
+            }
+          }
+        }
+      ]
+    ]
   }
 }
