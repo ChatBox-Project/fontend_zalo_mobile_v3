@@ -22,7 +22,7 @@ const createParams = async (file, mineType) => {
     const endPoint = getEndPoint(file)
 
     const params = {
-        Bucket: BUCKET,
+        Bucket: process.env.BUCKET,
         Key: `file${Date.now().toString()}.${endPoint}`,
         Body: buffer,
         ContentType: mineType,

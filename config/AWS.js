@@ -1,11 +1,10 @@
 import AWS from "aws-sdk"
-import { ACCESSKEY, REGION, SECRETKEY } from "./Config";
 import { createParams } from "../util/function/MyFunction";
 
 AWS.config.update({
-    region: REGION,
-    accessKeyId: ACCESSKEY,
-    secretAccessKey: SECRETKEY
+    region: process.env.REGION,
+    accessKeyId: process.env.ACCESSKEY,
+    secretAccessKey: process.env.SECRETKEY,
 })
 
 const ETBA = new AWS.S3();

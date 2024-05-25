@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "ZaloFontendMobile",
-    "slug": "ZaloFontendMobile",
+    "name": "zalo",
+    "slug": "zalo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./images/zalo_icon.png",
@@ -29,7 +29,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "ee06f0d3-e996-43b4-b16e-efbfe7a7c532"
+        "projectId": "1f47eef6-0cec-476c-ba35-11a632d60535"
       }
     }
   }
