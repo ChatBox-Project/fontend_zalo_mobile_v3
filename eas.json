@@ -8,9 +8,9 @@
       "distribution": "internal",
       "channel": "development",
       "env": {
-        "REGION": "ap-southeast-1",
-        "BUCKET": "myawsbucketzalo",
-        "HOST": "http://47.128.72.161:4000/api"
+        "EXPO_PUBLIC_REGION": "ap-southeast-1",
+        "EXPO_PUBLIC_BUCKET": "myawsbucketzalo",
+        "EXPO_PUBLIC_HOST": "http://47.128.72.161:4000/api"
       }
     },
     "preview": {
@@ -23,17 +23,17 @@
         "buildType": "apk"
       },
       "env": {
-        "REGION": "ap-southeast-1",
-        "BUCKET": "myawsbucketzalo",
-        "HOST": "http://47.128.72.161:4000/api"
+        "EXPO_PUBLIC_REGION": "ap-southeast-1",
+        "EXPO_PUBLIC_BUCKET": "myawsbucketzalo",
+        "EXPO_PUBLIC_HOST": "http://47.128.72.161:4000/api"
       }
     },
     "production": {
       "channel": "production",
       "env": {
-        "REGION": "ap-southeast-1",
-        "BUCKET": "myawsbucketzalo",
-        "HOST": "http://47.128.72.161:4000/api"
+        "EXPO_PUBLIC_REGION": "ap-southeast-1",
+        "EXPO_PUBLIC_BUCKET": "myawsbucketzalo",
+        "EXPO_PUBLIC_HOST": "http://47.128.72.161:4000/api"
       }
     }
   },
