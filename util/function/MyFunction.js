@@ -44,7 +44,7 @@ const getEndPoint = (uri) => {
 // lay loai tin nhan tư socket
 const getMessageType = (myUserId, data) => {
     // console.log(myUserId)
-    // console.log(data.createdAt)
+    // console.log(data.type_message)
 
     let typeMessage = {}
     if (myUserId._id == data.sender._id) {
@@ -68,17 +68,16 @@ const getMessageType = (myUserId, data) => {
         }
     }
 
-    const endPoint = getEndPoint(data.message)
+    const typemess = data.type_message
 
-    switch (endPoint) {
-        case "jpg":
-        case "jpeg":
+    switch (typemess) {
+        case "image":
             typeMessage = {
                 ...typeMessage,
                 image: data.message
             }
             break;
-        case "mp3":
+        case "audio":
             typeMessage = {
                 ...typeMessage,
                 audio: data.message

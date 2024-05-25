@@ -4,10 +4,10 @@
     "slug": "ZaloFontendMobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./images/zalo_icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./images/zalo_icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,18 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./images/zalo_icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.phutot111.ZaloFontendMobile"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./images/zalo_icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ee06f0d3-e996-43b4-b16e-efbfe7a7c532"
+      }
     }
   }
 }
