@@ -24,6 +24,7 @@ import RemoveGroup from "../api/conversation/remove-group";
 import SaveMessage from "../api/message/save-message";
 import GetMessageConversation from "../api/message/get-message-conversation";
 import RecallMessage from "../api/message/recall-message";
+import openUrlInBrowser from "../util/function/OpenFileInBrowser";
 
 // import AnyMessage from "../util/message_type/AnyMessage";
 
@@ -466,6 +467,7 @@ function ChatMessageScreen({navigation, route}) {
 
     // xu ly su kien long press tin nhan
     const onLongPressText = (context, message) => {
+        console.log(message)
         if (message.text && message.text !== "Tin nhắn đã bị thu hồi" && message.user._id === user._id) {
             const options = [
                 'Thu hồi',
@@ -478,6 +480,29 @@ function ChatMessageScreen({navigation, route}) {
             }, (buttonIndex) => {
                 switch (buttonIndex) {
                     case 0:
+                        removeMessage(message)
+                        break;
+                    default:
+                        break;
+                }
+            })
+        }
+        if(message.hasOwnProperty("image") || message.hasOwnProperty("audio") && message.text !== "Tin nhắn đã bị thu hồi" && message.user._id === user._id){
+            const options = [
+                'Xem',
+                'Thu hồi',
+                'Cancel',
+            ];
+            const cancelButtonIndex = options.length - 1;
+            context.actionSheet().showActionSheetWithOptions({
+                options,
+                cancelButtonIndex,
+            }, (buttonIndex) => {
+                switch (buttonIndex) {
+                    case 0:
+                        openUrlInBrowser(message?.image ? message.image : message.audio)
+                        break;
+                    case 1:
                         removeMessage(message)
                         break;
                     default:
@@ -503,8 +528,8 @@ function ChatMessageScreen({navigation, route}) {
                     }
                 }}
                 isTyping={isTyping}
-                renderMessageAudio={AudioMessage}
-                renderMessageImage={ImageMessage}
+                // renderMessageAudio={AudioMessage}
+                // renderMessageImage={ImageMessage}
                 onLongPress={onLongPressText}
             />
             <TouchableOpacity

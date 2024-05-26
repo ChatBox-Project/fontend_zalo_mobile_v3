@@ -1,6 +1,7 @@
 import * as FileSystem from 'expo-file-system';
-import { BUCKET } from '../../config/Config';
+import {BUCKET} from '../../config/Config';
 import * as ImagePicker from "expo-image-picker";
+
 const Buffer = require('buffer/').Buffer
 import * as DocumentPicker from "expo-document-picker";
 
@@ -45,12 +46,12 @@ const getEndPoint = (uri) => {
 const getMessageType = (myUserId, data) => {
     // console.log(myUserId)
     // console.log(data.type_message)
-
+    // console.log(data)
     let typeMessage = {}
     if (myUserId._id == data.sender._id) {
         typeMessage = {
             _id: data.key,
-            createdAt: data.createdAt,
+            createdAt: data.createdAt || data.createAt,
             user: {
                 _id: data.sender._id,
                 name: data.sender.username,
@@ -59,7 +60,7 @@ const getMessageType = (myUserId, data) => {
     } else {
         typeMessage = {
             _id: data.key,
-            createdAt: data.createdAt,
+            createdAt: data.createdAt || data.createAt,
             user: {
                 _id: data.sender._id,
                 name: data.sender.username,
@@ -91,6 +92,7 @@ const getMessageType = (myUserId, data) => {
     }
     // console.log(typeMessage)
     return typeMessage
+
 }
 
 // lay ten file tu uri
