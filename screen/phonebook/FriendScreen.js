@@ -42,7 +42,7 @@ function FriendScreen({ navigation }) {
             id: 0,
             titleTab: "Tất cả",
             tab: <TabFriend key={0} navigation={navigation} />,
-            count: 42
+            count: null
         },
         {
             id: 1,
