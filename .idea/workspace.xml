@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ad20bc77-d327-4c4b-a4fe-b0f2891be2a7" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/screen/phonebook/FriendScreen.js" beforeDir="false" afterPath="$PROJECT_DIR$/screen/phonebook/FriendScreen.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/eas.json" beforeDir="false" afterPath="$PROJECT_DIR$/eas.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,7 +62,8 @@
       <updated>1716634198260</updated>
       <workItem from="1716634200179" duration="9687000" />
       <workItem from="1716644375232" duration="20868000" />
-      <workItem from="1716681341304" duration="2308000" />
+      <workItem from="1716681341304" duration="2639000" />
+      <workItem from="1716684247912" duration="274000" />
     </task>
     <servers />
   </component>
